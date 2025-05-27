@@ -11,10 +11,13 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -45,7 +48,6 @@ public class StockServiceImpl implements StockService {
         return productResponseDtos;
     }
 
-
     // Upload a CSV file to update the stock
     @Override
     @Transactional
@@ -61,7 +63,7 @@ public class StockServiceImpl implements StockService {
                 Product product = productRepository.findByProductCode(productCode).orElseThrow(() -> new ProductNotFoundException());
 
                 if (product != null) {
-                    product.setTotalWeight(totalWeight);
+                    product.setTotalWeight(product.getTotalWeight() + totalWeight);
                 } else {
                     // Optionally log or collect missing product IDs
                     System.out.println("Product not found: " + productCode);
