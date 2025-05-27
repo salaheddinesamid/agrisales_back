@@ -20,6 +20,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -33,10 +34,11 @@ public class JWTFilter extends OncePerRequestFilter {
 
     private final JwtUtilities jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
+    private final ObjectMapper objectMapper;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        try{
+        try {
             System.out.println(request.getLocalAddr());
 
             // Extract the token from the HTTP headers
@@ -56,33 +58,43 @@ public class JWTFilter extends OncePerRequestFilter {
                     // Set the authentication context
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
-
                 else if(userDetails != null && !userDetails.isAccountNonLocked()) {
                     throw new UserAccountLockedException("User account is locked");
                 }
                 else {
                     throw new UserNotFoundException();
-
                 }
             }
+            filterChain.doFilter(request, response);
 
-        }catch (ExpiredJwtException ex) {
-            // Specifically handle expired tokens
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-
-            Map<String, Object> body = new HashMap<>();
-            body.put("status", HttpStatus.UNAUTHORIZED.value());
-            body.put("error", "Unauthorized");
-            body.put("message", "JWT expired");
-            body.put("path", request.getRequestURI());
-
-            final ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(response.getOutputStream(), body);
-            return;
+        } catch (ExpiredJwtException ex) {
+            log.error("JWT Token expired: {}", ex.getMessage());
+            sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "Token has expired", "JWT_EXPIRED");
+        } catch (TokenExpiredException ex) {
+            log.error("JWT Token expired: {}", ex.getMessage());
+            sendErrorResponse(response, HttpStatus.UNAUTHORIZED, ex.getMessage(), "JWT_EXPIRED");
+        } catch (UserAccountLockedException ex) {
+            log.error("User account locked: {}", ex.getMessage());
+            sendErrorResponse(response, HttpStatus.FORBIDDEN, ex.getMessage(), "ACCOUNT_LOCKED");
+        } catch (UserNotFoundException ex) {
+            log.error("User not found: {}", ex.getMessage());
+            sendErrorResponse(response, HttpStatus.NOT_FOUND, "User not found", "USER_NOT_FOUND");
+        } catch (Exception ex) {
+            log.error("Authentication error: {}", ex.getMessage());
+            sendErrorResponse(response, HttpStatus.INTERNAL_SERVER_ERROR, "Authentication failed", "AUTH_ERROR");
         }
-
-        filterChain.doFilter(request, response);
     }
 
+    private void sendErrorResponse(HttpServletResponse response, HttpStatus status, String message, String errorCode) throws IOException {
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(status.value());
+
+        Map<String, Object> errorDetails = new HashMap<>();
+        errorDetails.put("status", status.value());
+        errorDetails.put("error", status.getReasonPhrase());
+        errorDetails.put("message", message);
+        errorDetails.put("errorCode", errorCode);
+
+        objectMapper.writeValue(response.getWriter(), errorDetails);
+    }
 }
