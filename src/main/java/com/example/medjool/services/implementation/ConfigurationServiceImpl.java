@@ -129,6 +129,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
                 }
         ).toList();
         client.setContacts(newClientContacts);
+        client.setSIRET(updateClientDto.getSiret());
+        client.setWebSite(updateClientDto.getWebsite());
         return new ResponseEntity<>("Client updated successfully", HttpStatus.OK);
     }
 
