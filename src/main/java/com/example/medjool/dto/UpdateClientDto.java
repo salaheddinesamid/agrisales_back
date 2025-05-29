@@ -16,4 +16,7 @@ public class UpdateClientDto {
     private String newCompanyActivity;
     private List<UpdateAddressDto> newAddresses;
     private List<UpdateContactDto> newContacts;
+    private String website;
+    private String clientStatus;
+    private String siret;
 }
