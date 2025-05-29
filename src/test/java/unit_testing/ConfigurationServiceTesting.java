@@ -179,7 +179,7 @@ public class ConfigurationServiceTesting {
         // Mock updated client
         UpdateAddressDto updateAddressDto = new UpdateAddressDto(1L, "Algeria", "Street 20", "State", "3900", "Oran");
         UpdateContactDto updateContactDto = new UpdateContactDto(1, "FN", "", "contact@outlook.com");
-        UpdateClientDto updateClientDto = new UpdateClientDto("Mafriq Limited", "Samid", "Export and Import", List.of(updateAddressDto), List.of(updateContactDto));
+        UpdateClientDto updateClientDto = new UpdateClientDto("Mafriq Limited", "Samid", "Export and Import", List.of(updateAddressDto), List.of(updateContactDto),"www.mafriq.com", "ACTIVE", "RR");
 
         // Simulate save behavior
         when(clientRepository.save(existedClient)).thenReturn(existedClient);
