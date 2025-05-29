@@ -13,6 +13,7 @@ public interface StockService {
     List<ProductResponseDto> getAllProducts();
     ResponseEntity<Object> updateStock(MultipartFile file) throws IOException;
     ResponseEntity<Object> createNewProduct(NewProductDto newProductDto);
+    ResponseEntity<Object> clearStock();
     ResponseEntity<Object> initializeStock(MultipartFile file) throws IOException;
 
 }

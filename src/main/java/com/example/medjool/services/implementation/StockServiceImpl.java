@@ -102,6 +102,16 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
+    public ResponseEntity<Object> clearStock() {
+        productRepository.findAll().forEach(product -> {
+            product.setTotalWeight(0.0); // Reset total weight to 0
+            productRepository.save(product);
+        });
+
+        return new ResponseEntity<>("Stock cleared successfully", HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Object> initializeStock(MultipartFile file) throws IOException {
         try (
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(file.getInputStream()));

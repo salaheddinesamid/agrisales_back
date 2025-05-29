@@ -47,6 +47,11 @@ public class StockController {
         return stockService.updateStock(file);
     }
 
+    @PutMapping("/clear")
+    public ResponseEntity<Object> clearStock() {
+        return stockService.clearStock();
+    }
+
     @PostMapping("/initialize")
     public ResponseEntity<Object> initializeStock(@RequestBody MultipartFile file) throws IOException {
         return stockService.initializeStock(file);

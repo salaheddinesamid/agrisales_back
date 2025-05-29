@@ -243,14 +243,13 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         pallet.setTag(palletDto.getTag());
         pallet.setTotalNet(palletDto.getTotalNet());
         pallet.setPackaging(palletDto.getPackaging());
-
         pallet.setNumberOfBoxesInCarton(palletDto.getNumberOfBoxesInCarton());
         pallet.setNumberOfCartonsInStory(palletDto.getNumberOfCartonsInStory());
         pallet.setNumberOfStoriesInPallet(palletDto.getNumberOfStoriesInPallet());
-
         pallet.setNumberOfBoxesInStory(palletDto.getNumberOfBoxesInStory());
-
         pallet.setNumberOfBoxesInPallet(palletDto.getNumberOfBoxesInPallet());
+
+        palletRepository.save(pallet);
 
         return new ResponseEntity<>("Pallet updated successfully", HttpStatus.OK);
     }
