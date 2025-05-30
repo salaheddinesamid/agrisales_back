@@ -9,6 +9,8 @@ import com.example.medjool.repository.ContactRepository;
 import com.example.medjool.repository.PalletRepository;
 import com.example.medjool.services.ConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -81,6 +83,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 
     @Override
+    @Cacheable(value = "clients")
     public ResponseEntity<List<Client>> getAll(){
         List<Client> clients = clientRepository.findAll();
         return new ResponseEntity<>(clients,HttpStatus.OK);
@@ -90,6 +93,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     // Update client information:
     @Override
     @Transactional
+    @CacheEvict(value = "clients", allEntries = true)
     public ResponseEntity<Object> updateClient(Integer clientId, UpdateClientDto updateClientDto) {
         Optional<Client> optionalClient = clientRepository.findById(clientId);
         if (optionalClient.isEmpty()) {
