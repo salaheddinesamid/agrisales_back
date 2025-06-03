@@ -140,16 +140,13 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 
 
-    @Override
-    public ResponseEntity<Object> deleteClient(Integer id) throws ClassNotFoundException {
-        Optional<Client> client = clientRepository.findById(id);
+   @Override
+    public ResponseEntity<Object> deleteClient(Integer id) {
+        Client client = clientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Client with ID " + id + " not found"));
 
-
-        if (client.isEmpty()) {
-            throw new ClassNotFoundException();
-        }
-        clientRepository.delete(client.get());
-        return new ResponseEntity<>(client, HttpStatus.OK);
+        clientRepository.delete(client);
+        return new ResponseEntity<>("The client has been deleted", HttpStatus.OK);
     }
 
     private List<AddressResponseDto> convertToAddressDto(List<Address> addresses) {
