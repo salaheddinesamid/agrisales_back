@@ -52,6 +52,7 @@ public class SecurityConfiguration {
                                         "/actuator/metrics/",
                                         "/actuator/health",
                                         "/actuator/info",
+                                                "/api/email/**",
                                         "/api-docs/**"
 
                                                 ).permitAll()
@@ -61,6 +62,7 @@ public class SecurityConfiguration {
                                                 "/api/alert/**",
                                                 "/api/production/**",
                                                 "/api/user/**",
+
                                                 "/api/notification/**",
                                                 "/api/shipment/**").hasAnyAuthority("GENERAL_MANAGER","SALES")
                                         .anyRequest().authenticated()

@@ -45,21 +45,23 @@ public class RoleInitializer {
     }
 
     @EventListener(ApplicationReadyEvent.class)
-    public void initializeManager(){
-        String email = "Oussama.elmir@medjoolstar.com";
+    public void initializeUsers(){
 
-        if(!userRepository.existsByEmail(email)){
-            User user = new User();
-            user.setEmail(email);
-            user.setPassword(passwordEncoder.encode("admin"));
-            user.setFirstName("Oussama");
-            user.setLastName("Elmir");
+        // Create a default user for the General Manager role:
+        String GM_EMAIL = "Oussama.elmir@medjoolstar.com";
+
+        if(!userRepository.existsByEmail(GM_EMAIL)){
+            User GM = new User();
+            GM.setEmail(GM_EMAIL);
+            GM.setPassword(passwordEncoder.encode("admin"));
+            GM.setFirstName("Oussama");
+            GM.setLastName("Elmir");
              Role role = roleRepository.findByRoleName(RoleName.GENERAL_MANAGER)
                     .orElseThrow(() -> new RuntimeException("Role not found"));
-            user.setRole(role);
-            user.setAccountNonLocked(true);
-            userRepository.save(user);
+            GM.setRole(role);
+            GM.setAccountNonLocked(true);
+            userRepository.save(GM);
         }
-    }
 
+    }
 }

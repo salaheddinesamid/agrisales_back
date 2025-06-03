@@ -39,7 +39,7 @@ public class ProductionSchedulerService {
     }
 
     @Transactional
-    @Scheduled(cron = "0 0 0 * * ?") // Runs every midnight (more reliable than fixedRate)
+    @Scheduled(fixedRate = 24 * 60 * 60 * 1000) // Run every 24 hours
     public void scheduleProductionOrders() {
         try {
             Optional<SystemSetting> factoryHoursSetting = systemSettingRepository.findByKey("factory_working_hours");

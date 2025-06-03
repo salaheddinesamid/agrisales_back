@@ -18,6 +18,6 @@ public class ProductExceptionController {
     @ExceptionHandler(ProductLowStock.class)
     public ResponseEntity<Object> handleProductLowStock(ProductLowStock e) {
         String message = "PRODUCT LOW STOCK";
-        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(message, HttpStatus.CONFLICT);
     }
 }
