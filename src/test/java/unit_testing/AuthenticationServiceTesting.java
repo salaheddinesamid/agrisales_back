@@ -42,10 +42,8 @@ public class AuthenticationServiceTesting {
     @InjectMocks
     private AuthenticationServiceImpl authenticationService;
 
-    @Mock
-    BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @InjectMocks
+    @Mock
     private PasswordEncoder passwordEncoder;
 
 
@@ -99,7 +97,7 @@ public class AuthenticationServiceTesting {
 
         LoginRequestDto loginRequestDto = new LoginRequestDto();
         loginRequestDto.setEmail("test@test.com");
-        loginRequestDto.setPassword(null);
+        loginRequestDto.setPassword("password");
 
         User existedUser = new User();
         existedUser.setFirstName("Test");

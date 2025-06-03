@@ -45,6 +45,7 @@ public class ConfigurationServiceTesting {
         MockitoAnnotations.openMocks(this);
     }
 
+    //  --------------- Client tests ------------------//
     @Test
     void testCreateNewClient_AlreadyExists() throws ClientAlreadyFoundException {
         ClientDto clientDto = new ClientDto(
@@ -120,26 +121,6 @@ public class ConfigurationServiceTesting {
     }
 
 
-    /*
-    @Test
-    void createPallet_AlreadyExists(){
-        PalletDto palletDto = new PalletDto(1,20,2,10,100,100,20,500.0f,100,"Standard","");
-
-        Pallet existedPallet = new Pallet(1,1,20,2,10,100,20,100,500.0f,"Standard","",100);
-
-        when(palletRepository.findByPackaging(
-                palletDto.getPackaging()
-        )).thenReturn(existedPallet);
-
-        // Call the service method:
-
-        ResponseEntity<Object> response = configurationService.addPallet(palletDto);
-
-        assertEquals(409, response.getStatusCodeValue());
-    }
-
-     */
-
     @Test
     void getClientAddresses(){
 
@@ -192,7 +173,6 @@ public class ConfigurationServiceTesting {
     }
 
 
-
-
+    //  --------------- Pallet tests ------------------//
 
 }

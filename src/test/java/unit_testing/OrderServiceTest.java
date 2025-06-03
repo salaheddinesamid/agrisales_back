@@ -6,6 +6,7 @@ import com.example.medjool.dto.OrderRequestDto;
 import com.example.medjool.dto.OrderStatusDto;
 import com.example.medjool.exception.ClientNotActiveException;
 import com.example.medjool.exception.OrderCannotBeCanceledException;
+import com.example.medjool.exception.ProductLowStock;
 import com.example.medjool.exception.ProductNotFoundException;
 
 
@@ -13,6 +14,7 @@ import com.example.medjool.model.*;
 import com.example.medjool.repository.*;
 
 import com.example.medjool.services.implementation.OrderServiceImpl;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -62,21 +65,28 @@ public class OrderServiceTest {
     void testCreateOrderSuccess() {
         // Arrange
         LocalDate now = LocalDate.now();
-        OrderRequestDto orderRequest = new OrderRequestDto();
-        orderRequest.setClientName("Fresh Fruits Inc");
 
+        // Mock the client
         Client client = new Client();
         client.setClientStatus(ClientStatus.ACTIVE);
         client.setCompanyName("Fresh Fruits Inc");
 
+        // Create a request DTO for the order
+        OrderRequestDto orderRequest = new OrderRequestDto();
+        orderRequest.setClientName("Fresh Fruits Inc");
+
+
+        // Mock the product
         Product product = new Product();
         product.setProductCode("M_EA_B_M");
         product.setTotalWeight(1000.0);
 
+        // Mock the pallet
         Pallet pallet = new Pallet();
         pallet.setPalletId(1);
         pallet.setPreparationTime(5.0);
 
+        // Create an item for the request
         OrderItemRequestDto itemDto = new OrderItemRequestDto();
         itemDto.setProductCode("M_EA_B_M");
         itemDto.setItemWeight(500.0);
@@ -195,6 +205,51 @@ public class OrderServiceTest {
     @Test
     void testCreateOrder_withProductLowStock() {
 
+
+        LocalDateTime localDateTime = LocalDateTime.now();
+
+        // Mock a client
+        Client client = new Client();
+        client.setClientStatus(ClientStatus.ACTIVE);
+        client.setCompanyName("Fresh Fruits Inc");
+
+        // Mock a product
+
+        Product product = new Product();
+        product.setProductCode("M_EA_B_M");
+        product.setTotalWeight(0.0); // Simulating low stock
+
+        // Mock a pallet
+
+        Pallet pallet = new Pallet();
+        pallet.setPreparationTime(5.0);
+        pallet.setPalletId(1);
+
+
+        when(clientRepository.findByCompanyName("Fresh Fruits Inc")).thenReturn(client);
+        when(productRepository.findByProductCode("M_EA_B_M")).thenReturn(Optional.of(product));
+        when(palletRepository.findById(1)).thenReturn(Optional.of(pallet));
+
+        // Create an order request
+        OrderRequestDto orderRequest = new OrderRequestDto();
+        orderRequest.setClientName("Fresh Fruits Inc");
+        OrderItemRequestDto itemDto = new OrderItemRequestDto();
+        itemDto.setProductCode("M_EA_B_M");
+        itemDto.setItemWeight(500.0);
+        itemDto.setPalletId(1);
+        itemDto.setPricePerKg(2.5);
+        itemDto.setPackaging(1);
+        itemDto.setNumberOfPallets(1);
+        orderRequest.setItems(List.of(itemDto));
+        orderRequest.setCurrency(OrderCurrency.MAD.toString());
+        orderRequest.setProductionDate(localDateTime.toLocalDate());
+
+        // Act & Assert
+
+        Assertions.assertThrows(
+                ProductLowStock.class,
+                () -> orderService.createOrder(orderRequest)
+        );
     }
 
     @Test
