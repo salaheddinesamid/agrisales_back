@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+/** * Controller for handling authentication requests such as login and registration.
+ */
+
+
 @RestController
 @RequestMapping("api/auth")
 public class AuthenticationController {
@@ -21,11 +26,21 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
+    /** * Handles user login requests.
+     *
+     * @param loginRequestDto the login request containing email and password
+     * @return ResponseEntity with authentication result
+     */
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginRequestDto loginRequestDto) {
         return authenticationService.authenticate(loginRequestDto);
     }
 
+    /** * Handles user registration requests.
+     *
+     * @param newUserDto the new user details for registration
+     * @return ResponseEntity with registration result
+     */
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody NewUserDto newUserDto) {
         return authenticationService.createCredentials(newUserDto);

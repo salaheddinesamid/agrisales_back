@@ -8,6 +8,11 @@ import lombok.Setter;
 
 import java.util.List;
 
+/** * Represents a client in the system.
+ * Contains information about the client's company, contacts, and addresses.
+ */
+
+
 @Entity
 @Getter
 @Setter

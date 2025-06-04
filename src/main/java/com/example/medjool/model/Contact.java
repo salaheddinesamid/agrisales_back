@@ -6,6 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/** * Represents a contact entity with department, email, and phone information.
+ */
+
+
 @Entity
 @Getter
 @Setter

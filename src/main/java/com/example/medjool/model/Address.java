@@ -6,6 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/** * Represents an address entity in the system.
+ * This class maps to the 'addresses' table in the database.
+ */
+
+
 @Entity
 @Table(name = "addresses") // Explicit table name
 @Getter

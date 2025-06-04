@@ -9,6 +9,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/** * Represents an order in the system.
+ * An order is associated with a client and contains multiple order items.
+ * It includes details such as total price, currency, total weight, production date,
+ * delivery date, shipping address, and status.
+ */
+
+
 @Entity
 @Getter
 @Setter
