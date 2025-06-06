@@ -5,9 +5,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * Configuration class to set up CORS (Cross-Origin Resource Sharing) for the application.
+ * This allows the frontend application running on a different origin to access the backend APIs.
+ */
+
+
 @Configuration
 public class CorsConfiguration {
 
+    /** * Configures CORS settings for the application.
+     *
+     * @return a WebMvcConfigurer that applies CORS settings to all endpoints.
+     */
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {

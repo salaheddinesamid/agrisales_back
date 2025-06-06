@@ -9,6 +9,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/** * StockInitializer is a component that initializes the stock of products
+ * when the application is ready. It checks if each product already exists
+ * in the database and only adds it if it does not.
+ */
+
 
 @Component
 public class StockInitializer {
@@ -65,6 +70,11 @@ public class StockInitializer {
             new NewProductDto("BBS_ML_D_MS", "BBS", "ML", "Dark", "Medjool",0)
     );
 
+    /**
+     * This method is called when the application is ready.
+     * It initializes the stock by checking if each product exists in the database.
+     * If a product does not exist, it creates a new Product entity and saves it to the repository.
+     */
     @EventListener(ApplicationReadyEvent.class)
     public void initialize() {
         products.forEach(productDto -> {

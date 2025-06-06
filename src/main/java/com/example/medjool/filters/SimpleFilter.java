@@ -16,6 +16,15 @@ public class SimpleFilter extends OncePerRequestFilter {
 
     Logger logger = LoggerFactory.getLogger(SimpleFilter.class);
 
+    /**     * This method is called for every request to log the request URI and method.
+     * It continues the filter chain after logging.
+     *
+     * @param request  the HTTP request
+     * @param response the HTTP response
+     * @param filterChain the filter chain
+     * @throws ServletException if an error occurs during filtering
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         logger.info("Incoming request: {}Type of request:{}", request.getRequestURI(), request.getMethod());

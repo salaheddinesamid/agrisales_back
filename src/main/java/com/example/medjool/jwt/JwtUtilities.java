@@ -10,6 +10,10 @@ import org.springframework.util.StringUtils;
 import java.util.Date;
 import java.util.function.Function;
 
+/** * Utility class for handling JWT operations such as token generation, validation, and extraction of claims.
+ */
+
+
 @Slf4j
 @Component
 public class JwtUtilities {
@@ -20,16 +24,32 @@ public class JwtUtilities {
     // Expiration time:
     private Long jwtExpiration = 36000000L;
 
-    // Extract the username
+    /** Extracts the username from the JWT token.
+     *
+     * @param token the JWT token
+     * @return the username extracted from the token
+     */
     public String extractUserName(String token){
         return extractClaim(token, Claims::getSubject);
     }
 
-    // Extract the claims
+    /** * Extracts a specific claim from the JWT token.
+     *
+     * @param token the JWT token
+     * @param claimsTFunction a function to extract the desired claim
+     * @param <T> the type of the claim to be extracted
+     * @return the extracted claim
+     */
     private <T> T extractClaim(String token, Function<Claims,T> claimsTFunction) {
         final Claims claims = extractAllClaims(token);
         return claimsTFunction.apply(claims);
     }
+
+    /** * Extracts all claims from the JWT token.
+     *
+     * @param token the JWT token
+     * @return the claims contained in the token
+     */
     private Claims extractAllClaims(String token){
         return Jwts.parser()
                 .setSigningKey(secret)
@@ -37,10 +57,20 @@ public class JwtUtilities {
                 .getBody();
     }
 
-    // Extract the expiration date of the token
+    /** * Extracts the expiration date from the JWT token.
+     *
+     * @param token the JWT token
+     * @return the expiration date of the token
+     */
     public Date extractExpiration(String token) { return
             extractClaim(token, Claims::getExpiration);
     }
+
+    /** * Checks if the JWT token is expired.
+     *
+     * @param token the JWT token
+     * @return true if the token is expired, false otherwise
+     */
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String email = extractUserName(token);
         return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
@@ -60,7 +90,11 @@ public class JwtUtilities {
         return null;
     }
 
-    // Validate the token
+    /** * Validates the JWT token.
+     *
+     * @param token the JWT token to validate
+     * @return true if the token is valid, false otherwise
+     */
     public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(token);

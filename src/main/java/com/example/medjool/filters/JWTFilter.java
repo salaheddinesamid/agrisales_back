@@ -35,6 +35,16 @@ public class JWTFilter extends OncePerRequestFilter {
     private final UserDetailsServiceImpl userDetailsService;
     private final ObjectMapper objectMapper;
 
+    /**
+     * This method is called for every request to check if the JWT token is valid.
+     * If valid, it sets the authentication in the SecurityContext.
+     *
+     * @param request  the HTTP request
+     * @param response the HTTP response
+     * @param filterChain the filter chain
+     * @throws ServletException if an error occurs during filtering
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         try {
@@ -42,6 +52,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
             // Extract the token from the HTTP headers
             String token = jwtUtil.getToken(request);
+
             System.out.println(token);
             if (token != null && jwtUtil.validateToken(token)) {
                 // Extract the username
@@ -84,6 +95,14 @@ public class JWTFilter extends OncePerRequestFilter {
         }
     }
 
+    /**     * Sends an error response in JSON format.
+     *
+     * @param response the HTTP response
+     * @param status the HTTP status
+     * @param message the error message
+     * @param errorCode the error code
+     * @throws IOException if an I/O error occurs
+     */
     private void sendErrorResponse(HttpServletResponse response, HttpStatus status, String message, String errorCode) throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(status.value());
@@ -96,4 +115,5 @@ public class JWTFilter extends OncePerRequestFilter {
 
         objectMapper.writeValue(response.getWriter(), errorDetails);
     }
+
 }

@@ -14,11 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 public class ProductionSchedulerService {
 
-    private final OrderHistoryRepository orderHistoryRepository;
-    private final OrderRepository orderRepository;
     private final ProductionOrderRepository productionOrderRepository;
     private final SystemSettingRepository systemSettingRepository;
     private final FactoryScheduleRepository factoryScheduleRepository;
@@ -26,13 +25,9 @@ public class ProductionSchedulerService {
     private final Logger logger = LoggerFactory.getLogger(ProductionSchedulerService.class);
 
     @Autowired
-    public ProductionSchedulerService(OrderHistoryRepository orderHistoryRepository,
-                                      OrderRepository orderRepository,
-                                      ProductionOrderRepository productionOrderRepository,
+    public ProductionSchedulerService(ProductionOrderRepository productionOrderRepository,
                                       SystemSettingRepository systemSettingRepository,
                                       FactoryScheduleRepository factoryScheduleRepository) {
-        this.orderHistoryRepository = orderHistoryRepository;
-        this.orderRepository = orderRepository;
         this.productionOrderRepository = productionOrderRepository;
         this.systemSettingRepository = systemSettingRepository;
         this.factoryScheduleRepository = factoryScheduleRepository;

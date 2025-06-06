@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,12 +29,25 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+/** * Security configuration class for setting up Spring Security.
+ * This class configures the security filter chain, access rules, and JWT filter.
+ */
+
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
     private final JWTFilter JWTFilter;
+
+    /**     * Configures the security filter chain for the application.
+     * This method sets up CORS, CSRF protection, and access rules for different endpoints.
+     *
+     * @param http the HttpSecurity object to configure
+     * @return the configured SecurityFilterChain
+     * @throws Exception if an error occurs during configuration
+     */
 
     @Bean
     SecurityFilterChain configure(HttpSecurity http) throws Exception {
@@ -76,6 +89,12 @@ public class SecurityConfiguration {
                         .addFilterBefore(JWTFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
+    /**     * Provides a custom AccessDeniedHandler that returns a JSON response when access is denied.
+     * This handler sets the response status to 403 Forbidden and includes an error message in the response body.
+     *
+     * @return the configured AccessDeniedHandler
+     */
     @Bean
     public AccessDeniedHandler accessDeniedHandler() {
         return (request, response, accessDeniedException) -> {
@@ -103,11 +122,21 @@ public class SecurityConfiguration {
     }
 
 
+    /**     * Provides a PasswordEncoder bean for encoding passwords.
+     * This method uses BCryptPasswordEncoder for secure password hashing.
+     *
+     * @return the configured PasswordEncoder
+     */
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**     * Provides a RestTemplate bean for making HTTP requests.
+     * This method creates a new instance of RestTemplate.
+     *
+     * @return the configured RestTemplate
+     */
     @Bean
     RestTemplate restTemplate(){
         return new RestTemplate();
