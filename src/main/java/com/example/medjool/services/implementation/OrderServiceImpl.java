@@ -32,6 +32,7 @@ public class OrderServiceImpl implements OrderService{
     private final PalletRepository palletRepository;
     private final ShipmentServiceImpl shipmentService;
     private final OrderItemRepository orderItemRepository;
+    private final ProductionServiceImpl productionService;
 
     Logger logger = Logger.getLogger(OrderService.class.getName());
 
@@ -210,6 +211,7 @@ public class OrderServiceImpl implements OrderService{
                 order.setStatus(OrderStatus.CONFIRMED);
                 orderHistory.setConfirmedAt(LocalDateTime.now());
                 orderHistory.setPreferredProductionDate(orderStatusDto.getPreferredProductionDate());
+                productionService.pushIntoProduction(order.getId(), orderStatusDto.getPreferredProductionDate());
             }
 
             case CANCELED -> {

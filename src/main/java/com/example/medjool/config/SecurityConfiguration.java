@@ -75,6 +75,7 @@ public class SecurityConfiguration {
                                                 "/api/alert/**",
                                                 "/api/production/**",
                                                 "/api/user/**",
+                                                "/api/production/**",
 
                                                 "/api/notification/**",
                                                 "/api/shipment/**").hasAnyAuthority("GENERAL_MANAGER","SALES")
