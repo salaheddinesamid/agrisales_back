@@ -5,14 +5,13 @@ import com.example.medjool.exception.ClientNotActiveException;
 import com.example.medjool.exception.OrderCannotBeCanceledException;
 import com.example.medjool.exception.ProductLowStock;
 import com.example.medjool.exception.ProductNotFoundException;
-import com.example.medjool.filters.SimpleFilter;
 import com.example.medjool.model.*;
 import com.example.medjool.repository.*;
 import com.example.medjool.services.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +21,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -235,19 +233,18 @@ public class OrderServiceImpl implements OrderService{
 
                 HttpHeaders headers = new HttpHeaders();
                 headers.setBearerAuth("6jQBoznefQ5PeXKj4AcBOWflhb6XV4UcAegQIdti5PLUzz18T2QS1FtgGgX5UQUDtZNpNJUt9NU2XOxiq3gNiZns11Zmvuw5oi8WgNTEW28h9ooK2XVtHCE19TnJMx2");
-                headers.setContentType(MediaType.APPLICATION_JSON);
-
                 HttpEntity<ProductionRequestDto> requestEntity = new HttpEntity<>(productionRequestDto, headers);
                 try {
                     // Add debug logging
                     logger.info("Sending request to {} with headers: {}", PRODUCTION_SERVICE_URL, headers);
                     logger.info("Request body: {}", productionRequestDto);
 
-                    ResponseEntity<Object> response = restTemplate.exchange(
+                    ResponseEntity<ProductionResponseDto> response = restTemplate.exchange(
                             "http://localhost:20/api/production/push",
                             HttpMethod.POST,
                             requestEntity,
-                            Object.class
+                            new ParameterizedTypeReference<>() {
+                            }
                     );
 
                     logger.info("Production service response: {}", response.getStatusCode());
