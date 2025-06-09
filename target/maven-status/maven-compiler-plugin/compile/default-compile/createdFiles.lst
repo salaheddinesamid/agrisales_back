@@ -8,9 +8,9 @@ com\example\medjool\exception\JwtExceptionController.class
 com\example\medjool\repository\OrderRepository.class
 com\example\medjool\model\ProductStatus.class
 com\example\medjool\controller\AuthenticationController.class
+com\example\medjool\services\EmailService.class
 com\example\medjool\exception\ProductLowStock.class
 com\example\medjool\component\RoleInitializer.class
-com\example\medjool\controller\ProductionController.class
 com\example\medjool\dto\AccessDeniedErrorDto$AccessDeniedErrorDtoBuilder.class
 com\example\medjool\services\FileHandling.class
 com\example\medjool\dto\ClientDto.class
@@ -19,7 +19,6 @@ com\example\medjool\services\OrderService.class
 com\example\medjool\model\Client.class
 com\example\medjool\model\ClientStatus.class
 com\example\medjool\repository\ClientRepository.class
-com\example\medjool\repository\ProductionOrderRepository.class
 com\example\medjool\filters\JWTFilter.class
 com\example\medjool\repository\FactoryScheduleRepository.class
 com\example\medjool\config\SecurityConfiguration.class
@@ -31,8 +30,6 @@ com\example\medjool\services\implementation\UserManagementServiceImpl.class
 com\example\medjool\dto\NewUserDto.class
 com\example\medjool\services\ShipmentService.class
 com\example\medjool\filters\SimpleFilter.class
-com\example\medjool\controller\TestController.class
-com\example\medjool\services\implementation\ProductionServiceImpl.class
 com\example\medjool\controller\AlertController.class
 com\example\medjool\MedjoolApplication.class
 com\example\medjool\model\Pallet.class
@@ -47,14 +44,12 @@ com\example\medjool\dto\SettingDetailsDto.class
 com\example\medjool\services\OverviewService.class
 com\example\medjool\model\Address.class
 com\example\medjool\model\Shipment.class
-com\example\medjool\model\ProductionOrder.class
 com\example\medjool\dto\OrderResponseDto.class
 com\example\medjool\services\implementation\AuthenticationServiceImpl.class
 com\example\medjool\exception\OrderCannotBeChangedException.class
 com\example\medjool\model\FactorySchedule.class
 com\example\medjool\model\Notification.class
 com\example\medjool\repository\AddressRepository.class
-com\example\medjool\controller\ManagerController.class
 com\example\medjool\dto\OrderItemResponseDto.class
 com\example\medjool\dto\AddressDto.class
 com\example\medjool\repository\ShipmentRepository.class
@@ -74,6 +69,7 @@ com\example\medjool\exception\ClientAlreadyFoundException.class
 com\example\medjool\exception\UserAlreadyExistsException.class
 com\example\medjool\exception\ClientNotActiveException.class
 com\example\medjool\exception\OrderNotFoundException.class
+com\example\medjool\filters\ApiKeyAuthenticationFilter.class
 com\example\medjool\dto\AddressResponseDto.class
 com\example\medjool\dto\ShipmentDetailsDto.class
 com\example\medjool\dto\ShippingDetailsDto.class
@@ -81,7 +77,6 @@ com\example\medjool\model\User.class
 com\example\medjool\repository\OrderHistoryRepository.class
 com\example\medjool\config\CorsConfiguration$1.class
 com\example\medjool\dto\SettingUpdateDto.class
-com\example\medjool\services\ProductionService.class
 com\example\medjool\dto\OverviewDto.class
 com\example\medjool\exception\UserAccountCannotBeDeletedException.class
 com\example\medjool\model\SystemSetting.class
@@ -89,6 +84,7 @@ com\example\medjool\services\implementation\OverviewServiceImpl.class
 com\example\medjool\services\SystemSettingService.class
 com\example\medjool\services\implementation\StockServiceImpl.class
 com\example\medjool\services\implementation\AlertServiceImpl.class
+com\example\medjool\dto\ProductionResponseDto.class
 com\example\medjool\dto\NotificationResponseDto.class
 com\example\medjool\dto\OrderUpdateRequestDto.class
 com\example\medjool\dto\AuthenticationResponseDto.class
@@ -101,18 +97,20 @@ com\example\medjool\model\OrderCurrency.class
 com\example\medjool\services\AuthenticationService.class
 com\example\medjool\dto\OrderRequestDto.class
 com\example\medjool\services\implementation\SystemSettingServiceImpl.class
+com\example\medjool\services\implementation\EmailServiceImpl.class
 com\example\medjool\repository\PalletRepository.class
 com\example\medjool\dto\OrderHistoryResponseDto.class
 com\example\medjool\exception\ClientExceptionController.class
 com\example\medjool\repository\ContactRepository.class
 com\example\medjool\model\Contact.class
 com\example\medjool\dto\LoginRequestDto.class
+com\example\medjool\dto\ProductionRequestDto.class
 com\example\medjool\controller\UserManagementController.class
 com\example\medjool\dto\OrderHistoryDto.class
 com\example\medjool\dto\PalletDto.class
-com\example\medjool\component\ProductionSchedulerService.class
 com\example\medjool\services\implementation\ShipmentServiceImpl.class
 com\example\medjool\repository\OrderItemRepository.class
+com\example\medjool\controller\EmailController.class
 com\example\medjool\services\ConfigurationService.class
 com\example\medjool\config\CorsConfiguration.class
 com\example\medjool\dto\UserDetailsDto.class
@@ -125,7 +123,7 @@ com\example\medjool\services\UserManagementService.class
 com\example\medjool\dto\FactoryScheduleResponseDto.class
 com\example\medjool\model\OrderStatus.class
 com\example\medjool\repository\UserRepository.class
-com\example\medjool\dto\ProductionDetailsResponseDto.class
+com\example\medjool\filters\ApiKeyAuthenticationFilter$ApiKeyAuthenticationToken.class
 com\example\medjool\dto\UpdateContactDto.class
 com\example\medjool\dto\OrderStatusDto.class
 com\example\medjool\exception\ClientNotFoundException.class
@@ -138,4 +136,5 @@ com\example\medjool\component\SystemSettingsInitializer.class
 com\example\medjool\exception\TokenExpiredException.class
 com\example\medjool\dto\NewProductDto.class
 com\example\medjool\exception\OrderCannotBeCanceledException.class
+com\example\medjool\services\implementation\OrderServiceImpl$2.class
 com\example\medjool\services\implementation\UserDetailsServiceImpl.class
