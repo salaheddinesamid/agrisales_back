@@ -1,6 +1,7 @@
 package com.example.medjool.config;
 
 import com.example.medjool.dto.AccessDeniedErrorDto;
+import com.example.medjool.filters.ApiKeyAuthenticationFilter;
 import com.example.medjool.filters.JWTFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,6 +41,7 @@ import java.time.LocalDateTime;
 public class SecurityConfiguration {
 
     private final JWTFilter JWTFilter;
+    private final ApiKeyAuthenticationFilter apiKeyAuthenticationFilter;
 
     /**     * Configures the security filter chain for the application.
      * This method sets up CORS, CSRF protection, and access rules for different endpoints.
@@ -51,43 +53,45 @@ public class SecurityConfiguration {
 
     @Bean
     SecurityFilterChain configure(HttpSecurity http) throws Exception {
-
-                http.
-                        cors()
-                        .and()
-
-                        .csrf()
-                        .disable()
-                        .authorizeHttpRequests(authorizeRequests ->
-                                authorizeRequests.requestMatchers(
+        http
+                .cors()
+                .and()
+                .csrf()
+                .disable()
+                .authorizeHttpRequests(authorizeRequests ->
+                        authorizeRequests.requestMatchers(
                                         "/api/auth/**",
                                         "/swagger-ui/**",
                                         "/actuator/metrics/",
                                         "/actuator/health",
                                         "/actuator/info",
-                                                "/api/email/**",
+                                        "/api/email/**",
                                         "/api-docs/**"
+                                ).permitAll()
+                                .requestMatchers(
+                                        "/api/order/**",
+                                        "/api/stock/get_all",
+                                        "/api/overview/**",
+                                        "/api/configuration/**",
+                                        "/api/settings/**",
+                                        "/api/alert/**",
+                                        "/api/production/**",
+                                        "/api/user/**",
+                                        "/api/notification/**",
+                                        "/api/shipment/**"
+                                ).hasAnyAuthority("GENERAL_MANAGER","SALES","API_SERVICE")
+                                .anyRequest().authenticated()
+                )
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling
+                                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                                .accessDeniedHandler(accessDeniedHandler())
+                )
+                // Add API key filter first - if API key is valid, it will authenticate and skip JWT filter
+                .addFilterBefore(apiKeyAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                // Add JWT filter second - will only process if API key filter didn't authenticate
+                .addFilterBefore(JWTFilter, UsernamePasswordAuthenticationFilter.class);
 
-                                                ).permitAll()
-                                        .requestMatchers("/api/order/**","/api/stock/get_all","/api/overview/**",
-                                                "/api/configuration/**",
-                                                "/api/settings/**",
-                                                "/api/alert/**",
-                                                "/api/production/**",
-                                                "/api/user/**",
-                                                "/api/production/**",
-
-                                                "/api/notification/**",
-                                                "/api/shipment/**").hasAnyAuthority("GENERAL_MANAGER","SALES")
-                                        .anyRequest().authenticated()
-
-                        ).exceptionHandling(exceptionHandling ->
-                                exceptionHandling
-                                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-                                        .accessDeniedHandler(accessDeniedHandler())
-                        )
-                        //.addFilterBefore(JWTExpirationCheckFilter, UsernamePasswordAuthenticationFilter.class)
-                        .addFilterBefore(JWTFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

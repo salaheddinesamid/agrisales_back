@@ -1,22 +1,30 @@
 package com.example.medjool.services.implementation;
+
 import com.example.medjool.dto.*;
 import com.example.medjool.exception.ClientNotActiveException;
 import com.example.medjool.exception.OrderCannotBeCanceledException;
 import com.example.medjool.exception.ProductLowStock;
 import com.example.medjool.exception.ProductNotFoundException;
+import com.example.medjool.filters.SimpleFilter;
 import com.example.medjool.model.*;
 import com.example.medjool.repository.*;
 import com.example.medjool.services.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestTemplate;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 
@@ -32,9 +40,15 @@ public class OrderServiceImpl implements OrderService{
     private final PalletRepository palletRepository;
     private final ShipmentServiceImpl shipmentService;
     private final OrderItemRepository orderItemRepository;
-    private final ProductionServiceImpl productionService;
 
-    Logger logger = Logger.getLogger(OrderService.class.getName());
+    private final RestTemplate restTemplate;
+
+    private static final String PRODUCTION_SERVICE_URL = "http://localhost:20/api/production/push/";
+
+
+    private static String API_KEY = "6jQBoznefQ5PeXKj4AcBOWflhb6XV4UcAegQIdti5PLUzz18T2QS1FtgGgX5UQUDtZNpNJUt9NU2XOxiq3gNiZns11Zmvuw5oi8WgNTEW288h9ooK2XVtHCE19TnJMx2";
+
+    Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     @Override
     @Transactional
@@ -211,7 +225,47 @@ public class OrderServiceImpl implements OrderService{
                 order.setStatus(OrderStatus.CONFIRMED);
                 orderHistory.setConfirmedAt(LocalDateTime.now());
                 orderHistory.setPreferredProductionDate(orderStatusDto.getPreferredProductionDate());
-                productionService.pushIntoProduction(order.getId(), orderStatusDto.getPreferredProductionDate());
+
+                ProductionRequestDto productionRequestDto = new ProductionRequestDto(
+                        order.getId(),
+                        order.getProductionDate(),
+                        order.getWorkingHours()
+                );
+
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.setBearerAuth("6jQBoznefQ5PeXKj4AcBOWflhb6XV4UcAegQIdti5PLUzz18T2QS1FtgGgX5UQUDtZNpNJUt9NU2XOxiq3gNiZns11Zmvuw5oi8WgNTEW28h9ooK2XVtHCE19TnJMx2");
+                headers.setContentType(MediaType.APPLICATION_JSON);
+
+                HttpEntity<ProductionRequestDto> requestEntity = new HttpEntity<>(productionRequestDto, headers);
+                try {
+                    // Add debug logging
+                    logger.info("Sending request to {} with headers: {}", PRODUCTION_SERVICE_URL, headers);
+                    logger.info("Request body: {}", productionRequestDto);
+
+                    ResponseEntity<Object> response = restTemplate.exchange(
+                            "http://localhost:20/api/production/push",
+                            HttpMethod.POST,
+                            requestEntity,
+                            Object.class
+                    );
+
+                    logger.info("Production service response: {}", response.getStatusCode());
+                    logger.debug("Response body: {}", response.getBody());
+
+                } catch (ResourceAccessException e) {
+                    // Handle connection failures
+                    logger.error("Failed to connect to production service: {}", e.getMessage());
+                    throw new RuntimeException("Production service unavailable", e);
+                } catch (HttpClientErrorException e) {
+                    // Handle 4xx errors
+                    logger.error("Production service rejected request: {} - {}",
+                            e.getStatusCode(), e.getResponseBodyAsString());
+                    throw new RuntimeException("Production service error", e);
+                } catch (Exception e) {
+                    logger.error("Unexpected error", e);
+                    throw new RuntimeException("Failed to push order", e);
+                }
             }
 
             case CANCELED -> {
