@@ -11,6 +11,7 @@ import com.example.medjool.services.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,8 @@ public class OrderServiceImpl implements OrderService{
 
     private final RestTemplate restTemplate;
 
-    private static final String PRODUCTION_SERVICE_URL = "http://localhost:20/api/production/push/";
+    @Value("${production.service.url}")
+    private static String PRODUCTION_SERVICE_URL;
 
 
     private static String API_KEY = "6jQBoznefQ5PeXKj4AcBOWflhb6XV4UcAegQIdti5PLUzz18T2QS1FtgGgX5UQUDtZNpNJUt9NU2XOxiq3gNiZns11Zmvuw5oi8WgNTEW288h9ooK2XVtHCE19TnJMx2";
