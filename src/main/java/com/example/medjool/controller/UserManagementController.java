@@ -1,6 +1,7 @@
 package com.example.medjool.controller;
 
 import com.example.medjool.dto.NewPasswordDto;
+import com.example.medjool.dto.NewUserDto;
 import com.example.medjool.dto.UserDetailsDto;
 import com.example.medjool.services.implementation.UserManagementServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,5 +87,15 @@ public class UserManagementController {
     @DeleteMapping("/account/delete/{userId}")
     public ResponseEntity<Object> deleteUserAccount(@PathVariable long userId) {
         return userManagementService.deleteUserAccount(userId);
+    }
+
+    /**     * Creates a new user account with the provided details.
+     *
+     * @param userDetailsDto the DTO containing new user details
+     * @return ResponseEntity indicating the result of the account creation operation
+     */
+    @PostMapping("/account/new")
+    public ResponseEntity<Object> createNewUser(@RequestBody NewUserDto userDetailsDto) {
+        return userManagementService.createUserAccount(userDetailsDto);
     }
 }

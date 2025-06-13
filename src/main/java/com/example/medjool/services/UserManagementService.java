@@ -1,6 +1,7 @@
 package com.example.medjool.services;
 
 import com.example.medjool.dto.NewPasswordDto;
+import com.example.medjool.dto.NewUserDto;
 import com.example.medjool.dto.UserDetailsDto;
 import org.springframework.http.ResponseEntity;
 
@@ -44,6 +45,13 @@ public interface UserManagementService {
      * @return ResponseEntity indicating the result of the operation
      */
     ResponseEntity<Object> deleteUserAccount(Long id);
+
+    /** * Create a new user account.
+     *
+     * @param userDetailsDto the DTO containing new user details
+     * @return ResponseEntity with the created user's details
+     */
+    ResponseEntity<Object> createUserAccount(NewUserDto userDetailsDto);
 
     /** * Reset a user's password.
      *
