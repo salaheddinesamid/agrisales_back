@@ -1,10 +1,12 @@
 package com.example.medjool.component;
 
+import com.example.medjool.dto.NewUserDto;
 import com.example.medjool.model.Role;
 import com.example.medjool.model.RoleName;
 import com.example.medjool.model.User;
 import com.example.medjool.repository.RoleRepository;
 import com.example.medjool.repository.UserRepository;
+import com.example.medjool.services.implementation.UserManagementServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Component;
 public class RoleInitializer {
 
     private final RoleRepository roleRepository;
+    private final UserManagementServiceImpl userManagementService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private static final RoleName[] roles = {
@@ -25,8 +28,9 @@ public class RoleInitializer {
             RoleName.FACTORY
     };
     @Autowired
-    public RoleInitializer(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public RoleInitializer(RoleRepository roleRepository, UserManagementServiceImpl userManagementService, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.roleRepository = roleRepository;
+        this.userManagementService = userManagementService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -51,16 +55,14 @@ public class RoleInitializer {
         String GM_EMAIL = "Oussama.elmir@medjoolstar.com";
 
         if(!userRepository.existsByEmail(GM_EMAIL)){
-            User GM = new User();
-            GM.setEmail(GM_EMAIL);
-            GM.setPassword(passwordEncoder.encode("admin"));
-            GM.setFirstName("Oussama");
-            GM.setLastName("Elmir");
-             Role role = roleRepository.findByRoleName(RoleName.GENERAL_MANAGER)
-                    .orElseThrow(() -> new RuntimeException("Role not found"));
-            GM.setRole(role);
-            GM.setAccountNonLocked(true);
-            userRepository.save(GM);
+            NewUserDto newUserDto = new NewUserDto();
+            newUserDto.setEmail(GM_EMAIL);
+            newUserDto.setPassword("admin");
+            newUserDto.setFirstName("Oussama");
+            newUserDto.setLastName("Elmir");
+            newUserDto.setRoleName("GENERAL_MANAGER");
+
+            userManagementService.createUserAccount(newUserDto);
         }
 
     }

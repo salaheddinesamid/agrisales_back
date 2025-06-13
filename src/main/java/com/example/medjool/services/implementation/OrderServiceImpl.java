@@ -156,14 +156,11 @@ public class OrderServiceImpl implements OrderService{
                 Product product = productRepository.findByProductCode(itemRequest.getProductCode()).get();
                 Optional<Pallet> pallet = palletRepository.findById(itemRequest.getNewPalletId());
                 // Skip if product not found or insufficient stock
-                if (product == null){
-                    throw new ProductNotFoundException();
-                }
-                else if (product.getTotalWeight() < itemRequest.getNewWeight()){
+                if (product.getTotalWeight() < itemRequest.getNewWeight()){
                     throw new ProductLowStock();
                 }
                 // Update product inventory
-                logger.info("The product with id : " + product.getProductId() + "is being updated...");
+                logger.info("The product with id : {}is being updated...", product.getProductId());
                 product.setTotalWeight(product.getTotalWeight() - itemRequest.getNewWeight());
                 productRepository.save(product);
 
