@@ -46,7 +46,8 @@ public class OrderServiceImpl implements OrderService{
     private static String PRODUCTION_SERVICE_URL;
 
 
-    private static String API_KEY = "6jQBoznefQ5PeXKj4AcBOWflhb6XV4UcAegQIdti5PLUzz18T2QS1FtgGgX5UQUDtZNpNJUt9NU2XOxiq3gNiZns11Zmvuw5oi8WgNTEW288h9ooK2XVtHCE19TnJMx2";
+    @Value("${production.service.api.key}")
+    private static String API_KEY;
 
     Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
@@ -239,7 +240,7 @@ public class OrderServiceImpl implements OrderService{
                     logger.info("Request body: {}", productionRequestDto);
 
                     ResponseEntity<ProductionResponseDto> response = restTemplate.exchange(
-                            "http://localhost:20/api/production/push",
+                            "http://localhost:9090/api/production/push",
                             HttpMethod.POST,
                             requestEntity,
                             new ParameterizedTypeReference<>() {
