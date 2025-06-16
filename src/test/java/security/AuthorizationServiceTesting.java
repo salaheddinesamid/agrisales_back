@@ -1,4 +1,4 @@
-package unit_testing;
+package security;
 
 import com.example.medjool.MedjoolApplication;
 import com.example.medjool.jwt.JwtUtilities;

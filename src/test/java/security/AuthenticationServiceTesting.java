@@ -1,4 +1,4 @@
-package unit_testing;
+package security;
 
 import com.example.medjool.dto.LoginRequestDto;
 import com.example.medjool.dto.NewUserDto;
@@ -19,7 +19,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
