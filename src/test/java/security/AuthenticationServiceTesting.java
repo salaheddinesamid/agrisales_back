@@ -17,8 +17,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
@@ -38,12 +40,15 @@ public class AuthenticationServiceTesting {
     @Mock
     private RoleRepository roleRepository;
 
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
+
     @InjectMocks
     private AuthenticationServiceImpl authenticationService;
 
 
-    @Mock
-    private PasswordEncoder passwordEncoder;
 
 
     @BeforeEach
@@ -98,22 +103,25 @@ public class AuthenticationServiceTesting {
         loginRequestDto.setEmail("test@test.com");
         loginRequestDto.setPassword("password");
 
+        String encodedPassword = passwordEncoder.encode("password");
+
         User existedUser = new User();
+        existedUser.setUserId(1L);
         existedUser.setFirstName("Test");
         existedUser.setLastName("User");
         existedUser.setEmail("test@test.com");
-        existedUser.setPassword(passwordEncoder.encode("password")); // encode password!
+        existedUser.setPassword(encodedPassword);
         existedUser.setAccountNonLocked(true);
-        existedUser.setRole(role); // Important: Set the role here!
+        existedUser.setRole(role);
 
         when(userRepository.findByEmail(existedUser.getEmail())).thenReturn(Optional.of(existedUser));
-        when(passwordEncoder.matches("password", "encodedPassword")).thenReturn(true);
+        when(passwordEncoder.matches(loginRequestDto.getPassword(), encodedPassword)).thenReturn(true);
+
 
         // Act
         ResponseEntity<?> response = authenticationService.authenticate(loginRequestDto);
 
-        // Assert
-        assertEquals("", response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
