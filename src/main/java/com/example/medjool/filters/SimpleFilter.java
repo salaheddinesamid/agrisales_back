@@ -28,6 +28,7 @@ public class SimpleFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         logger.info("Incoming request: {}Type of request:{}", request.getRequestURI(), request.getMethod());
+        logger.info("MAC Address: {}", request.getHeader("X-MAC-Address"));
 
         // IMPORTANT: Continue the filter chain
         filterChain.doFilter(request, response);

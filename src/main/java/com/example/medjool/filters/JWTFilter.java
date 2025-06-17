@@ -26,6 +26,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/** * JWTFilter is a Spring Security filter that processes incoming HTTP requests to validate JWT tokens.
+ * It extracts the token from the request, validates it, and sets the authentication in the SecurityContext.
+ * If the token is invalid or expired, it sends an appropriate error response.
+ */
+
+
 @Component
 @Slf4j
 @RequiredArgsConstructor

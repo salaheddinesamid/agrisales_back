@@ -21,7 +21,8 @@ public class EmailServiceImpl implements EmailService {
         mailMessage.setTo("salaheddine.samid@medjoolstar.com"); // e.g., user@outlook.com
         mailMessage.setSubject(subject);
         mailMessage.setText(message);
-        mailMessage.setFrom("noreply@41.137.66.9.com");
+        mailMessage.setFrom("salaheddine.kobra@iu-study.org");
+
 
         mailSender.send(mailMessage);
     }
