@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 public class SystemSettingServiceImpl implements SystemSettingService {
 
-
+    //private static int x = 0;
     private final SystemSettingRepository systemSettingRepository;
 
     @Autowired

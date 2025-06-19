@@ -21,6 +21,9 @@ import java.util.List;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/** * This class tests the authorization service by verifying access to protected REST endpoints using JWT tokens.
+ * It checks both valid and invalid JWT scenarios.
+ */
 
 @SpringBootTest(classes = MedjoolApplication.class)
 @AutoConfigureMockMvc
@@ -35,6 +38,10 @@ public class AuthorizationServiceTesting {
     @Autowired
     JwtUtilities jwtUtilities;
 
+
+    /** * Tests access to a protected REST endpoint with a valid JWT token.
+     * It verifies that the endpoint returns a 200 OK status when accessed with a valid token.
+     */
     @Test
     void testAccessProtectedRestEndpoint_withValidJwt() throws Exception {
         String email = "Oussama.elmir@gmail.com";
@@ -56,9 +63,21 @@ public class AuthorizationServiceTesting {
     }
 
 
+
+    /** * Tests access to a protected REST endpoint with an invalid JWT token.
+     * It verifies that the endpoint returns a 401 Unauthorized status when accessed with an invalid token.
+     */
     @Test
     void testAccessProtectedRestEndpoint_withValidJwt_andInvalidRole() throws Exception{
         String token = jwtUtilities.generateToken("salaheddine.samid@medjoolstar.com","SALES");
+
+        UserDetails userDetails = org.springframework.security.core.userdetails.User
+                .withUsername("salaheddine.samid@medjoolstar.com")
+                .password("dummy")
+                .authorities("FINANCE") // Invalid role for this endpoint
+                .build();
+
+        Mockito.when(userDetailsService.loadUserByUsername("salaheddine.samid@medjoolstar.com")).thenReturn(userDetails);
 
         mockMvc.perform(get("/api/stock/get_all")
                         .header("Authorization", "Bearer " + token)

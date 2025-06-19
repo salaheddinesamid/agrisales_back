@@ -9,7 +9,6 @@ import com.example.medjool.exception.OrderCannotBeCanceledException;
 import com.example.medjool.exception.ProductLowStock;
 import com.example.medjool.exception.ProductNotFoundException;
 
-
 import com.example.medjool.model.*;
 import com.example.medjool.repository.*;
 
@@ -119,6 +118,7 @@ public class OrderServiceTest {
         OrderRequestDto orderRequest = new OrderRequestDto();
         orderRequest.setClientName("Fresh Fruits Inc");
 
+
         OrderItemRequestDto itemDto = new OrderItemRequestDto();
         itemDto.setProductCode("M_EA_B_M");
         itemDto.setItemWeight(500.0);
@@ -131,6 +131,7 @@ public class OrderServiceTest {
         orderRequest.setItems(List.of(itemDto));
         orderRequest.setCurrency(OrderCurrency.MAD.toString());
         orderRequest.setProductionDate(now);
+
 
         Client client = new Client();
         client.setClientStatus(ClientStatus.INACTIVE);
@@ -214,17 +215,14 @@ public class OrderServiceTest {
         client.setCompanyName("Fresh Fruits Inc");
 
         // Mock a product
-
         Product product = new Product();
         product.setProductCode("M_EA_B_M");
         product.setTotalWeight(0.0); // Simulating low stock
 
         // Mock a pallet
-
         Pallet pallet = new Pallet();
         pallet.setPreparationTime(5.0);
         pallet.setPalletId(1);
-
 
         when(clientRepository.findByCompanyName("Fresh Fruits Inc")).thenReturn(client);
         when(productRepository.findByProductCode("M_EA_B_M")).thenReturn(Optional.of(product));

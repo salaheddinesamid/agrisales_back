@@ -2,10 +2,8 @@ package com.example.medjool.jwt;
 
 import com.example.medjool.exception.TokenExpiredException;
 import io.jsonwebtoken.*;
-
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -78,12 +76,20 @@ public class JwtUtilities {
         return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    // Checks if the token is expired.
+    /** * Checks if the JWT token is expired.
+     *
+     * @param token the JWT token
+     * @return true if the token is expired, false otherwise
+     */
     public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    // Get the token from HTTP request.
+    /** * Retrieves the JWT token from the HTTP request.
+     *
+     * @param httpServletRequest the HTTP request containing the JWT token
+     * @return the JWT token if present, null otherwise
+     */
     public String getToken (HttpServletRequest httpServletRequest) {
         final String bearerToken = httpServletRequest. getHeader("Authorization");
         if(StringUtils.hasText(bearerToken) && bearerToken. startsWith("Bearer "))
@@ -116,7 +122,12 @@ public class JwtUtilities {
         return false;
     }
 
-    // Generate token for authenticated users
+    /** * Generates a JWT token for the given email and role.
+     *
+     * @param email the email to include in the token
+     * @param role the role to include in the token
+     * @return the generated JWT token
+     */
     public String generateToken(String email, String role){
         return Jwts.builder()
                 .setSubject(email)

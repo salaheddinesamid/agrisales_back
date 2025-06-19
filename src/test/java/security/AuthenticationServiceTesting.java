@@ -20,7 +20,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
@@ -57,6 +56,8 @@ public class AuthenticationServiceTesting {
     }
 
 
+    /** * Test for registering a new user successfully.
+     */
     @Test
     void registerUser_AlreadyExists() {
         Role role = new Role();
@@ -85,13 +86,8 @@ public class AuthenticationServiceTesting {
         assertEquals("User already exists", exception.getMessage());
     }
 
-
-    @Test
-    void createCredentials() {
-
-
-    }
-
+    /** * Test for authenticating a user successfully.
+     */
     @Test
     void testAuthenticate_Success() throws InvalidCredentialsException {
         // Arrange
@@ -104,6 +100,7 @@ public class AuthenticationServiceTesting {
         loginRequestDto.setPassword("password");
 
         String encodedPassword = passwordEncoder.encode("password");
+
 
         User existedUser = new User();
         existedUser.setUserId(1L);
@@ -129,10 +126,13 @@ public class AuthenticationServiceTesting {
 
     }
 
+    /** * Test for authenticating a user with invalid credentials.
+     */
     @Test
     void authenticatedUser_notExists(){
 
         LoginRequestDto loginRequestDto = new LoginRequestDto();
+
         loginRequestDto.setEmail("test@test.com");
         loginRequestDto.setPassword("password");
 
