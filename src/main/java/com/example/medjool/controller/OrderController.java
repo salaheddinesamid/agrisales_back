@@ -2,7 +2,6 @@ package com.example.medjool.controller;
 
 import com.example.medjool.dto.*;
 
-import com.example.medjool.model.OrderHistory;
 import com.example.medjool.services.implementation.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -78,6 +77,11 @@ public class OrderController {
         return orderService.getAllOrderHistory();
     }
 
+    /**     * Cancels an order by its ID.
+     *
+     * @param id the ID of the order to cancel
+     * @return ResponseEntity indicating the result of the cancellation
+     */
     @DeleteMapping("/cancel/{id}")
     public ResponseEntity<Object> cancelOrder(@PathVariable Long id) {
         return orderService.cancelOrder(id);

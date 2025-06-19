@@ -69,6 +69,8 @@ public class SecurityConfiguration {
 
                                         "/api-docs/**"
                                 ).permitAll()
+                                .requestMatchers("/api/user/**")
+                                .hasAnyAuthority("GENERAL_MANAGER","IT_ADMIN")
                                 .requestMatchers(
                                         "/api/order/**",
                                         "/api/stock/get_all",
@@ -77,7 +79,6 @@ public class SecurityConfiguration {
                                         "/api/settings/**",
                                         "/api/alert/**",
                                         "/api/production/**",
-                                        "/api/user/**",
                                         "/api/notification/**",
                                         "/api/shipment/**"
                                 ).hasAnyAuthority("GENERAL_MANAGER","SALES","API_SERVICE")

@@ -51,6 +51,13 @@ public class OrderServiceImpl implements OrderService{
 
     Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
+
+    /**
+     * Creates a new order based on the provided order request.
+     *
+     * @param orderRequest the order request containing client and item details
+     * @return ResponseEntity indicating success or failure
+     */
     @Override
     @Transactional
     public ResponseEntity<?> createOrder(OrderRequestDto orderRequest) {
@@ -124,6 +131,11 @@ public class OrderServiceImpl implements OrderService{
 
     }
 
+    /**
+     * Retrieves all orders from the repository.
+     *
+     * @return List of OrderResponseDto containing order details
+     */
     @Transactional(readOnly = true)
     @Override
     public List<OrderResponseDto> getAllOrders() {
@@ -133,6 +145,11 @@ public class OrderServiceImpl implements OrderService{
     }
 
 
+    /**     * Retrieves an order by its ID.
+     *
+     * @param id the ID of the order to retrieve
+     * @return OrderResponseDto containing order details, or null if not found
+     */
     @Transactional(readOnly = true)
     @Override
     public OrderResponseDto getOrderById(Long id) {
@@ -141,6 +158,13 @@ public class OrderServiceImpl implements OrderService{
                 .orElse(null);
     }
 
+
+    /**     * Updates an existing order with new details.
+     *
+     * @param id the ID of the order to update
+     * @param orderUpdateRequestDto the new details for the order
+     * @return ResponseEntity indicating success or failure
+     */
     @Override
     @Transactional
     public ResponseEntity<Object> updateOrder(Long id, OrderUpdateRequestDto orderUpdateRequestDto) {
@@ -191,6 +215,13 @@ public class OrderServiceImpl implements OrderService{
     }
 
 
+    /**     * Updates the status of an order.
+     *
+     * @param id the ID of the order to update
+     * @param orderStatusDto the new status and optional production date
+     * @return ResponseEntity indicating success or failure
+     * @throws Exception if the order cannot be found or if the status is invalid
+     */
     @Transactional
     @Override
     public ResponseEntity<Object> updateOrderStatus(Long id, OrderStatusDto orderStatusDto) throws Exception {
@@ -300,6 +331,11 @@ public class OrderServiceImpl implements OrderService{
 
 
 
+    /**     * Cancels an order by its ID, restoring stock for the products in the order.
+     *
+     * @param id the ID of the order to cancel
+     * @return ResponseEntity indicating success or failure
+     */
     @Transactional
     @Override
     public ResponseEntity<Object> cancelOrder(Long id) {
@@ -329,6 +365,10 @@ public class OrderServiceImpl implements OrderService{
         return new ResponseEntity<>("Order has been cancelled.", HttpStatus.OK);
     }
 
+    /**     * Retrieves all order history entries that are not yet received.
+     *
+     * @return ResponseEntity containing a list of OrderHistoryResponseDto
+     */
     @Override
     public ResponseEntity<List<OrderHistoryResponseDto>> getAllOrderHistory() {
 

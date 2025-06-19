@@ -28,6 +28,12 @@ public class ShipmentServiceImpl implements ShipmentService {
         this.shipmentRepository = shipmentRepository1;
         this.orderRepository = orderRepository;
     }
+
+    /**     * Creates a shipment for the given order.
+     *
+     * @param order Optional containing the order to create a shipment for.
+     * @throws Exception if an error occurs while creating the shipment.
+     */
     @Override
     public void createShipment(Optional<Order> order) throws Exception {
 
@@ -43,6 +49,12 @@ public class ShipmentServiceImpl implements ShipmentService {
         });
     }
 
+    /**     * Cancels a shipment by its ID.
+     *
+     * @param shipmentId the ID of the shipment to cancel
+     * @return ResponseEntity with a message indicating the cancellation status
+     * @throws Exception if the shipment is not found
+     */
     @Override
     public ResponseEntity<String> cancelShipment(long shipmentId) throws Exception {
         Shipment shipment = shipmentRepository.findById(shipmentId).orElseThrow(() -> new Exception("Shipment not found"));
@@ -51,6 +63,12 @@ public class ShipmentServiceImpl implements ShipmentService {
     }
 
 
+    /**     * Updates the shipment tracker with a tracking number.
+     *
+     * @param shipmentId the ID of the shipment to update
+     * @param trackingNumber the tracking number to set for the shipment
+     * @throws Exception if the shipment is not found
+     */
     @Override
     public void updateShipmentTracker(long shipmentId, String trackingNumber) throws Exception {
 
@@ -66,6 +84,11 @@ public class ShipmentServiceImpl implements ShipmentService {
 
     }
 
+    /**     * Retrieves all shipments and their details.
+     *
+     * @return a list of ShipmentDetailsDto containing shipment and order details
+     * @throws Exception if an error occurs while retrieving shipments
+     */
     @Override
     public List<ShipmentDetailsDto> getAllShipments() throws Exception {
 

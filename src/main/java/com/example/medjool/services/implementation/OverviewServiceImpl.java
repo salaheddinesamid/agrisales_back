@@ -31,6 +31,10 @@ public class OverviewServiceImpl implements OverviewService {
     }
 
 
+    /** * Retrieves an overview of the system, including total stock, orders, and revenue.
+     *
+     * @return ResponseEntity containing OverviewDto with system overview data
+     */
     @Override
     public ResponseEntity<?> getOverview() {
         final String STOCK_KEY = "min_stock_level";

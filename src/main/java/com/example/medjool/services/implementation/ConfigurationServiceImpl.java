@@ -17,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/** * Implementation of the ConfigurationService interface for managing clients and pallets.
+ */
+
 @Service
 public class ConfigurationServiceImpl implements ConfigurationService {
     private final ClientRepository clientRepository;
@@ -31,7 +34,12 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         this.contactRepository = contactRepository;
         this.palletRepository = palletRepository;
     }
-    // Add new client:
+
+    /**     * Adds a new client to the system.
+     *
+     * @param clientDto the DTO containing client details
+     * @return ResponseEntity with the created client or an error message
+     */
     @Override
     public ResponseEntity<Object> addClient(ClientDto clientDto) {
 
@@ -80,6 +88,10 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     }
 
 
+    /**     * Retrieves all clients from the system.
+     *
+     * @return ResponseEntity containing a list of all clients
+     */
     @Override
     public ResponseEntity<List<Client>> getAll(){
         List<Client> clients = clientRepository.findAll();
@@ -87,7 +99,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     }
 
 
-    // Update client information:
     @Override
     @Transactional
     public ResponseEntity<Object> updateClient(Integer clientId, UpdateClientDto updateClientDto) {
@@ -128,14 +139,22 @@ public class ConfigurationServiceImpl implements ConfigurationService {
                     return contact;
                 }
         ).toList();
+
+
         client.setContacts(newClientContacts);
         client.setSIRET(updateClientDto.getSiret());
         client.setWebSite(updateClientDto.getWebsite());
+        client.setClientStatus(ClientStatus.valueOf(updateClientDto.getClientStatus()));
         return new ResponseEntity<>("Client updated successfully", HttpStatus.OK);
     }
 
 
 
+    /**     * Deletes a client by ID.
+     *
+     * @param id the ID of the client to delete
+     * @return ResponseEntity with a success message or an error message
+     */
    @Override
     public ResponseEntity<Object> deleteClient(Integer id) {
         Client client = clientRepository.findById(id)
@@ -159,6 +178,11 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     }
 
 
+    /**     * Retrieves addresses of a client by client ID.
+     *
+     * @param id the ID of the client
+     * @return ResponseEntity containing a list of addresses for the client
+     */
     @Override
     public ResponseEntity<List<AddressResponseDto>> getClientAddresses(Integer id){
         List<Address> addresses = clientRepository.findById(id).get().getAddresses();
@@ -168,6 +192,11 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         return new ResponseEntity<>(addressResponseDtos,HttpStatus.OK);
     }
 
+    /**     * Retrieves addresses of a client by client name.
+     *
+     * @param clientName the name of the client
+     * @return ResponseEntity containing a list of addresses for the client
+     */
     @Override
     public ResponseEntity<List<AddressResponseDto>> getClientAddressesByClientName(String clientName) {
         List<Address> addresses = clientRepository.findByCompanyName(clientName).getAddresses();
@@ -178,7 +207,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     }
 
 
-    // -------------------------- Pallet Configuration Service ---------------------------
     @Override
     public ResponseEntity<Object> addPallet(PalletDto palletDto) {
         Pallet pallet = palletRepository.findByPackaging(palletDto.getPackaging());
@@ -225,12 +253,22 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 
 
+    /**     * Retrieves all pallets from the system.
+     *
+     * @return ResponseEntity containing a list of all pallets
+     */
     @Override
     public ResponseEntity<List<Pallet>> getAllPallets(){
         List<Pallet> pallets = palletRepository.findAll();
         return ResponseEntity.ok().body(pallets);
     }
 
+    /**     * Updates an existing pallet by ID.
+     *
+     * @param id the ID of the pallet to update
+     * @param palletDto the DTO containing updated pallet details
+     * @return ResponseEntity with a success message or an error message
+     */
     @Override
     public ResponseEntity<Object> updatePallet(Integer id, UpdatePalletDto palletDto) {
         Pallet pallet = palletRepository.findByPalletId(id);
@@ -261,11 +299,22 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
         return ResponseEntity.ok().body(pallets);
     }
+
+    /**     * Retrieves a pallet by ID.
+     *
+     * @param id the ID of the pallet to retrieve
+     * @return the Pallet object with the specified ID
+     */
     @Override
     public Pallet getPalletById(Integer id) {
         return palletRepository.findById(id).orElseThrow(null);
     }
 
+    /**     * Deletes a pallet by ID.
+     *
+     * @param palletId the ID of the pallet to delete
+     * @return ResponseEntity with a success message or an error message
+     */
     @Override
     public ResponseEntity<Object> deletePallet(Integer palletId) {
         Pallet pallet = palletRepository.findById(palletId).orElseThrow(null);

@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/** * AlertController handles requests related to user alerts.
+ * It provides endpoints to retrieve all alerts and mark all alerts as read.
+ */
 @RestController
 @RequestMapping("api/alert")
 public class AlertController {

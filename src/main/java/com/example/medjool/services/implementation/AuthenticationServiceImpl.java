@@ -37,6 +37,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         this.roleRepository = roleRepository;
     }
 
+    /**
+     * Authenticates a user based on the provided login request.
+     *
+     * @param loginRequestDto the login request containing email and password
+     * @return ResponseEntity containing authentication response with token and user details
+     * @throws UsernameNotFoundException if the user is not found
+     * @throws UserAccountLockedException if the user account is locked
+     * @throws InvalidCredentialsException if the credentials are invalid
+     */
     @Override
     public ResponseEntity<?> authenticate(LoginRequestDto loginRequestDto) {
 
@@ -75,8 +84,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return new ResponseEntity<>(authenticationResponseDto, HttpStatus.OK);
     }
 
-
-
+    /**     * Creates a new user with the provided details.
+     *
+     * @param newUserDto the DTO containing new user details
+     * @return ResponseEntity indicating the result of the user creation
+     * @throws UserAlreadyExistsException if a user with the same email already exists
+     */
     @Override
     public ResponseEntity<?> createCredentials(NewUserDto newUserDto){
 
@@ -105,6 +118,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return new ResponseEntity<>("NEW USER CREATED, WAITING FOR UNLOCKING THE ACCOUNT BY AN ADMIN...", HttpStatus.CREATED);
     }
 
+    /**
+     * Logs out a user by invalidating their token.
+     *
+     * @param token the JWT token to be invalidated
+     * @return ResponseEntity indicating the result of the logout operation
+     */
     @Override
     public ResponseEntity<Object> logout(String token) {
         return null;

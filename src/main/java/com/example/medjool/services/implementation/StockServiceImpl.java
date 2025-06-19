@@ -37,6 +37,10 @@ public class StockServiceImpl implements StockService {
         this.productRepository = productRepository;
     }
 
+    /**     * Fetches all products from the database and returns them as a list of ProductResponseDto.
+     *
+     * @return List of ProductResponseDto containing product details.
+     */
     @Override
     public List<ProductResponseDto> getAllProducts() {
 
@@ -48,7 +52,13 @@ public class StockServiceImpl implements StockService {
         return productResponseDtos;
     }
 
-    // Upload a CSV file to update the stock
+    /**     * Updates the stock of products based on the provided CSV file.
+     * The CSV file should contain product codes and their corresponding total weights.
+     *
+     * @param file MultipartFile containing the CSV data.
+     * @return ResponseEntity indicating success or failure of the operation.
+     * @throws IOException if there is an error reading the file.
+     */
     @Override
     @Transactional
     public ResponseEntity<Object> updateStock(MultipartFile file) throws IOException {
@@ -77,6 +87,12 @@ public class StockServiceImpl implements StockService {
     }
 
 
+    /**     * Creates a new product in the stock based on the provided NewProductDto.
+     * Checks if a product with the same callibre, color, quality, and farm already exists.
+     *
+     * @param newProductDto DTO containing details of the new product to be created.
+     * @return ResponseEntity indicating success or failure of the operation.
+     */
     @Override
     public ResponseEntity<Object> createNewProduct(NewProductDto newProductDto) {
         Product product = productRepository.findByCallibreAndColorAndQualityAndFarm(
@@ -101,6 +117,10 @@ public class StockServiceImpl implements StockService {
         }
     }
 
+    /**     * Clears the stock by resetting the total weight of all products to 0.
+     *
+     * @return ResponseEntity indicating success of the operation.
+     */
     @Override
     public ResponseEntity<Object> clearStock() {
         productRepository.findAll().forEach(product -> {
@@ -111,6 +131,14 @@ public class StockServiceImpl implements StockService {
         return new ResponseEntity<>("Stock cleared successfully", HttpStatus.OK);
     }
 
+
+    /**     * Initializes the stock by reading product details from a CSV file.
+     * The CSV should contain columns: product_code, Callibre, Color, Quality, Farm, Brand.
+     *
+     * @param file MultipartFile containing the CSV data.
+     * @return ResponseEntity indicating success or failure of the operation.
+     * @throws IOException if there is an error reading the file.
+     */
     @Override
     public ResponseEntity<Object> initializeStock(MultipartFile file) throws IOException {
         try (
