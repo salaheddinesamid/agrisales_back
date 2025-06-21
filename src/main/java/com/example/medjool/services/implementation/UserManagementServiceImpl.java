@@ -37,13 +37,13 @@ public class UserManagementServiceImpl implements UserManagementService {
     public ResponseEntity<List<UserDetailsDto>> getAllUsers() {
         List<UserDetailsDto> userDetailsDtos = userRepository.findAll().stream()
                 .map(user -> new UserDetailsDto(
-                        user.getUserId(),
-                        user.getFirstName(),
-                        user.getLastName(),
-                        user.getEmail(),
-                        user.getRole().getRoleName().toString(),
-                        user.isAccountNonLocked(),
-                        user.getLastLogin()
+                                user.getUserId(),
+                                user.getFirstName(),
+                                user.getLastName(),
+                                user.getEmail(),
+                                user.getRole().getRoleName().toString(),
+                                user.isAccountNonLocked(),
+                                user.getLastLogin()
                         )
                 )
                 .toList();
@@ -58,7 +58,7 @@ public class UserManagementServiceImpl implements UserManagementService {
     @Override
     public ResponseEntity<Object> activateUserAccount(Long id) {
         Optional<User> user = userRepository.findById(id);
-        user.ifPresent(u->{
+        user.ifPresent(u -> {
             u.setAccountNonLocked(true);
             userRepository.save(u);
         });
@@ -69,7 +69,7 @@ public class UserManagementServiceImpl implements UserManagementService {
     public ResponseEntity<Object> updateUserDetails(Long id, UserDetailsDto userDetailsDto) {
         Optional<User> user = userRepository.findById(id);
 
-        user.ifPresent(u->{
+        user.ifPresent(u -> {
             u.setFirstName(userDetailsDto.getFirstName());
             u.setLastName(userDetailsDto.getLastName());
             u.setEmail(userDetailsDto.getEmail());
@@ -85,7 +85,7 @@ public class UserManagementServiceImpl implements UserManagementService {
 
         // Fetch the user from the database;
         Optional<User> user = userRepository.findById(id);
-        user.ifPresent(u->{
+        user.ifPresent(u -> {
             u.setAccountNonLocked(false);
         });
 
@@ -94,10 +94,10 @@ public class UserManagementServiceImpl implements UserManagementService {
 
     @Override
     public ResponseEntity<Object> deleteUserAccount(Long id) {
-        try{
+        try {
             userRepository.deleteById(id);
             return new ResponseEntity<>("User account deleted", HttpStatus.OK);
-        }catch (UserAccountCannotBeDeletedException e){
+        } catch (UserAccountCannotBeDeletedException e) {
             return new ResponseEntity<>("User account cannot be deleted", HttpStatus.BAD_REQUEST);
         }
     }
@@ -106,11 +106,9 @@ public class UserManagementServiceImpl implements UserManagementService {
     public ResponseEntity<Object> createUserAccount(NewUserDto userDetailsDto) {
         boolean userExists = userRepository.existsByEmail(userDetailsDto.getEmail());
 
-        if(userExists) {
+        if (userExists) {
             return new ResponseEntity<>("User with this email already exists", HttpStatus.BAD_REQUEST);
-        }
-
-        else{
+        } else {
             User user = new User();
             user.setFirstName(userDetailsDto.getFirstName());
             user.setLastName(userDetailsDto.getLastName());
@@ -130,20 +128,21 @@ public class UserManagementServiceImpl implements UserManagementService {
     public ResponseEntity<Object> resetUserPassword(Long id, NewPasswordDto newPassword) {
         Optional<User> user = userRepository.findById(id);
 
-        if(user.isPresent()) {
+        if (user.isPresent()) {
             User u = user.get();
-            if(u.getPassword().equals(newPassword.getNewPassword())) {
-                return new ResponseEntity<>("New password cannot be the same as the old password", HttpStatus.BAD_REQUEST);
-            } else if(u.getPassword().equals(newPassword.getOldPassword())) {
-                u.setPassword(passwordEncoder.encode(newPassword.getNewPassword()));
-                userRepository.save(u);
-                return new ResponseEntity<>("User password updated", HttpStatus.OK);
-            }
-            else {
+
+            if (passwordEncoder.matches(newPassword.getOldPassword(), u.getPassword())) {
+                if (passwordEncoder.matches(newPassword.getNewPassword(), u.getPassword())) {
+                    return new ResponseEntity<>("New password cannot be the same as the old password", HttpStatus.BAD_REQUEST);
+                } else {
+                    u.setPassword(passwordEncoder.encode(newPassword.getNewPassword()));
+                    userRepository.save(u);
+                    return new ResponseEntity<>("Password updated successfully", HttpStatus.OK);
+                }
+            } else {
                 return new ResponseEntity<>("Old password is incorrect", HttpStatus.BAD_REQUEST);
             }
-        }
-        else{
+        } else {
             return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
         }
     }
