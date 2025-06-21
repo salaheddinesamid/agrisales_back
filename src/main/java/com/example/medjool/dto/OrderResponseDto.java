@@ -1,14 +1,20 @@
 package com.example.medjool.dto;
 
 import com.example.medjool.model.Order;
+import com.example.medjool.utils.DateFormatter;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @Setter
 public class OrderResponseDto {
+
+    private DateFormatter dateFormatter = new DateFormatter();
+
     private Long id;
     private String clientName;
     private double totalPrice;
@@ -17,7 +23,7 @@ public class OrderResponseDto {
     private String status;
 
     private List<OrderItemResponseDto> items;
-    private LocalDateTime productionDate;
+    private String productionDate;
     private LocalDateTime deliveryDate;
     private double workingHours;
     private String shippingAddress;
@@ -32,7 +38,7 @@ public class OrderResponseDto {
         this.items = order.getOrderItems().stream()
                 .map(OrderItemResponseDto::new)
                 .toList();
-        this.productionDate = order.getProductionDate();
+        this.productionDate = dateFormatter.formatDate(order.getProductionDate());
         this.deliveryDate = order.getDeliveryDate();
         this.workingHours = order.getWorkingHours();
         this.shippingAddress  = order.getShippingAddress();
