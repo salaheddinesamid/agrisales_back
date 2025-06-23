@@ -32,6 +32,9 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private MixedOrderItem mixedOrderItem;
+
     @Column(name = "total_price", nullable = false)
     private double totalPrice;
 
