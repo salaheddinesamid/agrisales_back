@@ -1,4 +1,7 @@
 package com.example.medjool.repository;
 
-public interface MixedOrderItemRepo {
+import com.example.medjool.model.MixedOrderItem;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface MixedOrderItemRepo extends JpaRepository<MixedOrderItem, Long> {
 }
