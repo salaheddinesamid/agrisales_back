@@ -39,6 +39,8 @@ public class OrderServiceImpl implements OrderService{
     private final PalletRepository palletRepository;
     private final ShipmentServiceImpl shipmentService;
     private final OrderItemRepository orderItemRepository;
+    private final MixedOrderItemRepo mixedOrderItemRepo;
+    private final MixeOrderItemDetailsRepo mixedOrderItemDetailsRepo;
 
     private final RestTemplate restTemplate;
 
@@ -78,6 +80,12 @@ public class OrderServiceImpl implements OrderService{
         long estimatedDeliveryTime = 0;
         double totalWorkingHours = 0;
 
+        /**
+         * Process each item in the order request
+         * - Validate product availability
+         * - Update product stock
+         * - Create OrderItem and associate it with the Order
+         */
         for (OrderItemRequestDto itemDto : orderRequest.getItems()) {
             Product product = productRepository.findByProductCode(itemDto.getProductCode())
                     .orElseThrow(ProductNotFoundException::new);
@@ -111,6 +119,45 @@ public class OrderServiceImpl implements OrderService{
         }
 
         productRepository.saveAll(order.getOrderItems().stream().map(OrderItem::getProduct).collect(Collectors.toList()));
+
+        /** * Process mixed order details
+         * - Total price and weight
+         * - Production date and status
+         * - Shipping address and estimated delivery date
+         */
+        if(orderRequest.getMixedOrderDto() != null) {
+            MixedOrderDto mixedOrderDto = orderRequest.getMixedOrderDto();
+            MixedOrderItem mixedOrderItem = new MixedOrderItem();
+            List<MixedOrderItemDetails> mixedOrderItemsDetails = new ArrayList<>();
+
+            Pallet pallet = palletRepository.findById(mixedOrderDto.getPalletId())
+                    .orElseThrow(() -> new RuntimeException("Pallet not found"));
+
+            for(MixedOrderItemRequestDto mixedOrderItemRequestDto : mixedOrderDto.getItems()) {
+
+                Product product = productRepository.findById(mixedOrderItemRequestDto.getProductId())
+                        .orElseThrow(ProductNotFoundException::new);
+                double percentageWeight = pallet.getTotalNet() * (mixedOrderItemRequestDto.getPercentage() / 100.0);
+
+                if (product.getTotalWeight() < percentageWeight) {
+                    throw new ProductLowStock();
+                }
+
+                product.setTotalWeight(product.getTotalWeight() - percentageWeight);
+
+                MixedOrderItemDetails mixedOrderItemDetails = new MixedOrderItemDetails();
+
+                mixedOrderItemDetails.setProduct(product);
+                mixedOrderItemDetails.setWeight(percentageWeight);
+                mixedOrderItemDetails.setPercentage(mixedOrderItemRequestDto.getPercentage());
+
+                mixedOrderItemsDetails.add(mixedOrderItemDetails);
+                mixedOrderItemDetailsRepo.save(mixedOrderItemDetails);
+
+            }
+            mixedOrderItem.setItemDetails(mixedOrderItemsDetails);
+            order.setMixedOrderItem(mixedOrderItem);
+        }
 
         order.setTotalPrice(totalPrice);
         order.setTotalWeight(totalWeight);
