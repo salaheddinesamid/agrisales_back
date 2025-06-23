@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -12,19 +14,12 @@ import lombok.Setter;
 public class OrderItemRequestDto {
 
     private String productCode;
-
     private double pricePerKg;
-
     private double packaging;
-
     private int numberOfPallets;
-
     private double itemWeight;
-
     private String itemBrand;
-
     private Integer palletId;
-
     private String currency;
 
 }

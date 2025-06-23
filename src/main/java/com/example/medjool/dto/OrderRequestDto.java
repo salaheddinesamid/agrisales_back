@@ -15,6 +15,7 @@ import java.util.List;
 public class OrderRequestDto {
     private String clientName;
     private List<OrderItemRequestDto> items;
+    private MixedOrderDto mixedOrderDto;
     private String currency;
     private LocalDate productionDate;
     private  String shippingAddress;
