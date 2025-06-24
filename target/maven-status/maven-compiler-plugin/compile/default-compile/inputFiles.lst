@@ -31,12 +31,10 @@ C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\d
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\repository\OrderItemRepository.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\exception\SettingNotFoundException.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\model\Notification.java
-C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\services\implementation\EmailServiceImpl.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\services\OrderService.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\exception\AuthenticationExceptionController.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\repository\OrderRepository.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\UpdateContactDto.java
-C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\controller\EmailController.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\LoginRequestDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\exception\UserAccountLockedException.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\MixedOrderItemRequestDto.java
@@ -133,7 +131,6 @@ C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\e
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\AccessDeniedErrorDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\component\SystemSettingsInitializer.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\exception\InvalidCredentialsException.java
-C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\services\EmailService.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\controller\SystemSettingsController.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\BearerTokenDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\exception\ShipmentExceptionController.java

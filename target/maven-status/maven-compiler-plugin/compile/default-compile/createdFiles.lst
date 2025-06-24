@@ -8,7 +8,6 @@ com\example\medjool\exception\JwtExceptionController.class
 com\example\medjool\repository\OrderRepository.class
 com\example\medjool\model\ProductStatus.class
 com\example\medjool\controller\AuthenticationController.class
-com\example\medjool\services\EmailService.class
 com\example\medjool\exception\ProductLowStock.class
 com\example\medjool\component\RoleInitializer.class
 com\example\medjool\dto\AccessDeniedErrorDto$AccessDeniedErrorDtoBuilder.class
@@ -102,7 +101,6 @@ com\example\medjool\model\OrderCurrency.class
 com\example\medjool\services\AuthenticationService.class
 com\example\medjool\dto\OrderRequestDto.class
 com\example\medjool\services\implementation\SystemSettingServiceImpl.class
-com\example\medjool\services\implementation\EmailServiceImpl.class
 com\example\medjool\repository\PalletRepository.class
 com\example\medjool\dto\OrderHistoryResponseDto.class
 com\example\medjool\exception\ClientExceptionController.class
@@ -115,7 +113,6 @@ com\example\medjool\dto\OrderHistoryDto.class
 com\example\medjool\dto\PalletDto.class
 com\example\medjool\services\implementation\ShipmentServiceImpl.class
 com\example\medjool\repository\OrderItemRepository.class
-com\example\medjool\controller\EmailController.class
 com\example\medjool\services\ConfigurationService.class
 com\example\medjool\config\CorsConfiguration.class
 com\example\medjool\dto\UserDetailsDto.class
