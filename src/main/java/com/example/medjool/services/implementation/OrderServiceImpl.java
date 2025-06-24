@@ -20,6 +20,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -135,9 +136,11 @@ public class OrderServiceImpl implements OrderService{
 
             for(MixedOrderItemRequestDto mixedOrderItemRequestDto : mixedOrderDto.getItems()) {
 
-                Product product = productRepository.findById(mixedOrderItemRequestDto.getProductId())
+                Product product = productRepository.findByProductCode(mixedOrderItemRequestDto.getProductCode())
                         .orElseThrow(ProductNotFoundException::new);
-                double percentageWeight = pallet.getTotalNet() * (mixedOrderItemRequestDto.getPercentage() / 100.0);
+
+                double percentageWeight = Double.valueOf(pallet.getTotalNet() * (mixedOrderItemRequestDto.getPercentage() / 100.0));
+                System.out.println("Required: " + percentageWeight + ", Available: " + product.getTotalWeight());
 
                 if (product.getTotalWeight() < percentageWeight) {
                     throw new ProductLowStock();
@@ -168,6 +171,7 @@ public class OrderServiceImpl implements OrderService{
         order.setDeliveryDate(LocalDateTime.now().plusHours(estimatedDeliveryTime));
         order.setWorkingHours(totalWorkingHours);
 
+        order.setOrderDate(LocalDate.now());
 
         Order savedOrder = orderRepository.save(order); // Save after everything is set
         OrderHistory orderHistory = new OrderHistory();
