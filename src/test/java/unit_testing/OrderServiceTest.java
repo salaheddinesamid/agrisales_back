@@ -50,6 +50,12 @@ public class OrderServiceTest {
     @Mock
     private OrderItemRepository orderItemRepository;
 
+    @Mock
+    private MixedOrderItemRepo mixedOrderItemRepo;
+
+    @Mock
+    private MixeOrderItemDetailsRepo mixeOrderItemDetailsRepo;
+
     @InjectMocks
     private OrderServiceImpl orderService;
 
@@ -109,36 +115,39 @@ public class OrderServiceTest {
         assertEquals("Order has been created successfully.", response.getBody());
     }
 
-    /*
+
     @Test
-    void testCreateOrderWithMixedItems(){
+    void testCreateOrderWithMixedItems() {
         OrderRequestDto orderRequest = new OrderRequestDto();
         orderRequest.setClientName("Fresh Fruits Inc");
 
-
+        // Mock order item
         OrderItemRequestDto itemDto = new OrderItemRequestDto();
-        itemDto.setProductCode("M_EA_B_M");
+        itemDto.setProductCode("M_EB_B_M");
         itemDto.setItemWeight(500.0);
         itemDto.setPalletId(1);
         itemDto.setPricePerKg(2.5);
         itemDto.setPackaging(1);
         itemDto.setNumberOfPallets(1);
-
+        itemDto.setCurrency("EUR");
 
         orderRequest.setItems(List.of(itemDto));
-        orderRequest.setCurrency(OrderCurrency.MAD.toString());
-        orderRequest.setProductionDate(now);
+        orderRequest.setCurrency("EUR");
+        orderRequest.setProductionDate(LocalDate.now());
 
+        // Mock the mixed order DTO
         MixedOrderDto mixedOrderDto = new MixedOrderDto();
         ArrayList<MixedOrderItemRequestDto> mixedItems = new ArrayList<>();
 
         MixedOrderItemRequestDto item_1 = new MixedOrderItemRequestDto();
         MixedOrderItemRequestDto item_2 = new MixedOrderItemRequestDto();
 
-        item_1.setProductId(1L);
+        // Mixed item 1:
+        item_1.setProductCode("M_EC_B_M");
         item_1.setPercentage(10);
 
-        item_2.setProductId(2L);
+        // Mixed item 2:
+        item_2.setProductCode("M_EA_B_M");
         item_2.setPercentage(90);
 
         mixedItems.add(item_1);
@@ -148,41 +157,50 @@ public class OrderServiceTest {
         mixedOrderDto.setBrand("Medjool Star");
         mixedOrderDto.setPalletId(1);
 
+        orderRequest.setMixedOrderDto(mixedOrderDto);
 
+        // Mock the client
         Client client = new Client();
-        client.setClientStatus(ClientStatus.INACTIVE);
+        client.setClientStatus(ClientStatus.ACTIVE);
         client.setCompanyName("Fresh Fruits Inc");
 
+        // Mock the products with sufficient stock
         Product product1 = new Product();
         Product product2 = new Product();
+        Product product3 = new Product();
 
         product1.setProductId(1L);
         product1.setProductCode("M_EA_B_M");
-        product1.setTotalWeight(1000.0);
+        product1.setTotalWeight(1000.0); // Sufficient stock
 
         product2.setProductId(2L);
-        product2.setProductCode("M_EC_B_M");
-        product2.setTotalWeight(2000.0);
+        product2.setProductCode("M_EB_B_M");
+        product2.setTotalWeight(2000.0); // Sufficient stock
 
+        product3.setProductId(3L);
+        product3.setProductCode("M_EC_B_M");
+        product3.setTotalWeight(2000.0); // Sufficient stock
+
+
+        // Mock the pallet
         Pallet pallet = new Pallet();
         pallet.setPalletId(1);
         pallet.setPreparationTime(5.0);
-        pallet.setTotalNet(3000.0f);
+        pallet.setTotalNet(1000.0f);
 
         when(clientRepository.findByCompanyName("Fresh Fruits Inc")).thenReturn(client);
-        when(productRepository.findByProductCode("M_EA_B_M")).thenReturn(Optional.of(product));
+        when(productRepository.findByProductCode("M_EA_B_M")).thenReturn(Optional.of(product1));
+        when(productRepository.findByProductCode("M_EB_B_M")).thenReturn(Optional.of(product2));
+        when(productRepository.findByProductCode("M_EC_B_M")).thenReturn(Optional.of(product3));
         when(palletRepository.findById(1)).thenReturn(Optional.of(pallet));
         when(orderRepository.save(any(Order.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
+        // Act
+        ResponseEntity<?> response = orderService.createOrder(orderRequest);
 
-        ClientNotActiveException exception =
-                org.junit.jupiter.api.Assertions.assertThrows(
-                        ClientNotActiveException.class,
-                        () -> orderService.createOrder(orderRequest)
-                );
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
-
-     */
 
     @Test
     void testCreateOrder_withInActiveClient() {
