@@ -1,9 +1,9 @@
 com\example\medjool\integration\AuthenticationFlowTesting.class
-unit_testing\AuthorizationServiceTesting.class
+security\AuthorizationServiceTesting.class
 unit_testing\OrderServiceTest.class
 unit_testing\UserManagementTesting.class
 unit_testing\StockServiceTesting.class
 unit_testing\ConfigurationServiceTesting.class
-unit_testing\AuthenticationServiceTesting.class
 unit_testing\OverviewServiceTesting.class
+security\AuthenticationServiceTesting.class
 unit_testing\ShipmentServiceTesting.class
