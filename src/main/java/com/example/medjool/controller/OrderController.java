@@ -87,4 +87,14 @@ public class OrderController {
         return orderService.cancelOrder(id);
     }
 
+    /**     * Retrieves an order by its ID.
+     *
+     * @param id the ID of the order to retrieve
+     * @return OrderResponseDto containing details of the specified order
+     */
+    @GetMapping("/get/{id}")
+    public OrderResponseDto getOrder(@PathVariable Long id) {
+        return orderService.getOrderById(id);
+    }
+
 }
