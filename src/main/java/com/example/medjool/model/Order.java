@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,9 @@ public class Order {
 
     @Column(name = "production_date")
     private LocalDateTime productionDate;
+
+    @Column(name = "order_date")
+    private LocalDate orderDate;
 
     @Column(name = "delivery_date")
     private LocalDateTime deliveryDate;
