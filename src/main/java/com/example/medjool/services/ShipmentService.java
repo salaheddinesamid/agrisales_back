@@ -31,7 +31,7 @@ public interface ShipmentService {
      * @param trackingNumber the new tracking number for the shipment
      * @throws Exception if an error occurs during the update
      */
-    void updateShipmentTracker(long shipmentId, String trackingNumber) throws Exception;
+    ResponseEntity<?> updateShipmentTracker(long shipmentId, String trackingNumber) throws Exception;
 
     /**     * Tracks a shipment with the given shipment ID.
      *

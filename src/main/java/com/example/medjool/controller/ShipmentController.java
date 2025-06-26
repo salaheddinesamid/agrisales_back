@@ -43,8 +43,8 @@ public class ShipmentController {
      * @throws Exception if an error occurs while updating the tracking number
      */
     @PutMapping("/update/tracking/{shipmentId}")
-    public void updateTrackingNumber(@PathVariable long shipmentId, @RequestParam String trackingNumber) throws Exception {
-        shipmentService.updateShipmentTracker(shipmentId, trackingNumber);
+    public ResponseEntity<?> updateTrackingNumber(@PathVariable long shipmentId, @RequestParam String trackingNumber) throws Exception {
+        return shipmentService.updateShipmentTracker(shipmentId, trackingNumber);
     }
 
     /**     * Cancels a shipment by its ID.

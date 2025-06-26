@@ -70,13 +70,19 @@ public class ShipmentServiceImpl implements ShipmentService {
      * @throws Exception if the shipment is not found
      */
     @Override
-    public void updateShipmentTracker(long shipmentId, String trackingNumber) throws Exception {
+    public ResponseEntity<?> updateShipmentTracker(long shipmentId, String trackingNumber) throws Exception {
 
-        Shipment shipment = shipmentRepository.findById(shipmentId).orElseThrow(() -> new Exception("Shipment not found"));
-        String trackingUrl = SHIPMENT_URL + trackingNumber;
-        shipment.setTrackingNumber(trackingNumber);
-        shipment.setTrackingUrl(trackingUrl);
-        shipmentRepository.save(shipment);
+        try{
+            Shipment shipment = shipmentRepository.findById(shipmentId).orElseThrow(() -> new Exception("Shipment not found"));
+            String trackingUrl = SHIPMENT_URL + trackingNumber;
+            shipment.setTrackingNumber(trackingNumber);
+            shipment.setTrackingUrl(trackingUrl);
+            shipmentRepository.save(shipment);
+
+            return new ResponseEntity<>("The shipment has been updated...", HttpStatus.OK);
+        }catch (Exception exception){
+            return new ResponseEntity<>("Error updating shipment: " + exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
