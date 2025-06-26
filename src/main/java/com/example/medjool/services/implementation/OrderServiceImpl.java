@@ -159,6 +159,7 @@ public class OrderServiceImpl implements OrderService{
             order.setMixedOrderItem(mixedOrderItem);
         }
 
+
         order.setTotalPrice(totalPrice);
         order.setTotalWeight(totalWeight);
         order.setProductionDate(LocalDateTime.now());
@@ -228,9 +229,20 @@ public class OrderServiceImpl implements OrderService{
             processItemsAdded(order,orderUpdateRequestDto.getItemsAdded());
             processItemsUpdated(order,orderUpdateRequestDto.getUpdatedItems());
 
-            return new ResponseEntity<>("Order has been updated.", HttpStatus.OK);
+            double totalPrice = order.getOrderItems().stream()
+                    .map(item -> item.getItemWeight() * item.getPricePerKg())
+                    .reduce(0.0, Double::sum);
+            double totalWeight = order.getOrderItems().stream()
+                    .map(OrderItem::getItemWeight)
+                    .reduce(0.0, Double::sum);
+
+
+            order.setTotalPrice(totalPrice);
+            order.setTotalWeight(totalWeight);
+
+            return new ResponseEntity<>("Order has been updated successfully.", HttpStatus.OK);
         }catch (RuntimeException e){
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new RuntimeException("");
         }
 
     }
@@ -306,80 +318,46 @@ public class OrderServiceImpl implements OrderService{
      * @param updatedItems the list of updated item details
      */
     @Transactional
-    public void processItemsUpdated(Order order,List<OrderItemUpdateRequestDto> updatedItems){
+    public void processItemsUpdated(Order order, List<OrderItemUpdateRequestDto> updatedItems) {
 
-        for(OrderItemUpdateRequestDto dto : updatedItems){
-            OrderItem orderItem = orderItemRepository.findByIdForUpdate(dto.getItemId()).orElseThrow(()->new RuntimeException("Order item not found"));
+        for (OrderItemUpdateRequestDto dto : updatedItems) {
+            OrderItem orderItem = orderItemRepository.findByIdForUpdate(dto.getItemId())
+                    .orElseThrow(() -> new RuntimeException("Order item not found with ID: " + dto.getItemId()));
+
+
+            Product oldProduct = orderItem.getProduct();
             Product newProduct = productRepository.findByProductCodeForUpdate(dto.getProductCode())
                     .orElseThrow(ProductNotFoundException::new);
-            Product currentProduct = orderItem.getProduct();
 
-            if(!currentProduct.equals(newProduct)){
-                currentProduct.setTotalWeight(currentProduct.getTotalWeight() + orderItem.getItemWeight());
-                orderItem.setProduct(newProduct);
-                newProduct.setTotalWeight(newProduct.getTotalWeight() - orderItem.getItemWeight());
+            double oldWeight = orderItem.getItemWeight();
+            double newWeight = dto.getNewWeight();
+
+            // Revert old product stock
+            oldProduct.setTotalWeight(oldProduct.getTotalWeight() + oldWeight);
+            productRepository.save(oldProduct);
+
+            // Check if new product has enough stock
+            if (newProduct.getTotalWeight() < newWeight) {
+                throw new IllegalArgumentException("Insufficient stock for product: " + newProduct.getProductCode());
             }
-            else{
-                
-            }
+
+            // Deduct new weight from new product
+            newProduct.setTotalWeight(newProduct.getTotalWeight() - newWeight);
+            productRepository.save(newProduct);
+
+            // Update order item fields
+            orderItem.setProduct(newProduct);
+            orderItem.setItemWeight(newWeight);
+            orderItem.setBrand(dto.getNewBrand());
+            orderItem.setPricePerKg(dto.getNewPricePerKg());
+            orderItem.setNumberOfPallets(dto.getNewNumberOfPallets());
+            orderItem.setPackaging(dto.getNewPackaging());
+
+            orderItemRepository.save(orderItem);
         }
+
+        orderRepository.save(order);
     }
-
-
-
-    /*
-    @Override
-    @Transactional
-    public ResponseEntity<Object> updateOrder(Long id, OrderUpdateRequestDto orderUpdateRequestDto) {
-        Optional<Order> order = orderRepository.findById(id);
-
-        order.ifPresent(o -> {
-            if(o.getStatus() == OrderStatus.READY_TO_SHIPPED){
-                throw new OrderCannotBeCanceledException("Order cannot be updated at this stage.");
-            }
-
-            // Calculate the new delivery date:
-            double workingHours = 0;
-
-            for (OrderItemUpdateRequestDto itemRequest : orderUpdateRequestDto.getItems()) {
-                Product product = productRepository.findByProductCode(itemRequest.getProductCode()).get();
-                Optional<Pallet> pallet = palletRepository.findById(itemRequest.getNewPalletId());
-                // Skip if product not found or insufficient stock
-                if (product.getTotalWeight() < itemRequest.getNewWeight()){
-                    throw new ProductLowStock();
-                }
-                // Update product inventory
-                logger.info("The product with id : {}is being updated...", product.getProductId());
-                product.setTotalWeight(product.getTotalWeight() - itemRequest.getNewWeight());
-                productRepository.save(product);
-
-                // Incrementing the working hours:
-                workingHours += pallet.get().getPreparationTime();
-                // Update order item
-                OrderItem orderItem = orderItemRepository.findById(itemRequest.getItemId()).get();
-                orderItem.setProduct(product);
-                orderItem.setPricePerKg(itemRequest.getNewPrice());
-                orderItem.setPackaging(itemRequest.getNewPackaging());
-                orderItem.setNumberOfPallets(itemRequest.getNewPalletId());
-                orderItem.setItemWeight(itemRequest.getNewWeight());
-                orderItem.setPallet(pallet.get());
-            }
-            // Set the new total price
-            o.setTotalWeight(orderUpdateRequestDto.getTotalWeight());
-            o.setTotalPrice(orderUpdateRequestDto.getTotalPrice());
-
-            // Update the production date:
-            LocalDateTime prod_date = LocalDateTime.now();
-            o.setProductionDate(prod_date);
-            // Update the new delivery date:
-            LocalDateTime newDeliveryDate = LocalDateTime.now().plusHours((long) workingHours);
-            o.setDeliveryDate(newDeliveryDate);
-        });
-        return new ResponseEntity<>("Order has been updated.", HttpStatus.OK);
-    }
-
-     */
-
 
     /**     * Updates the status of an order.
      *

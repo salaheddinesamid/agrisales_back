@@ -2,6 +2,7 @@ package com.example.medjool.controller;
 
 import com.example.medjool.dto.*;
 
+import com.example.medjool.model.Order;
 import com.example.medjool.services.implementation.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
