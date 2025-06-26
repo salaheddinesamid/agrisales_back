@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -425,4 +425,107 @@ public class OrderServiceTest {
                         () -> orderService.updateOrderStatus(1L, orderStatusDto)
                 );
     }
+
+    @Test
+    void updateOrderTest() {
+        // === Setup Entities ===
+        Client c = new Client();
+        c.setCompanyName("Samid Cor");
+        c.setClientId(1);
+        c.setClientStatus(ClientStatus.ACTIVE);
+
+        Product p1 = new Product(); // will be deleted
+        p1.setProductId(1L);
+        p1.setProductCode("M_EA_B_M");
+        p1.setTotalWeight(2000.0);
+
+        Product p2 = new Product(); // will be updated
+        p2.setProductId(2L);
+        p2.setProductCode("M_EC_B_M");
+        p2.setTotalWeight(2000.0);
+
+        Pallet pallet1 = new Pallet();
+        pallet1.setPalletId(1);
+        pallet1.setPreparationTime(5.0);
+        pallet1.setTotalNet(300.0f);
+
+        OrderItem oi1 = new OrderItem(); // to be deleted
+        oi1.setId(1L);
+        oi1.setProduct(p1);
+        oi1.setOrderCurrency(OrderCurrency.USD);
+        oi1.setPallet(pallet1);
+        oi1.setItemWeight(500.0);
+        oi1.setPricePerKg(2.0);
+
+        OrderItem oi2 = new OrderItem(); // to be updated
+        oi2.setId(2L);
+        oi2.setProduct(p2);
+        oi2.setItemWeight(800.0);
+        oi2.setPricePerKg(2.0);
+        oi2.setPallet(pallet1);
+        oi2.setOrderCurrency(OrderCurrency.USD);
+        oi2.setBrand("Medjool Star");
+
+        Order o = new Order();
+        o.setId(1L);
+        o.setClient(c);
+        o.setCurrency(OrderCurrency.valueOf("USD"));
+        o.setStatus(OrderStatus.PRELIMINARY);
+        o.setOrderItems(new ArrayList<>(List.of(oi1, oi2)));
+        o.setProductionDate(LocalDateTime.now());
+
+        OrderItemRequestDto addedItem = new OrderItemRequestDto();
+        addedItem.setProductCode("M_EC_B_M");
+        addedItem.setItemBrand("Medjool Star");
+        addedItem.setPalletId(1);
+        addedItem.setNumberOfPallets(3);
+        addedItem.setItemWeight(900.0);
+        addedItem.setPricePerKg(2.0);
+        addedItem.setPackaging(1);
+
+        OrderItemUpdateRequestDto updatedItem = new OrderItemUpdateRequestDto();
+        updatedItem.setItemId(2L);
+        updatedItem.setProductCode("M_EC_B_M");
+        updatedItem.setNewBrand("Oum Toumour");
+        updatedItem.setNewWeight(1000.0);
+        updatedItem.setNewPricePerKg(2.5);
+        updatedItem.setNewNumberOfPallets(4);
+        updatedItem.setNewPackaging(0.5);
+
+        OrderUpdateRequestDto dto = new OrderUpdateRequestDto();
+        dto.setClientName("Samid Cor");
+        dto.setItemsDeleted(List.of(1L));
+        dto.setItemsAdded(List.of(addedItem));
+        dto.setUpdatedItems(List.of(updatedItem));
+
+        // === Mock Repositories ===
+        when(orderRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(o));
+        when(orderItemRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(oi1));
+        when(orderItemRepository.findByIdForUpdate(2L)).thenReturn(Optional.of(oi2));
+        when(productRepository.findByProductCodeForUpdate("M_EA_B_M")).thenReturn(Optional.of(p1));
+        when(productRepository.findByProductCodeForUpdate("M_EC_B_M")).thenReturn(Optional.of(p2));
+        when(palletRepository.findById(1)).thenReturn(Optional.of(pallet1));
+
+        // === Call Service Method ===
+        ResponseEntity<Object> responseDto = orderService.updateOrder(1L, dto);
+
+        // === Assertions ===
+        assertNotNull(responseDto);
+        assertEquals(1L, o.getId());
+
+        // Total price: 2.5 * 1000 (updated item) + 2.0 * 900 (new item)
+        double expectedTotalPrice = 2.5 * 1000 + 2.0 * 900;
+        double expectedTotalWeight = 1000.0 + 900.0;
+
+        assertEquals(expectedTotalPrice, o.getTotalPrice(), 0.001);
+        assertEquals(expectedTotalWeight, o.getTotalWeight(), 0.001);
+
+        assertEquals(2, o.getOrderItems().size());
+
+        assertFalse(o.getOrderItems().contains(oi1)); // Deleted item gone
+
+        assertTrue(o.getOrderItems().stream()
+                .anyMatch(item -> item.getBrand().equals("Oum Toumour"))); // Updated brand
+    }
+
 }
