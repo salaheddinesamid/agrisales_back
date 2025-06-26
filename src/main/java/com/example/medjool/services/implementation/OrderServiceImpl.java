@@ -1,10 +1,7 @@
 package com.example.medjool.services.implementation;
 
 import com.example.medjool.dto.*;
-import com.example.medjool.exception.ClientNotActiveException;
-import com.example.medjool.exception.OrderCannotBeCanceledException;
-import com.example.medjool.exception.ProductLowStock;
-import com.example.medjool.exception.ProductNotFoundException;
+import com.example.medjool.exception.*;
 import com.example.medjool.model.*;
 import com.example.medjool.repository.*;
 import com.example.medjool.services.OrderService;
@@ -209,17 +206,133 @@ public class OrderServiceImpl implements OrderService{
                 .orElse(null);
     }
 
-
-    /**     * Updates an existing order with new details.
+    /**     * Updates an existing order based on the provided ID and update request.
      *
      * @param id the ID of the order to update
-     * @param orderUpdateRequestDto the new details for the order
+     * @param orderUpdateRequestDto the request containing updated order details
      * @return ResponseEntity indicating success or failure
      */
     @Override
     @Transactional
     public ResponseEntity<Object> updateOrder(Long id, OrderUpdateRequestDto orderUpdateRequestDto) {
+
+        try{
+            Order order = orderRepository.findByIdForUpdate(id).orElseThrow(()-> new RuntimeException("Order not found"));
+
+            if (order.getStatus() == OrderStatus.READY_TO_SHIPPED) {
+                throw new OrderCannotBeCanceledException("Order cannot be updated at this stage.");
+            }
+
+
+            processItemsDeleted(order,orderUpdateRequestDto.getItemsDeleted());
+            processItemsAdded(order,orderUpdateRequestDto.getItemsAdded());
+            processItemsUpdated(order,orderUpdateRequestDto.getUpdatedItems());
+
+            return new ResponseEntity<>("Order has been updated.", HttpStatus.OK);
+        }catch (RuntimeException e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    /**     * Processes items added to an order.
+     *
+     * @param order the order to which items are being added
+     * @param addedItems the list of items to be added
+     */
+    @Transactional
+    public void processItemsAdded(Order order, List<OrderItemRequestDto> addedItems) {
+
+        for (OrderItemRequestDto dto : addedItems) {
+            // Fetch product with locking
+            Product p = productRepository.findByProductCodeForUpdate(dto.getProductCode())
+                    .orElseThrow(ProductNotFoundException::new);
+
+            // Check stock availability
+            if (p.getTotalWeight() < dto.getItemWeight()) {
+                throw new IllegalArgumentException("Insufficient stock for product: " + p.getProductCode());
+            }
+
+            // Fetch pallet with validation
+            Pallet pallet = palletRepository.findById(dto.getPalletId())
+                    .orElseThrow(() -> new RuntimeException("Pallet not found with id: " + dto.getPalletId()));
+
+            // Update product weight
+            p.setTotalWeight(p.getTotalWeight() - dto.getItemWeight());
+            productRepository.save(p);
+
+            // Map DTO to Entity
+            OrderItem newItem = new OrderItem();
+            newItem.setProduct(p);
+            newItem.setBrand(dto.getItemBrand());
+            newItem.setOrderCurrency(order.getCurrency());
+            newItem.setItemWeight(dto.getItemWeight());
+            newItem.setNumberOfPallets(dto.getNumberOfPallets());
+            newItem.setPallet(pallet);
+            newItem.setPricePerKg(dto.getPricePerKg());
+            newItem.setPackaging(dto.getPackaging());
+            newItem.setOrder(order);
+
+            orderItemRepository.save(newItem);
+            order.addOrderItem(newItem);
+        }
+
+        orderRepository.save(order); // Optional based on cascade config
+    }
+
+
+    /**     * Processes items deleted from an order.
+     *
+     * @param order the order from which items are being deleted
+     * @param deletedItems the list of item IDs to be deleted
+     */
+    @Transactional
+    public void processItemsDeleted(Order order,List<Long> deletedItems){
+        for(Long itemId : deletedItems){
+            OrderItem orderItem = orderItemRepository.findByIdForUpdate(itemId)
+                    .orElseThrow(() -> new RuntimeException("Order item not found"));
+            Product product = orderItem.getProduct();
+            product.setTotalWeight(product.getTotalWeight() + orderItem.getItemWeight());
+            productRepository.save(product);
+            orderItemRepository.delete(orderItem);
+            order.getOrderItems().removeIf(item -> item.getId().equals(itemId));
+        }
+        orderRepository.save(order);
+    }
+
+    /**     * Processes items updated in an order.
+     *
+     * @param order the order containing items to be updated
+     * @param updatedItems the list of updated item details
+     */
+    @Transactional
+    public void processItemsUpdated(Order order,List<OrderItemUpdateRequestDto> updatedItems){
+
+        for(OrderItemUpdateRequestDto dto : updatedItems){
+            OrderItem orderItem = orderItemRepository.findByIdForUpdate(dto.getItemId()).orElseThrow(()->new RuntimeException("Order item not found"));
+            Product newProduct = productRepository.findByProductCodeForUpdate(dto.getProductCode())
+                    .orElseThrow(ProductNotFoundException::new);
+            Product currentProduct = orderItem.getProduct();
+
+            if(!currentProduct.equals(newProduct)){
+                currentProduct.setTotalWeight(currentProduct.getTotalWeight() + orderItem.getItemWeight());
+                orderItem.setProduct(newProduct);
+                newProduct.setTotalWeight(newProduct.getTotalWeight() - orderItem.getItemWeight());
+            }
+            else{
+                
+            }
+        }
+    }
+
+
+
+    /*
+    @Override
+    @Transactional
+    public ResponseEntity<Object> updateOrder(Long id, OrderUpdateRequestDto orderUpdateRequestDto) {
         Optional<Order> order = orderRepository.findById(id);
+
         order.ifPresent(o -> {
             if(o.getStatus() == OrderStatus.READY_TO_SHIPPED){
                 throw new OrderCannotBeCanceledException("Order cannot be updated at this stage.");
@@ -264,6 +377,8 @@ public class OrderServiceImpl implements OrderService{
         });
         return new ResponseEntity<>("Order has been updated.", HttpStatus.OK);
     }
+
+     */
 
 
     /**     * Updates the status of an order.

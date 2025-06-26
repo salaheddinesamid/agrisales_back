@@ -1,6 +1,7 @@
 package com.example.medjool.services;
 import com.example.medjool.dto.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public interface OrderService {
      * @return ResponseEntity containing the updated order or an error message
      */
     ResponseEntity<Object> updateOrder(Long id, OrderUpdateRequestDto orderUpdateRequestDto);
+
 
     /**     * Updates the status of an order based on the provided OrderStatusDto.
      *

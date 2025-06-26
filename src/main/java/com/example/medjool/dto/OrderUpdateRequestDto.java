@@ -8,7 +8,9 @@ import java.util.List;
 public class OrderUpdateRequestDto {
 
     private String clientName;
-    private List<OrderItemUpdateRequestDto> items;
+    private List<OrderItemUpdateRequestDto> updatedItems;
+    private List<Long> itemsDeleted;
+    private List<OrderItemRequestDto> itemsAdded;
     private double totalWeight;
     private double totalPrice;
 }
