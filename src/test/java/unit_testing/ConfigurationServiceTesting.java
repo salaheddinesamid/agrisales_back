@@ -54,9 +54,11 @@ public class ConfigurationServiceTesting {
                 "Export and Import",
                 "www.client1.com",
                 "GMS",
+                10,
                 null,
                 null,
                 "ACTIVE"
+
         );
 
 
@@ -84,6 +86,7 @@ public class ConfigurationServiceTesting {
                 "Export and Import",
                 "www.client1.com",
                 "GMS",
+                10,
                 null,
                 null,
                 "ACTIVE"
@@ -154,7 +157,7 @@ public class ConfigurationServiceTesting {
         when(addressRepository.findById(1L)).thenReturn(java.util.Optional.of(address));
         when(contactRepository.findById(1)).thenReturn(java.util.Optional.of(contact));
         // Mock existing client
-        Client existedClient = new Client(1, "Client1", "GM", "Export and Import", "CC2233", "www.client1.com", "GMS", List.of(address), List.of(contact), ClientStatus.ACTIVE);
+        Client existedClient = new Client(1, "Client1", "GM", "Export and Import", "CC2233", "www.client1.com", "GMS",10f, List.of(address), List.of(contact), ClientStatus.ACTIVE);
         when(clientRepository.findById(1)).thenReturn(java.util.Optional.of(existedClient));
 
         // Mock updated client
@@ -175,4 +178,35 @@ public class ConfigurationServiceTesting {
 
     //  --------------- Pallet tests ------------------//
 
+    @Test
+    void createNewPalletTestSuccess(){
+
+        // Mock the pallet dto:
+        PalletDto palletDto = new PalletDto();
+        palletDto.setPackaging(1);
+
+        // Basic information:
+        palletDto.setNumberOfBoxesInCarton(10);
+        palletDto.setNumberOfCartonsInStory(30);
+        palletDto.setNumberOfStoriesInPallet(12);
+
+        // Dimension information:
+        palletDto.setHeight(100);
+        palletDto.setWidth(200);
+        palletDto.setLength(300);
+
+        // Costs information:
+        palletDto.setProductionCost(2);
+        palletDto.setDatePurchase(3);
+        palletDto.setLaborCost(4);
+        palletDto.setTransportCost(3);
+        palletDto.setLaborTransportCost(2.4f);
+        palletDto.setInsuranceCost(3);
+        palletDto.setVat(4);
+        palletDto.setMarkupCost(2.5f);
+        palletDto.setPackagingCost(5);
+        palletDto.setPreliminaryLogistics(3);
+        palletDto.setFuelCost(1);
+        palletDto.setNotes("");
+    }
 }

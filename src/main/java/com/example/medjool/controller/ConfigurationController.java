@@ -39,7 +39,7 @@ public class ConfigurationController {
      * @return ResponseEntity containing a list of all clients
      */
     @GetMapping("client/get_all")
-    public ResponseEntity<List<Client>> getAllClients() {
+    public ResponseEntity<List<ClientResponseDto>> getAllClients() {
         return configurationService.getAll();
     }
 

@@ -21,7 +21,7 @@ public interface ConfigurationService {
      * @return a ResponseEntity containing a list of all clients
      */
 
-    ResponseEntity<List<Client>> getAll();
+    ResponseEntity<List<ClientResponseDto>> getAll();
 
     /**     * Updates an existing client in the system.
      *

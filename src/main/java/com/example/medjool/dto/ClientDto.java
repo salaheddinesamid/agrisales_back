@@ -14,6 +14,7 @@ public class ClientDto {
     private String companyActivity;
     private String website;
     private String preferredProductQuality;
+    private float commission;
     private List<ContactDto> contacts;
     private List<AddressDto> addresses;
     private String status;

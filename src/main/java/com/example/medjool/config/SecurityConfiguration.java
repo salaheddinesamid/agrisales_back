@@ -65,14 +65,14 @@ public class SecurityConfiguration {
                                         "/actuator/metrics/",
                                         "/actuator/health",
                                         "/actuator/info",
-                                        "/api/email/**",
-
-                                        "/api-docs/**"
+                                        "/api/order/**",
+                                        "/api/configuration/client/delete/**",
+                                        "/api/email/**",                                        "/api-docs/**"
                                 ).permitAll()
                                 .requestMatchers("/api/user/**")
                                 .hasAnyAuthority("GENERAL_MANAGER","IT_ADMIN")
                                 .requestMatchers(
-                                        "/api/order/**",
+
                                         "/api/stock/get_all",
                                         "/api/overview/**",
                                         "/api/configuration/**",
