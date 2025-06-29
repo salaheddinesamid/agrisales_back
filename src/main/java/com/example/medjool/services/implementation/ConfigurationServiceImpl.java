@@ -80,6 +80,9 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         client.setAddresses(clientAddresses);
         client.setContacts(clientContacts);
 
+        // Add client commission:
+        client.setCommission(clientDto.getCommission());
+
 
         // Save the client
         clientRepository.save(client);
@@ -88,14 +91,17 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     }
 
 
-    /**     * Retrieves all clients from the system.
+    /**
+     * Retrieves all clients from the system.
      *
      * @return ResponseEntity containing a list of all clients
      */
     @Override
-    public ResponseEntity<List<Client>> getAll(){
+    public ResponseEntity<List<ClientResponseDto>> getAll(){
         List<Client> clients = clientRepository.findAll();
-        return new ResponseEntity<>(clients,HttpStatus.OK);
+        List<ClientResponseDto> response = clients.stream()
+                .map(ClientResponseDto::new).toList();
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
 
@@ -235,11 +241,21 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         }
 
         // Dimensions:
-
         newPallet.setHeight(palletDto.getHeight());
         newPallet.setWidth(palletDto.getWidth());
         newPallet.setLength(palletDto.getLength());
 
+        // Costs:
+        newPallet.setProductionCost(palletDto.getProductionCost());
+        newPallet.setDatePurchase(palletDto.getDatePurchase());
+        newPallet.setLaborCost(palletDto.getLaborCost());
+        newPallet.setPackagingCost(palletDto.getPackagingCost());
+        newPallet.setTransportationCost(palletDto.getTransportCost());
+        newPallet.setTransportationCost(palletDto.getTransportCost());
+        newPallet.setMarkUpCost(palletDto.getMarkupCost());
+        newPallet.setVat(palletDto.getVat());
+        newPallet.setPreliminaryLogisticsCost(palletDto.getPreliminaryLogistics());
+        newPallet.setInsuranceCost(palletDto.getInsuranceCost());
 
         // Preparation hours:
         newPallet.setPreparationTime(palletDto.getPreparationTime());
@@ -250,8 +266,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         palletRepository.save(newPallet);
         return ResponseEntity.ok().body(newPallet);
     }
-
-
 
     /**     * Retrieves all pallets from the system.
      *
@@ -273,13 +287,20 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     public ResponseEntity<Object> updatePallet(Integer id, UpdatePalletDto palletDto) {
         Pallet pallet = palletRepository.findByPalletId(id);
 
+        // Update dimensions:
         pallet.setHeight(palletDto.getHeight());
         pallet.setWidth(palletDto.getWidth());
         pallet.setLength(palletDto.getLength());
+
+        // Update costs:
+
+        // Update preparation time:
         pallet.setPreparationTime(palletDto.getPreparationTime());
         pallet.setTag(palletDto.getTag());
         pallet.setTotalNet(palletDto.getTotalNet());
         pallet.setPackaging(palletDto.getPackaging());
+
+        // Update basic information:
         pallet.setNumberOfBoxesInCarton(palletDto.getNumberOfBoxesInCarton());
         pallet.setNumberOfCartonsInStory(palletDto.getNumberOfCartonsInStory());
         pallet.setNumberOfStoriesInPallet(palletDto.getNumberOfStoriesInPallet());
