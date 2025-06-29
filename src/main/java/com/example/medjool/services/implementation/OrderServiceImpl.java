@@ -123,7 +123,7 @@ public class OrderServiceImpl implements OrderService{
          * - Production date and status
          * - Shipping address and estimated delivery date
          */
-        if(orderRequest.getMixedOrderDto() != null) {
+        if(orderRequest.getMixedOrderDto().getItems() != null) {
             MixedOrderDto mixedOrderDto = orderRequest.getMixedOrderDto();
             MixedOrderItem mixedOrderItem = new MixedOrderItem();
             List<MixedOrderItemDetails> mixedOrderItemsDetails = new ArrayList<>();
@@ -441,10 +441,13 @@ public class OrderServiceImpl implements OrderService{
             }
 
             case CANCELED -> {
+                List<OrderHistory> history = order.getOrderHistory();
                 for (OrderItem orderItem : order.getOrderItems()) {
                     Product product = orderItem.getProduct();
                     product.setTotalWeight(product.getTotalWeight() + orderItem.getItemWeight());
+                    order.getOrderItems().remove(orderItem);
                 }
+                history.forEach(history::remove);
             }
 
             case SHIPPED -> {
