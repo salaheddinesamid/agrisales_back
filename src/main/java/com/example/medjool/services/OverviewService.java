@@ -10,4 +10,6 @@ public interface OverviewService {
      * @return ResponseEntity containing the overview data.
      */
     ResponseEntity<?> getOverview();
+
+    ResponseEntity<?> getMarginPerClient();
 }

@@ -117,4 +117,9 @@ public class OverviewServiceImpl implements OverviewService {
        return new ResponseEntity<>(overviewDto, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<?> getMarginPerClient() {
+        return null;
+    }
+
 }
