@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 
@@ -17,7 +19,6 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class Client {
 
     @Id
@@ -42,12 +43,31 @@ public class Client {
     @Column(name = "preferred_product_quality")
     private String preferredProductQuality;
 
+    @Column(name = "commission", nullable = true)
+    private Float commission;
+
     @OneToMany
     List<Address> addresses;
 
     @OneToMany
     List<Contact> contacts;
 
-   @Enumerated(EnumType.STRING)
-   ClientStatus clientStatus;
+    @Enumerated(EnumType.STRING)
+    ClientStatus clientStatus;
+
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Order> orders;
+
+    public Client(){
+
+    }
+
+
+    public <E> Client(int id,String companyName,
+                      String generalManager, String companyActivity,
+                      String SIRET, String webSite, String preferredProductQuality,
+                      Float commission, List<Address> address, List<Contact> contact, ClientStatus clientStatus) {
+
+    }
 }

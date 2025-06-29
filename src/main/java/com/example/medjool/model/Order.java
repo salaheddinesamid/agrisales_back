@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,6 +29,7 @@ public class Order {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Client client;
 
     @JsonManagedReference
@@ -65,6 +68,15 @@ public class Order {
 
     @Column(name = "working_hours",nullable = true)
     private double workingHours;
+
+    @OneToOne
+    @JoinColumn(name = "shipment_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Shipment shipment;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<OrderHistory> orderHistory;
 
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
