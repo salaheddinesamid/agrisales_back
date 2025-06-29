@@ -14,6 +14,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Pallet {
 
+
+    // Basic information:
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer palletId;
@@ -33,11 +35,45 @@ public class Pallet {
     @Column(name = "number_of_boxes_in_story")
     private Integer numberOfBoxesInStory;
 
-
     @Column(name = "number_of_boxes_in_pallet")
     private Integer numberOfBoxesInPallet;
 
+    // Costs:
+    @Column(name = "production_cost")
+    private Float productionCost;
 
+    @Column(name = "date_purchase")
+    private Float datePurchase;
+
+    @Column(name = "fuel_cost")
+    private Float fuelCost;
+
+    @Column(name = "labor_cost")
+    private Float laborCost;
+
+    @Column(name = "packaging_cost")
+    private Float packagingCost;
+
+    @Column(name = "transportation_cost")
+    private Float transportationCost;
+
+    @Column(name = "labor_transport_cost")
+    private Float laborTransportCost;
+
+    @Column(name = "markUpCost")
+    private Float markUpCost;
+
+    @Column(name = "vat")
+    private Float vat;
+
+    @Column(name = "preliminary_logistics_cost")
+    private Float preliminaryLogisticsCost;
+
+    @Column(name = "insurance_cost")
+    private Float insuranceCost;
+
+
+    // Dimensions:
     @Column(name = "height")
     private float height;
 
