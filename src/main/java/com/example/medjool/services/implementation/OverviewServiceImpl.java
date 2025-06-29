@@ -3,6 +3,7 @@ package com.example.medjool.services.implementation;
 
 import com.example.medjool.dto.OverviewDto;
 import com.example.medjool.model.*;
+import com.example.medjool.repository.ClientRepository;
 import com.example.medjool.repository.OrderRepository;
 import com.example.medjool.repository.ProductRepository;
 import com.example.medjool.repository.SystemSettingRepository;
@@ -21,13 +22,15 @@ public class OverviewServiceImpl implements OverviewService {
     private final OrderRepository orderRepository;
     private final SystemSettingRepository systemSettingRepository;
     private final AlertServiceImpl alertService;
+    private final ClientRepository clientRepository;
 
     @Autowired
-    public OverviewServiceImpl(ProductRepository productRepository, OrderRepository orderRepository, SystemSettingRepository systemSettingRepository, AlertServiceImpl alertService) {
+    public OverviewServiceImpl(ProductRepository productRepository, OrderRepository orderRepository, SystemSettingRepository systemSettingRepository, AlertServiceImpl alertService, ClientRepository clientRepository) {
         this.productRepository = productRepository;
         this.orderRepository = orderRepository;
         this.systemSettingRepository = systemSettingRepository;
         this.alertService = alertService;
+        this.clientRepository = clientRepository;
     }
 
 
@@ -119,7 +122,19 @@ public class OverviewServiceImpl implements OverviewService {
 
     @Override
     public ResponseEntity<?> getMarginPerClient() {
-        return null;
+        /*
+        List<Client> clients = clientRepository.findAll();
+
+        for(Client client : clients) {
+            List<Order> clientOrders = orderRepository.findAllByClient(client);
+
+            for(Order order : clientOrders) {
+                Pallet orderPallet = order.getOrderItems().get(0).getPallet();
+            }
+        }
+
+         */
+        return new ResponseEntity<>("",HttpStatus.OK);
     }
 
 }

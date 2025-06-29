@@ -1,5 +1,6 @@
 package com.example.medjool.repository;
 
+import com.example.medjool.model.Client;
 import com.example.medjool.model.Order;
 import com.example.medjool.model.OrderStatus;
 import jakarta.persistence.LockModeType;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findAllByStatus(OrderStatus status);
+    List<Order> findAllByClient(Client client);
 
     /**     * Finds an Order by its ID and locks it for update to prevent concurrent modifications.
      *
