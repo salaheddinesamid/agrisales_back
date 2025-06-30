@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class OrderServiceTest {
+public class  OrderServiceTest {
 
     @Mock
     private ClientRepository clientRepository;
@@ -339,6 +339,56 @@ public class OrderServiceTest {
                 ProductLowStock.class,
                 () -> orderService.createOrder(orderRequest)
         );
+    }
+
+    @Test
+    void testCancelOrderSuccess(){
+        Client client = new Client();
+        client.setClientStatus(ClientStatus.ACTIVE);
+        client.setCompanyName("Fresh Fruits Inc");
+
+        Product product = new Product();
+        product.setProductCode("M_EA_B_M");
+        product.setTotalWeight(1000.0);
+
+        Order order = new Order();
+        order.setId(1L);
+        order.setClient(client);
+        order.setStatus(OrderStatus.PRELIMINARY);
+
+        OrderItem orderItem1 = new OrderItem();
+        orderItem1.setId(1L);
+        orderItem1.setProduct(product);
+        orderItem1.setOrderCurrency(OrderCurrency.MAD);
+        orderItem1.setItemWeight(300.0);
+        orderItem1.setPricePerKg(3);
+
+        OrderItem orderItem2 = new OrderItem();
+        orderItem2.setId(2L);
+        orderItem2.setProduct(product);
+        orderItem2.setOrderCurrency(OrderCurrency.MAD);
+        orderItem2.setItemWeight(300.0);
+        orderItem2.setPricePerKg(3);
+
+        List<OrderItem> orderItems = new ArrayList<>();
+        orderItems.add(orderItem1);
+        orderItems.add(orderItem2);
+        order.setOrderItems(orderItems);
+
+        Pallet pallet = new Pallet();
+
+        pallet.setPreparationTime(5.0);
+
+        when(clientRepository.findByCompanyName("Fresh Fruits Inc")).thenReturn(client);
+        when(productRepository.findByProductCode("M_EA_B_M")).thenReturn(Optional.of(product));
+        when(palletRepository.findById(1)).thenReturn(Optional.of(pallet));
+        when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
+
+        ResponseEntity<Object> response = orderService.cancelOrder(1L);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Order has been cancelled.", response.getBody());
+        assertEquals(0,orderItemRepository.findAll().size());
     }
 
     @Test

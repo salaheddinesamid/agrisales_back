@@ -3,22 +3,21 @@ package unit_testing;
 import com.example.medjool.dto.*;
 import com.example.medjool.exception.ClientAlreadyFoundException;
 import com.example.medjool.model.*;
-import com.example.medjool.repository.AddressRepository;
-import com.example.medjool.repository.ClientRepository;
-import com.example.medjool.repository.ContactRepository;
-import com.example.medjool.repository.PalletRepository;
+import com.example.medjool.repository.*;
 import com.example.medjool.services.implementation.ConfigurationServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -33,6 +32,12 @@ public class ConfigurationServiceTesting {
 
     @Mock
     private AddressRepository addressRepository;
+
+    @Mock
+    private OrderRepository orderRepository;
+
+    @Mock
+    private OrderItemRepository orderItemRepository;
 
     @Mock
     private ContactRepository contactRepository;
@@ -60,7 +65,6 @@ public class ConfigurationServiceTesting {
                 "ACTIVE"
 
         );
-
 
         Client existedClient = new Client();
         when(clientRepository.findByCompanyName(
@@ -173,6 +177,48 @@ public class ConfigurationServiceTesting {
 
         // Verification
         assertEquals(200, response.getStatusCodeValue());
+        assertEquals("FN",contact.getDepartment());
+        assertEquals("Algeria",address.getCountry());
+    }
+
+    @Test
+    void deleteClientTestSuccess(){
+        // Mock the client to be deleted:
+        Client client = new Client();
+        client.setClientId(1);
+        client.setCompanyName("Client1");
+        client.setClientStatus(ClientStatus.ACTIVE);
+
+        // Mock an order associated to the client
+        Order order = new Order();
+        OrderItem orderItem = new OrderItem();
+
+        // Mock a product:
+        Product product = new Product();
+        product.setProductId(1L);
+        product.setProductCode("P001");
+
+        // Mock a pallet:
+        Pallet pallet = new Pallet();
+        pallet.setPalletId(1);
+
+        orderItem.setPallet(pallet);
+        orderItem.setProduct(product);
+
+        order.setId(1L);
+        order.setClient(client);
+        order.setOrderItems(List.of(orderItem));
+
+        when(clientRepository.findById(1)).thenReturn(java.util.Optional.of(client));
+        when(palletRepository.findByPalletId(1)).thenReturn(pallet);
+        when(orderItemRepository.findById(1L)).thenReturn(java.util.Optional.of(orderItem));
+        when(orderRepository.findById(1L)).thenReturn(java.util.Optional.of(order));
+
+
+        ResponseEntity<Object> response = configurationService.deleteClient(1);
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+        assertEquals(0,addressRepository.findAll().size());
+        assertEquals(0,contactRepository.findAll().size());
     }
 
 
@@ -208,5 +254,12 @@ public class ConfigurationServiceTesting {
         palletDto.setPreliminaryLogistics(3);
         palletDto.setFuelCost(1);
         palletDto.setNotes("");
+
+
+        when(palletRepository.findByPackaging(palletDto.getPackaging()))
+                .thenReturn(null);
+
+        ResponseEntity<Object> response = configurationService.addPallet(palletDto);
+        assertEquals(HttpStatus.OK,response.getStatusCode());
     }
 }
