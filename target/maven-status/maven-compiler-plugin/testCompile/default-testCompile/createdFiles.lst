@@ -3,7 +3,9 @@ security\AuthorizationServiceTesting.class
 unit_testing\OrderServiceTest.class
 unit_testing\UserManagementTesting.class
 unit_testing\StockServiceTesting.class
+integration_testing\OrderServiceIntegrationTesting.class
 unit_testing\ConfigurationServiceTesting.class
+integration_testing\ConfigurationServiceIntegrationTesting.class
 unit_testing\OverviewServiceTesting.class
 security\AuthenticationServiceTesting.class
 unit_testing\ShipmentServiceTesting.class

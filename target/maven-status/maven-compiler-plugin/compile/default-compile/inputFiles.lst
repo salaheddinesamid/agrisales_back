@@ -1,6 +1,7 @@
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\model\RoleName.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\repository\NotificationRepository.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\model\SystemSetting.java
+C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\UpdateShipmentTrackingNumberResponse.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\filters\ApiKeyAuthenticationFilter.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\OrderUpdateRequestDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\OrderStatusDto.java
@@ -15,6 +16,7 @@ C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\d
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\jwt\JwtUtilities.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\AddressResponseDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\repository\ProductRepository.java
+C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\PalletResponseDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\exception\ProductLowStock.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\model\Shipment.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\exception\OrderNotFoundException.java
@@ -31,6 +33,7 @@ C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\d
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\repository\OrderItemRepository.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\exception\SettingNotFoundException.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\model\Notification.java
+C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\MarginClientResponseDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\services\OrderService.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\exception\AuthenticationExceptionController.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\repository\OrderRepository.java
@@ -53,6 +56,7 @@ C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\m
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\NotificationResponseDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\model\MixedOrderItemDetails.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\filters\SimpleFilter.java
+C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\exception\PalletNotFoundException.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\repository\SystemSettingRepository.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\controller\AlertController.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\model\ClientStatus.java
@@ -85,10 +89,12 @@ C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\e
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\repository\AddressRepository.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\MedjoolApplication.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\services\implementation\OrderServiceImpl.java
+C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\exception\ConfigurationExceptionController.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\ProductionRequestDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\UpdatePalletDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\model\Order.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\OrderItemRequestDto.java
+C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\ClientResponseDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\model\User.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\AddressDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\controller\UserManagementController.java
@@ -132,6 +138,7 @@ C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\d
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\component\SystemSettingsInitializer.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\exception\InvalidCredentialsException.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\controller\SystemSettingsController.java
+C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\TotalPalletCostDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\BearerTokenDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\exception\ShipmentExceptionController.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\UpdateClientDto.java

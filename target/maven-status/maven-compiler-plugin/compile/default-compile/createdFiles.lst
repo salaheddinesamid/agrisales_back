@@ -11,6 +11,7 @@ com\example\medjool\controller\AuthenticationController.class
 com\example\medjool\exception\ProductLowStock.class
 com\example\medjool\component\RoleInitializer.class
 com\example\medjool\dto\AccessDeniedErrorDto$AccessDeniedErrorDtoBuilder.class
+com\example\medjool\exception\ConfigurationExceptionController.class
 com\example\medjool\services\FileHandling.class
 com\example\medjool\dto\ClientDto.class
 com\example\medjool\exception\UserAccountLockedException.class
@@ -26,6 +27,7 @@ com\example\medjool\exception\SettingExceptionController.class
 com\example\medjool\services\implementation\ConfigurationServiceImpl.class
 com\example\medjool\services\StockService.class
 com\example\medjool\services\implementation\UserManagementServiceImpl.class
+com\example\medjool\dto\UpdateShipmentTrackingNumberResponse.class
 com\example\medjool\dto\NewUserDto.class
 com\example\medjool\services\ShipmentService.class
 com\example\medjool\filters\SimpleFilter.class
@@ -83,6 +85,7 @@ com\example\medjool\config\CorsConfiguration$1.class
 com\example\medjool\dto\SettingUpdateDto.class
 com\example\medjool\dto\OverviewDto.class
 com\example\medjool\exception\UserAccountCannotBeDeletedException.class
+com\example\medjool\dto\PalletResponseDto.class
 com\example\medjool\model\SystemSetting.class
 com\example\medjool\services\implementation\OverviewServiceImpl.class
 com\example\medjool\services\SystemSettingService.class
@@ -111,6 +114,7 @@ com\example\medjool\dto\ProductionRequestDto.class
 com\example\medjool\controller\UserManagementController.class
 com\example\medjool\dto\OrderHistoryDto.class
 com\example\medjool\dto\PalletDto.class
+com\example\medjool\dto\TotalPalletCostDto.class
 com\example\medjool\services\implementation\ShipmentServiceImpl.class
 com\example\medjool\repository\OrderItemRepository.class
 com\example\medjool\services\ConfigurationService.class
@@ -121,8 +125,11 @@ com\example\medjool\model\OrderItem.class
 com\example\medjool\dto\NewPasswordDto.class
 com\example\medjool\exception\ProductNotFoundException.class
 com\example\medjool\services\implementation\OrderServiceImpl$1.class
+com\example\medjool\dto\ClientResponseDto.class
+com\example\medjool\dto\MarginClientResponseDto.class
 com\example\medjool\services\UserManagementService.class
 com\example\medjool\dto\FactoryScheduleResponseDto.class
+com\example\medjool\exception\PalletNotFoundException.class
 com\example\medjool\model\OrderStatus.class
 com\example\medjool\repository\UserRepository.class
 com\example\medjool\filters\ApiKeyAuthenticationFilter$ApiKeyAuthenticationToken.class
