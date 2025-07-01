@@ -104,7 +104,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-
     @Override
     @Transactional
     public ResponseEntity<Object> updateClient(Integer clientId, UpdateClientDto updateClientDto) {
@@ -122,13 +121,25 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         List<Address> newClientAddresses = updateClientDto.getNewAddresses().stream().map(
                 addressDto -> {
                     Address address = addressRepository.findById(addressDto.getAddressId()).orElse(null);
-                    assert address != null;
-                    address.setCity(addressDto.getCity());
-                    address.setCountry(addressDto.getCountry());
-                    address.setStreet(addressDto.getStreet());
-                    address.setState(addressDto.getState());
-                    address.setPostalCode(addressDto.getZip());
-                    return address;
+                    if(address != null){
+                        address.setCity(addressDto.getCity());
+                        address.setCountry(addressDto.getCountry());
+                        address.setStreet(addressDto.getStreet());
+                        address.setState(addressDto.getState());
+                        address.setPostalCode(addressDto.getZip());
+
+                        return address;
+                    }
+                    else {
+                        Address newAddress = new Address();
+                        newAddress.setCity(addressDto.getCity());
+                        newAddress.setCountry(addressDto.getCountry());
+                        newAddress.setStreet(addressDto.getStreet());
+                        newAddress.setState(addressDto.getState());
+                        newAddress.setPostalCode(addressDto.getZip());
+                        return addressRepository.save(newAddress);
+                    }
+
                 }
         ).toList();
 
@@ -138,11 +149,20 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         List<Contact> newClientContacts = updateClientDto.getNewContacts().stream().map(
                 contactDto -> {
                     Contact contact = contactRepository.findById(contactDto.getContactId()).orElse(null);
-                    assert contact != null;
-                    contact.setEmail(contactDto.getNewEmailAddress());
-                    contact.setPhone(contactDto.getNewPhoneNumber());
-                    contact.setDepartment(contactDto.getNewDepartmentName());
-                    return contact;
+                    if (contact != null){
+                        contact.setEmail(contactDto.getNewEmailAddress());
+                        contact.setPhone(contactDto.getNewPhoneNumber());
+                        contact.setDepartment(contactDto.getNewDepartmentName());
+                        return contact;
+                    }else{
+                        Contact newContact = new Contact();
+                        newContact.setEmail(contactDto.getNewEmailAddress());
+                        newContact.setPhone(contactDto.getNewPhoneNumber());
+                        newContact.setDepartment(contactDto.getNewDepartmentName());
+
+                        return contactRepository.save(newContact);
+                    }
+
                 }
         ).toList();
 
@@ -284,32 +304,48 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      * @return ResponseEntity with a success message or an error message
      */
     @Override
+    @Transactional(rollbackFor = RuntimeException.class)
     public ResponseEntity<Object> updatePallet(Integer id, UpdatePalletDto palletDto) {
         Pallet pallet = palletRepository.findByPalletId(id);
-
         // Update dimensions:
+        updatePalletDimensions(pallet,palletDto);
+        // Update costs:
+        updatePalletCosts(pallet,palletDto);
+        // Update basic information:
+        updatePalletBasicInformation(pallet,palletDto);
+
+        return new ResponseEntity<>("Pallet updated successfully", HttpStatus.OK);
+    }
+
+    private void updatePalletDimensions(Pallet pallet, UpdatePalletDto palletDto) {
         pallet.setHeight(palletDto.getHeight());
         pallet.setWidth(palletDto.getWidth());
         pallet.setLength(palletDto.getLength());
-
-        // Update costs:
-
-        // Update preparation time:
-        pallet.setPreparationTime(palletDto.getPreparationTime());
-        pallet.setTag(palletDto.getTag());
-        pallet.setTotalNet(palletDto.getTotalNet());
-        pallet.setPackaging(palletDto.getPackaging());
-
-        // Update basic information:
+    }
+    private void updatePalletCosts(Pallet pallet, UpdatePalletDto palletDto){
+        pallet.setProductionCost(palletDto.getProductionCost());
+        pallet.setLaborCost(palletDto.getLaborCost());
+        pallet.setPackagingCost(palletDto.getPackagingCost());
+        pallet.setTransportationCost(palletDto.getTransportCost());
+        pallet.setMarkUpCost(palletDto.getMarkupCost());
+        pallet.setVat(palletDto.getVat());
+        pallet.setPreliminaryLogisticsCost(palletDto.getPreliminaryLogistics());
+        pallet.setInsuranceCost(palletDto.getInsuranceCost());
+        pallet.setFuelCost(palletDto.getFuelCost());
+        pallet.setDatePurchase(palletDto.getDatePurchase());
+        pallet.setLaborTransportCost(palletDto.getLaborTransportCost());
+        pallet.setVat(palletDto.getVat());
+    }
+    private void updatePalletBasicInformation(Pallet pallet, UpdatePalletDto palletDto) {
         pallet.setNumberOfBoxesInCarton(palletDto.getNumberOfBoxesInCarton());
         pallet.setNumberOfCartonsInStory(palletDto.getNumberOfCartonsInStory());
         pallet.setNumberOfStoriesInPallet(palletDto.getNumberOfStoriesInPallet());
         pallet.setNumberOfBoxesInStory(palletDto.getNumberOfBoxesInStory());
         pallet.setNumberOfBoxesInPallet(palletDto.getNumberOfBoxesInPallet());
-
-        palletRepository.save(pallet);
-
-        return new ResponseEntity<>("Pallet updated successfully", HttpStatus.OK);
+        pallet.setPreparationTime(palletDto.getPreparationTime());
+        pallet.setTag(palletDto.getTag());
+        pallet.setTotalNet(palletDto.getTotalNet());
+        pallet.setPackaging(palletDto.getPackaging());
     }
 
     @Override
