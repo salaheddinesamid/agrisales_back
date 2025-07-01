@@ -1,14 +1,16 @@
 package com.example.medjool.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class MarginClientResponseDto {
 
-    private ClientResponseDto clientResponseDto;
+    private String clientName;
     private double totalWeight;
     private double totalPrice;
-    private TotalPalletCostDto totalPalletCostDto;
+    private double ordersCost;
     private Double marginOnVariableCost;
     private Double margin;
 }
