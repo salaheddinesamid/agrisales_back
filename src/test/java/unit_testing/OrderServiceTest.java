@@ -99,6 +99,11 @@ public class  OrderServiceTest {
         itemDto.setNumberOfPallets(1);
         itemDto.setCurrency(OrderCurrency.MAD.toString());
 
+        MixedOrderDto mixedOrderDto = new MixedOrderDto();
+        mixedOrderDto.setItems(null);
+
+        orderRequest.setMixedOrderDto(mixedOrderDto);
+
         orderRequest.setItems(List.of(itemDto));
         orderRequest.setProductionDate(now);
 
@@ -374,6 +379,7 @@ public class  OrderServiceTest {
         orderItems.add(orderItem1);
         orderItems.add(orderItem2);
         order.setOrderItems(orderItems);
+
 
         Pallet pallet = new Pallet();
 

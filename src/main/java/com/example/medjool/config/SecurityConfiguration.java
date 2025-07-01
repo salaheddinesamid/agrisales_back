@@ -66,6 +66,7 @@ public class SecurityConfiguration {
                                         "/actuator/health",
                                         "/actuator/info",
                                         "/api/order/**",
+                                        "/api/margin_per_client/**",
                                         "/api/configuration/client/delete/**",
                                         "/api/email/**",                                        "/api-docs/**"
                                 ).permitAll()
@@ -74,7 +75,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(
 
                                         "/api/stock/get_all",
-                                        "/api/overview/**",
+
                                         "/api/configuration/**",
                                         "/api/settings/**",
                                         "/api/alert/**",

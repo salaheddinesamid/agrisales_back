@@ -5,6 +5,7 @@ import com.example.medjool.exception.ClientAlreadyFoundException;
 import com.example.medjool.model.*;
 import com.example.medjool.repository.*;
 import com.example.medjool.services.implementation.ConfigurationServiceImpl;
+import org.hibernate.sql.Update;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -167,7 +168,7 @@ public class ConfigurationServiceTesting {
         // Mock updated client
         UpdateAddressDto updateAddressDto = new UpdateAddressDto(1L, "Algeria", "Street 20", "State", "3900", "Oran");
         UpdateContactDto updateContactDto = new UpdateContactDto(1, "FN", "", "contact@outlook.com");
-        UpdateClientDto updateClientDto = new UpdateClientDto("Mafriq Limited", "Samid", "Export and Import", List.of(updateAddressDto), List.of(updateContactDto),"www.mafriq.com", "ACTIVE", "RR");
+        UpdateClientDto updateClientDto = new UpdateClientDto("Mafriq Limited", "Samid", "Export and Import", List.of(updateAddressDto), List.of(updateContactDto),null,null,"", "ACTIVE", "RR");
 
         // Simulate save behavior
         when(clientRepository.save(existedClient)).thenReturn(existedClient);
@@ -261,5 +262,30 @@ public class ConfigurationServiceTesting {
 
         ResponseEntity<Object> response = configurationService.addPallet(palletDto);
         assertEquals(HttpStatus.OK,response.getStatusCode());
+    }
+
+    @Test
+    void testDeletePalletAlreadyInUse(){
+
+    }
+
+    @Test
+    void testUpdatePalletSuccess(){
+
+        Pallet pallet = new Pallet();
+        pallet.setPalletId(1);
+        pallet.setNumberOfBoxesInCarton(20);
+        pallet.setNumberOfCartonsInStory(30);
+        pallet.setNumberOfStoriesInPallet(12);
+
+        UpdatePalletDto updatePalletDto  = new UpdatePalletDto();
+        updatePalletDto.setFuelCost(2);
+        updatePalletDto.setMarkupCost(3);
+
+        when(palletRepository.findByPalletId(1)).thenReturn(pallet);
+
+        ResponseEntity<Object>  response = configurationService.updatePallet(1, updatePalletDto);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(2,pallet.getFuelCost());
     }
 }

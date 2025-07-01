@@ -1,6 +1,5 @@
 package com.example.medjool.services;
-
-
+import com.example.medjool.dto.MarginClientResponseDto;
 import org.springframework.http.ResponseEntity;
 
 public interface OverviewService {
@@ -11,5 +10,7 @@ public interface OverviewService {
      */
     ResponseEntity<?> getOverview();
 
-    ResponseEntity<?> getMarginPerClient();
+    ResponseEntity<MarginClientResponseDto> getMarginPerClient(String companyName);
+
+    ResponseEntity<?> getAllMarginPerClient();
 }

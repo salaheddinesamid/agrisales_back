@@ -119,7 +119,7 @@ public class JWTFilter extends OncePerRequestFilter {
         errorDetails.put("message", message);
         errorDetails.put("errorCode", errorCode);
 
-        objectMapper.writeValue(response.getWriter(), errorDetails);
+        objectMapper.writeValue(response.getOutputStream(), errorDetails);
     }
 
 }
