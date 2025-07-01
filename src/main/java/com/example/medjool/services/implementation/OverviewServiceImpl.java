@@ -1,7 +1,11 @@
 package com.example.medjool.services.implementation;
 
 
+import com.example.medjool.dto.MarginClientResponseDto;
+import com.example.medjool.dto.OrderCostDto;
+import com.example.medjool.dto.OrderItemCostDto;
 import com.example.medjool.dto.OverviewDto;
+import com.example.medjool.exception.ClientNotFoundException;
 import com.example.medjool.model.*;
 import com.example.medjool.repository.ClientRepository;
 import com.example.medjool.repository.OrderRepository;
@@ -121,20 +125,66 @@ public class OverviewServiceImpl implements OverviewService {
     }
 
     @Override
-    public ResponseEntity<?> getMarginPerClient() {
-        /*
-        List<Client> clients = clientRepository.findAll();
-
-        for(Client client : clients) {
-            List<Order> clientOrders = orderRepository.findAllByClient(client);
-
-            for(Order order : clientOrders) {
-                Pallet orderPallet = order.getOrderItems().get(0).getPallet();
-            }
-        }
-
-         */
+    public ResponseEntity<MarginClientResponseDto> getMarginPerClient(String companyName) {
+        MarginClientResponseDto response = clientMargin(companyName);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    @Override
+    public ResponseEntity<?> getAllMarginPerClient() {
         return new ResponseEntity<>("",HttpStatus.OK);
     }
+
+    private MarginClientResponseDto clientMargin(String companyName){
+        Client client = clientRepository.findByCompanyName(companyName);
+        List<Order> clientOrders = orderRepository.findAllByClient(client);
+
+        List<OrderCostDto> ordersCost = clientOrders
+                .stream().map(order -> {
+                    List<OrderItem> items = order.getOrderItems();
+                    List<OrderItemCostDto> itemsCosts = items
+                            .stream().map(item -> {
+                                Pallet pallet = item.getPallet();
+                                return new OrderItemCostDto(pallet, item.getNumberOfPallets());
+                            }).toList();
+                    double orderTotalCost = itemsCosts.stream()
+                            .map(OrderItemCostDto::getTotal)
+                            .reduce(0.0, Double::sum);
+
+                    return new OrderCostDto(order.getId(),itemsCosts,orderTotalCost);
+                }).toList();
+
+        double totalWeight = clientOrders.stream()
+                .map(Order::getTotalWeight)
+                .reduce(0.0, Double::sum);
+        double totalRevenue = clientOrders.stream()
+                .map(clientOrder->{
+                    if(clientOrder.getCurrency().equals(OrderCurrency.USD)) {
+                        return clientOrder.getTotalPrice() * 10.5;
+                    } else if(clientOrder.getCurrency().equals(OrderCurrency.EUR)) {
+                        return clientOrder.getTotalPrice() * 11;
+                    } else if(clientOrder.getCurrency().equals(OrderCurrency.MAD)) {
+                        return clientOrder.getTotalPrice();
+                    }
+                    return 0.0;
+                })
+                .reduce(0.0, Double::sum);
+
+        double totalOrdersCost = ordersCost.stream()
+                .map(OrderCostDto::getTotalCost)
+                .reduce(0.0, Double::sum);
+
+        double marginOnVariableCost = totalRevenue - totalOrdersCost;
+        double margin =  marginOnVariableCost / totalWeight;
+
+                return new MarginClientResponseDto(
+                        companyName,
+                        totalWeight,
+                        totalRevenue,
+                        totalOrdersCost,
+                        marginOnVariableCost,
+                        margin
+                );
+    }
+
 
 }
