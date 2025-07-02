@@ -13,6 +13,9 @@ import com.example.medjool.repository.ProductRepository;
 import com.example.medjool.repository.SystemSettingRepository;
 import com.example.medjool.services.OverviewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -125,6 +128,7 @@ public class OverviewServiceImpl implements OverviewService {
     }
 
     @Override
+    @Cacheable(value = "marginPerClient", key = "#companyName")
     public ResponseEntity<MarginClientResponseDto> getMarginPerClient(String companyName) {
         MarginClientResponseDto response = clientMargin(companyName);
         return new ResponseEntity<>(response, HttpStatus.OK);
