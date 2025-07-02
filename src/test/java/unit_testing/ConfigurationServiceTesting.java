@@ -5,7 +5,6 @@ import com.example.medjool.exception.ClientAlreadyFoundException;
 import com.example.medjool.model.*;
 import com.example.medjool.repository.*;
 import com.example.medjool.services.implementation.ConfigurationServiceImpl;
-import org.hibernate.sql.Update;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -63,8 +61,8 @@ public class ConfigurationServiceTesting {
                 10,
                 null,
                 null,
-                "ACTIVE"
-
+                "ACTIVE",
+                "344"
         );
 
         Client existedClient = new Client();
@@ -94,7 +92,8 @@ public class ConfigurationServiceTesting {
                 10,
                 null,
                 null,
-                "ACTIVE"
+                "ACTIVE",
+                "33SS"
         );
 
         ContactDto contactDto = new ContactDto(
@@ -123,9 +122,10 @@ public class ConfigurationServiceTesting {
         // Call the service method
         ResponseEntity<Object> response = configurationService.addClient(clientDto);
 
-
         // Verification
         assertEquals(201, response.getStatusCodeValue());
+        assertEquals(1, clientRepository.findAll().size());
+        assertEquals(1,addressRepository.findAll().size());
     }
 
 
@@ -218,10 +218,13 @@ public class ConfigurationServiceTesting {
 
         ResponseEntity<Object> response = configurationService.deleteClient(1);
         assertEquals(HttpStatus.OK,response.getStatusCode());
+        // Make sure the addresses are deleted
         assertEquals(0,addressRepository.findAll().size());
+        // Make sure the contacts are deleted
         assertEquals(0,contactRepository.findAll().size());
+        // Make sure the order is deleted
+        assertEquals(0,orderRepository.findAll().size());
     }
-
 
     //  --------------- Pallet tests ------------------//
 
@@ -256,12 +259,12 @@ public class ConfigurationServiceTesting {
         palletDto.setFuelCost(1);
         palletDto.setNotes("");
 
-
         when(palletRepository.findByPackaging(palletDto.getPackaging()))
                 .thenReturn(null);
 
         ResponseEntity<Object> response = configurationService.addPallet(palletDto);
         assertEquals(HttpStatus.OK,response.getStatusCode());
+        assertEquals(1, palletRepository.findAll().size());
     }
 
     @Test
