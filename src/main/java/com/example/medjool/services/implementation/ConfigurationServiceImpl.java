@@ -82,7 +82,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
         // Add client commission:
         client.setCommission(clientDto.getCommission());
-
+        client.setSIRET(clientDto.getSiret());
 
         // Save the client
         clientRepository.save(client);
@@ -170,6 +170,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         client.setContacts(newClientContacts);
         client.setSIRET(updateClientDto.getSiret());
         client.setWebSite(updateClientDto.getWebsite());
+        client.setCommission(updateClientDto.getCommission());
         client.setClientStatus(ClientStatus.valueOf(updateClientDto.getClientStatus()));
         return new ResponseEntity<>("Client updated successfully", HttpStatus.OK);
     }

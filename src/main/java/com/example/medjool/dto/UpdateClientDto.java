@@ -20,5 +20,6 @@ public class UpdateClientDto {
     private List<Long> deletedContacts;
     private String website;
     private String clientStatus;
+    private Float commission;
     private String siret;
 }
