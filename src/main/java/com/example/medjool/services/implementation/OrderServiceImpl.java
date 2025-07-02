@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -60,6 +61,7 @@ public class OrderServiceImpl implements OrderService{
      */
     @Override
     @Transactional
+    @CacheEvict(value = "marginPerClient", key = "#orderRequest.clientName")
     public ResponseEntity<?> createOrder(OrderRequestDto orderRequest) {
         logger.info("New Order is being processed...");
         logger.info(orderRequest.toString());
