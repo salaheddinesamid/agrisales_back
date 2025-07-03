@@ -271,8 +271,10 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         newPallet.setDatePurchase(palletDto.getDatePurchase());
         newPallet.setLaborCost(palletDto.getLaborCost());
         newPallet.setPackagingCost(palletDto.getPackagingCost());
+        newPallet.setFuelCost(palletDto.getFuelCost());
         newPallet.setTransportationCost(palletDto.getTransportCost());
-        newPallet.setTransportationCost(palletDto.getTransportCost());
+        newPallet.setPackagingAT(palletDto.getPackagingAT());
+        newPallet.setLaborTransportCost(palletDto.getLaborTransportCost());
         newPallet.setMarkUpCost(palletDto.getMarkupCost());
         newPallet.setVat(palletDto.getVat());
         newPallet.setPreliminaryLogisticsCost(palletDto.getPreliminaryLogistics());

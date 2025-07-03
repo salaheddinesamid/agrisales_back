@@ -7,9 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ * DTO for Pallet information.
+ * This class contains all the necessary fields to represent a pallet's details,
+ * including its dimensions, costs, and packaging information.
+ */
 public class PalletDto {
-
-
     // Basic information:
     float  packaging;
     Integer numberOfBoxesInCarton;
@@ -24,12 +27,12 @@ public class PalletDto {
     private float packagingCost;
     private float fuelCost;
     private float transportCost;
+    private float packagingAT;
     private float laborTransportCost;
     private float markupCost;
     private float vat;
     private float preliminaryLogistics;
     private float insuranceCost;
-
     // Dimension of the pallet
     float height;
     float width;

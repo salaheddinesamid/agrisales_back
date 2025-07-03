@@ -41,34 +41,26 @@ public class Pallet {
     // Costs:
     @Column(name = "production_cost")
     private Float productionCost;
-
     @Column(name = "date_purchase")
     private Float datePurchase;
-
-    @Column(name = "fuel_cost")
-    private Float fuelCost;
-
     @Column(name = "labor_cost")
     private Float laborCost;
-
     @Column(name = "packaging_cost")
     private Float packagingCost;
-
+    @Column(name = "fuel_cost")
+    private Float fuelCost;
     @Column(name = "transportation_cost")
     private Float transportationCost;
-
+    @Column(name = "packaging_at")
+    private Float packagingAT;
     @Column(name = "labor_transport_cost")
     private Float laborTransportCost;
-
     @Column(name = "markUpCost")
     private Float markUpCost;
-
     @Column(name = "vat")
     private Float vat;
-
     @Column(name = "preliminary_logistics_cost")
     private Float preliminaryLogisticsCost;
-
     @Column(name = "insurance_cost")
     private Float insuranceCost;
 
@@ -95,6 +87,14 @@ public class Pallet {
 
     @Column(name = "preparation_time_in_hours")
     private double preparationTime;
+
+    public float getTotalPalletCost(){
+        return productionCost +
+                datePurchase + laborCost +
+                packagingCost + fuelCost + transportationCost +
+                packagingAT + laborTransportCost + markUpCost + vat +
+                preliminaryLogisticsCost + insuranceCost;
+    }
 
 
 }
