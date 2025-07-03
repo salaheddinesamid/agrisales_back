@@ -140,6 +140,9 @@ public class OverviewServiceImpl implements OverviewService {
 
     private MarginClientResponseDto clientMargin(String companyName){
         Client client = clientRepository.findByCompanyName(companyName);
+        if(client == null) {
+            throw new ClientNotFoundException();
+        }
         List<Order> clientOrders = orderRepository.findAllByClient(client);
 
         List<OrderCostDto> ordersCost = clientOrders

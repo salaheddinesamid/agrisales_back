@@ -13,6 +13,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
@@ -60,7 +61,7 @@ public class OrderServiceImpl implements OrderService{
      * @return ResponseEntity indicating success or failure
      */
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @CacheEvict(value = "marginPerClient", key = "#orderRequest.clientName")
     public ResponseEntity<?> createOrder(OrderRequestDto orderRequest) {
         logger.info("New Order is being processed...");
