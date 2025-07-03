@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
 import java.util.Objects;
@@ -168,7 +169,7 @@ public class ConfigurationServiceTesting {
         // Mock updated client
         UpdateAddressDto updateAddressDto = new UpdateAddressDto(1L, "Algeria", "Street 20", "State", "3900", "Oran");
         UpdateContactDto updateContactDto = new UpdateContactDto(1, "FN", "", "contact@outlook.com");
-        UpdateClientDto updateClientDto = new UpdateClientDto("Mafriq Limited", "Samid", "Export and Import", List.of(updateAddressDto), List.of(updateContactDto),null,null,"", "ACTIVE", "RR");
+        UpdateClientDto updateClientDto = new UpdateClientDto("Mafriq Limited", "Samid", "Export and Import", List.of(updateAddressDto), List.of(updateContactDto),null,null,"", "ACTIVE",10f, "RR");
 
         // Simulate save behavior
         when(clientRepository.save(existedClient)).thenReturn(existedClient);
@@ -250,6 +251,7 @@ public class ConfigurationServiceTesting {
         palletDto.setDatePurchase(3);
         palletDto.setLaborCost(4);
         palletDto.setTransportCost(3);
+        palletDto.setPackagingAT(2);
         palletDto.setLaborTransportCost(2.4f);
         palletDto.setInsuranceCost(3);
         palletDto.setVat(4);
