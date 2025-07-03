@@ -40,8 +40,10 @@ C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\r
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\UpdateContactDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\LoginRequestDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\exception\UserAccountLockedException.java
+C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\controller\OverviewController.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\MixedOrderItemRequestDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\NewUserDto.java
+C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\OrderItemCostDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\services\implementation\AlertServiceImpl.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\AuthenticationResponseDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\model\Product.java
@@ -86,6 +88,7 @@ C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\d
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\services\implementation\OverviewServiceImpl.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\OrderHistoryResponseDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\exception\TokenExpiredException.java
+C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\OrderCostDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\repository\AddressRepository.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\MedjoolApplication.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\services\implementation\OrderServiceImpl.java
@@ -138,7 +141,6 @@ C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\d
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\component\SystemSettingsInitializer.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\exception\InvalidCredentialsException.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\controller\SystemSettingsController.java
-C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\TotalPalletCostDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\BearerTokenDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\exception\ShipmentExceptionController.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\UpdateClientDto.java
