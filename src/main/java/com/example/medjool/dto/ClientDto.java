@@ -18,4 +18,5 @@ public class ClientDto {
     private List<ContactDto> contacts;
     private List<AddressDto> addresses;
     private String status;
+    private String siret;
 }
