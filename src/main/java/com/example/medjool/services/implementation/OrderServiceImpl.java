@@ -302,6 +302,13 @@ public class OrderServiceImpl implements OrderService{
     public void processItemsAdded(Order order, List<OrderItemRequestDto> addedItems) {
 
         List<OrderItem> items = new ArrayList<>();
+        List<Pallet> pallets = palletRepository.findAll();
+        // Create a map for quick pallet lookup by ID:
+        HashMap<Integer,Pallet> palletHashMap = new HashMap<>();
+        for(Pallet p : pallets){
+            palletHashMap.put(p.getPalletId(), p);
+        }
+
         for (OrderItemRequestDto dto : addedItems) {
             // Fetch product with locking
             Product p = productRepository.findByProductCodeForUpdate(dto.getProductCode())
@@ -585,19 +592,7 @@ public class OrderServiceImpl implements OrderService{
 
         List<OrderHistoryResponseDto> response =  orderHistoryRepository.findAll()
                         .stream().filter(orderHistory -> orderHistory.getReceivedAt() == null)
-                .map(orderHistory ->{
-                    OrderHistoryResponseDto orderHistoryResponseDto = new OrderHistoryResponseDto();
-                    orderHistoryResponseDto.setHistoryId(orderHistory.getId());
-                    orderHistoryResponseDto.setOrderNumber(orderHistory.getOrder().getId());
-                    orderHistoryResponseDto.setClientName(orderHistory.getOrder().getClient().getCompanyName());
-                    orderHistoryResponseDto.setConfirmedAt(orderHistory.getConfirmedAt());
-                    orderHistoryResponseDto.setInProductionAt(orderHistory.getPreferredProductionDate());
-                    orderHistoryResponseDto.setReadyToShipAt(orderHistory.getReadyToShipAt());
-                    orderHistoryResponseDto.setShippedAt(orderHistory.getShippedAt());
-                    orderHistoryResponseDto.setDeliveredAt(orderHistory.getDeliveredAt());
-                    orderHistoryResponseDto.setReceivedAt(orderHistory.getReceivedAt());
-                    return orderHistoryResponseDto;
-                })
+                .map(OrderHistoryResponseDto::new)
                 .toList();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
