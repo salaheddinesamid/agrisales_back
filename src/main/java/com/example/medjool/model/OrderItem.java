@@ -48,4 +48,30 @@ public class OrderItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pallet_id", nullable = false)
     Pallet pallet;
+
+    public OrderItem(
+            Product product,
+            double itemWeight,
+            double pricePerKg,
+            double packaging,
+            int numberOfPallets,
+            OrderCurrency orderCurrency,
+            String brand,
+            Pallet pallet,
+            Order order
+    ){
+        this.product = product;
+        this.itemWeight = itemWeight;
+        this.pricePerKg = pricePerKg;
+        this.packaging = packaging;
+        this.numberOfPallets = numberOfPallets;
+        this.orderCurrency = orderCurrency;
+        this.brand = brand;
+        this.pallet = pallet;
+        this.order = order;
+    }
+
+    public OrderItem() {
+
+    }
 }
