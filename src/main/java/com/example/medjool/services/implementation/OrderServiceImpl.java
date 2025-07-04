@@ -21,9 +21,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -81,45 +79,77 @@ public class OrderServiceImpl implements OrderService{
         long estimatedDeliveryTime = 0;
         double totalWorkingHours = 0;
 
+        // Store updated products to avoid duplicate database calls:
+        Set<Product> updatedProducts = new HashSet<>();
+
         /**
          * Process each item in the order request
          * - Validate product availability
          * - Update product stock
          * - Create OrderItem and associate it with the Order
          */
-        for (OrderItemRequestDto itemDto : orderRequest.getItems()) {
-            Product product = productRepository.findByProductCode(itemDto.getProductCode())
-                    .orElseThrow(ProductNotFoundException::new);
 
-            if (product.getTotalWeight() < itemDto.getItemWeight()) {
-                throw new ProductLowStock();
+        // Fetch the products from the db once:
+        List<Product> productsList = productRepository.findAll();
+
+        // Fetch the pallets from the db once:
+        List<Pallet> palletList = palletRepository.findAll();
+
+        // Store products by their codes:
+        HashMap<String,Product> productHashMap = new HashMap<>();
+        for(Product p : productsList){
+            productHashMap.put(p.getProductCode(),p);
+        }
+
+        // Store the pallets by their ids:
+        HashMap<Integer, Pallet> palletHashMap = new HashMap<>();
+        for(Pallet p : palletList){
+            palletHashMap.put(p.getPalletId(), p);
+        }
+
+        List<OrderItem> orderItemsList = new ArrayList<>();
+
+        // Iterate over each order item:
+        for (OrderItemRequestDto itemDto : orderRequest.getItems()) {
+            Product product = productHashMap.get(itemDto.getProductCode());
+            if(product == null){
+                throw new ProductNotFoundException();
+            }
+
+            if (validateStock(product, itemDto.getItemWeight())) {
+                throw new ProductLowStock("The product with code: " + product.getProductCode() + " does not have enough stock.");
             }
 
             product.setTotalWeight(product.getTotalWeight() - itemDto.getItemWeight());
+            updatedProducts.add(product);
 
-            Pallet pallet = palletRepository.findById(itemDto.getPalletId())
-                    .orElseThrow(() -> new RuntimeException("Pallet not found"));
-
-            OrderItem orderItem = new OrderItem();
-            orderItem.setProduct(product);
-            orderItem.setItemWeight(itemDto.getItemWeight());
-            orderItem.setPricePerKg(itemDto.getPricePerKg());
-            orderItem.setPackaging(itemDto.getPackaging());
-            orderItem.setNumberOfPallets(itemDto.getNumberOfPallets());
-            orderItem.setOrderCurrency(OrderCurrency.valueOf(itemDto.getCurrency()));
+            //Avoid duplicate db calls:
+            Pallet pallet = palletHashMap.get(itemDto.getPalletId());
+            if(pallet == null){
+                throw new PalletNotFoundException("The pallet with id: " + itemDto.getPalletId() + " does not exist.");
+            }
+            OrderItem orderItem = new OrderItem(
+                    product,
+                    itemDto.getItemWeight(),
+                    itemDto.getPricePerKg(),
+                    itemDto.getPackaging(),
+                    itemDto.getNumberOfPallets(),
+                    OrderCurrency.valueOf(itemDto.getCurrency()),
+                    itemDto.getItemBrand(),
+                    pallet,
+                    order
+            );
             order.setCurrency(OrderCurrency.valueOf(itemDto.getCurrency()));
-            orderItem.setPallet(pallet);
-            orderItem.setOrder(order); // maintain bidirectional relationship
 
             order.getOrderItems().add(orderItem); // maintain bidirectional relationship
-
+            orderItemsList.add(orderItem);
             totalPrice += itemDto.getPricePerKg() * itemDto.getItemWeight();
             totalWeight += itemDto.getItemWeight();
             estimatedDeliveryTime += (long) pallet.getPreparationTime();
             totalWorkingHours += pallet.getPreparationTime();
         }
 
-        productRepository.saveAll(order.getOrderItems().stream().map(OrderItem::getProduct).collect(Collectors.toList()));
+        //productRepository.saveAll(order.getOrderItems().stream().map(OrderItem::getProduct).collect(Collectors.toList()));
 
         /** * Process mixed order details
          * - Total price and weight
@@ -131,56 +161,69 @@ public class OrderServiceImpl implements OrderService{
             MixedOrderItem mixedOrderItem = new MixedOrderItem();
             List<MixedOrderItemDetails> mixedOrderItemsDetails = new ArrayList<>();
 
-            Pallet pallet = palletRepository.findById(mixedOrderDto.getPalletId())
-                    .orElseThrow(() -> new RuntimeException("Pallet not found"));
+            Pallet pallet = palletHashMap.get(mixedOrderDto.getPalletId());
+
+            if(pallet == null){
+                throw new PalletNotFoundException("The pallet with id: " + mixedOrderDto.getPalletId() + " does not exist.");
+            }
 
             for(MixedOrderItemRequestDto mixedOrderItemRequestDto : mixedOrderDto.getItems()) {
 
-                Product product = productRepository.findByProductCode(mixedOrderItemRequestDto.getProductCode())
-                        .orElseThrow(ProductNotFoundException::new);
+                Product product = productHashMap.get(mixedOrderItemRequestDto.getProductCode());
+
+                if(product == null){
+                    throw new ProductNotFoundException();
+                }
 
                 double percentageWeight = Double.valueOf(pallet.getTotalNet() * (mixedOrderItemRequestDto.getPercentage() / 100.0));
                 System.out.println("Required: " + percentageWeight + ", Available: " + product.getTotalWeight());
 
-                if (product.getTotalWeight() < percentageWeight) {
-                    throw new ProductLowStock();
+                if (validateStock(product, mixedOrderItemRequestDto.getWeight())) {
+                    throw new ProductLowStock("The product with code: " + product.getProductCode() + " does not have enough stock.");
                 }
 
                 product.setTotalWeight(product.getTotalWeight() - percentageWeight);
+                updatedProducts.add(product);
 
                 MixedOrderItemDetails mixedOrderItemDetails = new MixedOrderItemDetails();
-
                 mixedOrderItemDetails.setProduct(product);
                 mixedOrderItemDetails.setWeight(percentageWeight);
                 mixedOrderItemDetails.setPercentage(mixedOrderItemRequestDto.getPercentage());
-
                 mixedOrderItemsDetails.add(mixedOrderItemDetails);
-                mixedOrderItemDetailsRepo.save(mixedOrderItemDetails);
 
             }
+            // Batch save:
+            mixedOrderItemDetailsRepo.saveAll(mixedOrderItemsDetails);
             mixedOrderItem.setItemDetails(mixedOrderItemsDetails);
             order.setMixedOrderItem(mixedOrderItem);
         }
-
 
         order.setTotalPrice(totalPrice);
         order.setTotalWeight(totalWeight);
         order.setProductionDate(LocalDateTime.now());
         order.setStatus(OrderStatus.PRELIMINARY);
-
         order.setShippingAddress(orderRequest.getShippingAddress());
         order.setDeliveryDate(LocalDateTime.now().plusHours(estimatedDeliveryTime));
         order.setWorkingHours(totalWorkingHours);
-
         order.setOrderDate(LocalDate.now());
 
         Order savedOrder = orderRepository.save(order); // Save after everything is set
+        orderItemRepository.saveAll(orderItemsList);
+        // Save the update products in a single batch:
+        productRepository.saveAll(updatedProducts);
+
+
         OrderHistory orderHistory = new OrderHistory();
         orderHistory.setOrder(savedOrder);
         orderHistoryRepository.save(orderHistory);
 
-        return ResponseEntity.ok("Order has been created successfully.");
+        OrderResponseDto orderResponseDto = new OrderResponseDto(savedOrder);
+        return ResponseEntity.ok(orderResponseDto);
 
+    }
+
+    private boolean validateStock(Product product, double weight){
+        return (product.getTotalWeight() < weight);
     }
 
     /**
@@ -258,6 +301,7 @@ public class OrderServiceImpl implements OrderService{
     @Transactional
     public void processItemsAdded(Order order, List<OrderItemRequestDto> addedItems) {
 
+        List<OrderItem> items = new ArrayList<>();
         for (OrderItemRequestDto dto : addedItems) {
             // Fetch product with locking
             Product p = productRepository.findByProductCodeForUpdate(dto.getProductCode())
@@ -277,21 +321,25 @@ public class OrderServiceImpl implements OrderService{
             productRepository.save(p);
 
             // Map DTO to Entity
-            OrderItem newItem = new OrderItem();
-            newItem.setProduct(p);
-            newItem.setBrand(dto.getItemBrand());
-            newItem.setOrderCurrency(order.getCurrency());
-            newItem.setItemWeight(dto.getItemWeight());
-            newItem.setNumberOfPallets(dto.getNumberOfPallets());
-            newItem.setPallet(pallet);
-            newItem.setPricePerKg(dto.getPricePerKg());
-            newItem.setPackaging(dto.getPackaging());
-            newItem.setOrder(order);
+            OrderItem newItem = new OrderItem(
+                    p,
+                    dto.getItemWeight(),
+                    dto.getPricePerKg(),
+                    dto.getPackaging(),
+                    dto.getNumberOfPallets(),
+                    OrderCurrency.valueOf(dto.getCurrency()),
+                    dto.getItemBrand(),
+                    pallet,
+                    order
+            );
 
-            orderItemRepository.save(newItem);
+            //orderItemRepository.save(newItem);
+            items.add(newItem);
             order.addOrderItem(newItem);
         }
 
+        // Save all the items in a single batch:
+        orderItemRepository.saveAll(items);
         orderRepository.save(order); // Optional based on cascade config
     }
 
@@ -303,15 +351,27 @@ public class OrderServiceImpl implements OrderService{
      */
     @Transactional
     public void processItemsDeleted(Order order,List<Long> deletedItems){
+
+        List<Product> updatedProducts = new ArrayList<>();
+        List<OrderItem> updatedOrderItems = new ArrayList<>();
         for(Long itemId : deletedItems){
             OrderItem orderItem = orderItemRepository.findByIdForUpdate(itemId)
                     .orElseThrow(() -> new RuntimeException("Order item not found"));
             Product product = orderItem.getProduct();
             product.setTotalWeight(product.getTotalWeight() + orderItem.getItemWeight());
-            productRepository.save(product);
-            orderItemRepository.delete(orderItem);
+            updatedProducts.add(product);
+            updatedOrderItems.add(orderItem);
+
+            //productRepository.save(product);
+            //orderItemRepository.delete(orderItem);
             order.getOrderItems().removeIf(item -> item.getId().equals(itemId));
         }
+
+        // Save the products and order items in a single batch:
+        productRepository.saveAll(updatedProducts);
+        orderItemRepository.saveAll(updatedOrderItems);
+
+        // Save the orders:
         orderRepository.save(order);
     }
 
@@ -337,6 +397,7 @@ public class OrderServiceImpl implements OrderService{
 
             // Revert old product stock
             oldProduct.setTotalWeight(oldProduct.getTotalWeight() + oldWeight);
+
             productRepository.save(oldProduct);
 
             // Check if new product has enough stock
@@ -355,7 +416,6 @@ public class OrderServiceImpl implements OrderService{
             orderItem.setPricePerKg(dto.getNewPricePerKg());
             orderItem.setNumberOfPallets(dto.getNewNumberOfPallets());
             orderItem.setPackaging(dto.getNewPackaging());
-
             orderItemRepository.save(orderItem);
         }
 
