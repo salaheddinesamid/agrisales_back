@@ -14,8 +14,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /** * Implementation of the ConfigurationService interface for managing clients and pallets.
  */
@@ -62,9 +66,11 @@ public class ConfigurationServiceImpl implements ConfigurationService {
                     address.setStreet(addressDto.getStreet());
                     address.setState(addressDto.getState());
                     address.setPostalCode(addressDto.getPostalCode());
-                    addressRepository.save(address);
                     return address;
                 }).toList();
+
+        // Save all the addresses in a single batch:
+        addressRepository.saveAll(clientAddresses);
 
         List<Contact> clientContacts = clientDto.getContacts().stream().map(
                 contactDto -> {
@@ -72,14 +78,14 @@ public class ConfigurationServiceImpl implements ConfigurationService {
                     contact.setEmail(contactDto.getEmail());
                     contact.setPhone(contactDto.getPhone());
                     contact.setDepartment(contactDto.getDepartment());
-                    contactRepository.save(contact);
                     return contact;
                 }
         ).toList();
 
+        contactRepository.saveAll(clientContacts);
+
         client.setAddresses(clientAddresses);
         client.setContacts(clientContacts);
-
         // Add client commission:
         client.setCommission(clientDto.getCommission());
         client.setSIRET(clientDto.getSiret());
@@ -107,74 +113,57 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     @Override
     @Transactional
     public ResponseEntity<Object> updateClient(Integer clientId, UpdateClientDto updateClientDto) {
-        Optional<Client> optionalClient = clientRepository.findById(clientId);
-        if (optionalClient.isEmpty()) {
-            return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
-        }
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new RuntimeException("Client not found"));
 
-        Client client = optionalClient.get();
-
+        // Update client fields
         client.setCompanyName(updateClientDto.getNewCompanyName());
         client.setGeneralManager(updateClientDto.getNewGeneralManager());
         client.setCompanyActivity(updateClientDto.getNewCompanyActivity());
-
-        List<Address> newClientAddresses = updateClientDto.getNewAddresses().stream().map(
-                addressDto -> {
-                    Address address = addressRepository.findById(addressDto.getAddressId()).orElse(null);
-                    if(address != null){
-                        address.setCity(addressDto.getCity());
-                        address.setCountry(addressDto.getCountry());
-                        address.setStreet(addressDto.getStreet());
-                        address.setState(addressDto.getState());
-                        address.setPostalCode(addressDto.getZip());
-
-                        return address;
-                    }
-                    else {
-                        Address newAddress = new Address();
-                        newAddress.setCity(addressDto.getCity());
-                        newAddress.setCountry(addressDto.getCountry());
-                        newAddress.setStreet(addressDto.getStreet());
-                        newAddress.setState(addressDto.getState());
-                        newAddress.setPostalCode(addressDto.getZip());
-                        return addressRepository.save(newAddress);
-                    }
-
-                }
-        ).toList();
-
-
-        client.setAddresses(newClientAddresses);
-
-        List<Contact> newClientContacts = updateClientDto.getNewContacts().stream().map(
-                contactDto -> {
-                    Contact contact = contactRepository.findById(contactDto.getContactId()).orElse(null);
-                    if (contact != null){
-                        contact.setEmail(contactDto.getNewEmailAddress());
-                        contact.setPhone(contactDto.getNewPhoneNumber());
-                        contact.setDepartment(contactDto.getNewDepartmentName());
-                        return contact;
-                    }else{
-                        Contact newContact = new Contact();
-                        newContact.setEmail(contactDto.getNewEmailAddress());
-                        newContact.setPhone(contactDto.getNewPhoneNumber());
-                        newContact.setDepartment(contactDto.getNewDepartmentName());
-
-                        return contactRepository.save(newContact);
-                    }
-
-                }
-        ).toList();
-
-
-        client.setContacts(newClientContacts);
         client.setSIRET(updateClientDto.getSiret());
         client.setWebSite(updateClientDto.getWebsite());
         client.setCommission(updateClientDto.getCommission());
         client.setClientStatus(ClientStatus.valueOf(updateClientDto.getClientStatus()));
-        return new ResponseEntity<>("Client updated successfully", HttpStatus.OK);
-    }
 
+        // --- Optimize Address Mapping ---
+        Map<Long, Address> addressMap = addressRepository.findAll().stream()
+                .collect(Collectors.toMap(Address::getAddressId, Function.identity()));
+
+        List<Address> updatedAddresses = updateClientDto.getNewAddresses().stream().map(dto -> {
+            Address address = addressMap.get(dto.getAddressId());
+            if (address == null) {
+                address = new Address();
+            }
+            address.setCity(dto.getCity());
+            address.setCountry(dto.getCountry());
+            address.setStreet(dto.getStreet());
+            address.setState(dto.getState());
+            address.setPostalCode(dto.getZip());
+            return addressRepository.save(address);
+        }).toList();
+
+        client.setAddresses(updatedAddresses);
+
+        // --- Optimize Contact Mapping ---
+        Map<Integer, Contact> contactMap = contactRepository.findAll().stream()
+                .collect(Collectors.toMap(Contact::getContactId, Function.identity()));
+
+        List<Contact> updatedContacts = updateClientDto.getNewContacts().stream().map(dto -> {
+            Contact contact = contactMap.get(dto.getContactId());
+            if (contact == null) {
+                contact = new Contact();
+            }
+            contact.setEmail(dto.getNewEmailAddress());
+            contact.setPhone(dto.getNewPhoneNumber());
+            contact.setDepartment(dto.getNewDepartmentName());
+            return contactRepository.save(contact);
+        }).toList();
+
+        client.setContacts(updatedContacts);
+
+        clientRepository.save(client);
+        return ResponseEntity.ok("Client updated successfully");
+    }
 
 
     /**     * Deletes a client by ID.
@@ -213,9 +202,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     @Override
     public ResponseEntity<List<AddressResponseDto>> getClientAddresses(Integer id){
         List<Address> addresses = clientRepository.findById(id).get().getAddresses();
-
         List<AddressResponseDto> addressResponseDtos = convertToAddressDto(addresses);
-
         return new ResponseEntity<>(addressResponseDtos,HttpStatus.OK);
     }
 
@@ -262,24 +249,11 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         }
 
         // Dimensions:
-        newPallet.setHeight(palletDto.getHeight());
-        newPallet.setWidth(palletDto.getWidth());
-        newPallet.setLength(palletDto.getLength());
+        addPalletDimensions(newPallet, palletDto);
 
         // Costs:
-        newPallet.setProductionCost(palletDto.getProductionCost());
-        newPallet.setDatePurchase(palletDto.getDatePurchase());
-        newPallet.setLaborCost(palletDto.getLaborCost());
-        newPallet.setPackagingCost(palletDto.getPackagingCost());
-        newPallet.setFuelCost(palletDto.getFuelCost());
-        newPallet.setTransportationCost(palletDto.getTransportCost());
-        newPallet.setPackagingAT(palletDto.getPackagingAT());
-        newPallet.setLaborTransportCost(palletDto.getLaborTransportCost());
-        newPallet.setMarkUpCost(palletDto.getMarkupCost());
-        newPallet.setVat(palletDto.getVat());
-        newPallet.setPreliminaryLogisticsCost(palletDto.getPreliminaryLogistics());
-        newPallet.setInsuranceCost(palletDto.getInsuranceCost());
-
+        addPalletCosts(newPallet, palletDto);
+        
         // Preparation hours:
         newPallet.setPreparationTime(palletDto.getPreparationTime());
         newPallet.setPackaging(palletDto.getPackaging());
@@ -288,6 +262,27 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
         palletRepository.save(newPallet);
         return ResponseEntity.ok().body(newPallet);
+    }
+
+    private void addPalletDimensions(Pallet pallet, PalletDto palletDto) {
+        pallet.setHeight(palletDto.getHeight());
+        pallet.setWidth(palletDto.getWidth());
+        pallet.setLength(palletDto.getLength());
+
+    }
+    private void addPalletCosts(Pallet pallet, PalletDto palletDto) {
+        pallet.setProductionCost(palletDto.getProductionCost());
+        pallet.setDatePurchase(palletDto.getDatePurchase());
+        pallet.setLaborCost(palletDto.getLaborCost());
+        pallet.setPackagingCost(palletDto.getPackagingCost());
+        pallet.setFuelCost(palletDto.getFuelCost());
+        pallet.setTransportationCost(palletDto.getTransportCost());
+        pallet.setPackagingAT(palletDto.getPackagingAT());
+        pallet.setLaborTransportCost(palletDto.getLaborTransportCost());
+        pallet.setMarkUpCost(palletDto.getMarkupCost());
+        pallet.setVat(palletDto.getVat());
+        pallet.setPreliminaryLogisticsCost(palletDto.getPreliminaryLogistics());
+        pallet.setInsuranceCost(palletDto.getInsuranceCost());
     }
 
     /**     * Retrieves all pallets from the system.
@@ -337,7 +332,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         pallet.setFuelCost(palletDto.getFuelCost());
         pallet.setDatePurchase(palletDto.getDatePurchase());
         pallet.setLaborTransportCost(palletDto.getLaborTransportCost());
-        pallet.setVat(palletDto.getVat());
+        pallet.setPackagingAT(palletDto.getPackagingAT());
     }
     private void updatePalletBasicInformation(Pallet pallet, UpdatePalletDto palletDto) {
         pallet.setNumberOfBoxesInCarton(palletDto.getNumberOfBoxesInCarton());
