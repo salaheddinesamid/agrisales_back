@@ -390,6 +390,7 @@ public class OrderServiceImpl implements OrderService{
     @Transactional
     public void processItemsUpdated(Order order, List<OrderItemUpdateRequestDto> updatedItems) {
 
+        List<OrderItem> updatedOrderItems = new ArrayList<>();
         for (OrderItemUpdateRequestDto dto : updatedItems) {
             OrderItem orderItem = orderItemRepository.findByIdForUpdate(dto.getItemId())
                     .orElseThrow(() -> new RuntimeException("Order item not found with ID: " + dto.getItemId()));
@@ -423,9 +424,11 @@ public class OrderServiceImpl implements OrderService{
             orderItem.setPricePerKg(dto.getNewPricePerKg());
             orderItem.setNumberOfPallets(dto.getNewNumberOfPallets());
             orderItem.setPackaging(dto.getNewPackaging());
-            orderItemRepository.save(orderItem);
+            updatedOrderItems.add(orderItem);
         }
 
+        // Save all the update items in one batch:
+        orderItemRepository.saveAll(updatedOrderItems);
         orderRepository.save(order);
     }
 
