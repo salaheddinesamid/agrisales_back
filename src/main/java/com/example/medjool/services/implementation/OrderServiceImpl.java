@@ -178,7 +178,7 @@ public class OrderServiceImpl implements OrderService{
                 double percentageWeight = Double.valueOf(pallet.getTotalNet() * (mixedOrderItemRequestDto.getPercentage() / 100.0));
                 System.out.println("Required: " + percentageWeight + ", Available: " + product.getTotalWeight());
 
-                if (validateStock(product, mixedOrderItemRequestDto.getWeight())) {
+                if (!validateStock(product, mixedOrderItemRequestDto.getWeight())) {
                     throw new ProductLowStock("The product with code: " + product.getProductCode() + " does not have enough stock.");
                 }
 
@@ -223,7 +223,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     private boolean validateStock(Product product, double weight){
-        return (product.getTotalWeight() < weight);
+        return !(product.getTotalWeight() < weight);
     }
 
     /**
@@ -261,7 +261,7 @@ public class OrderServiceImpl implements OrderService{
      */
     @Override
     @Transactional
-    public ResponseEntity<Object> updateOrder(Long id, OrderUpdateRequestDto orderUpdateRequestDto) {
+    public ResponseEntity<?> updateOrder(Long id, OrderUpdateRequestDto orderUpdateRequestDto) {
 
         try{
             Order order = orderRepository.findByIdForUpdate(id).orElseThrow(()-> new RuntimeException("Order not found"));
@@ -286,16 +286,19 @@ public class OrderServiceImpl implements OrderService{
             order.setTotalPrice(totalPrice);
             order.setTotalWeight(totalWeight);
 
-            return new ResponseEntity<>("Order has been updated successfully.", HttpStatus.OK);
+            OrderResponseDto orderResponseDto = new OrderResponseDto(order);
+
+            return new ResponseEntity<>(orderResponseDto, HttpStatus.OK);
         }catch (RuntimeException e){
             throw new RuntimeException("");
         }
 
     }
 
-    /**     * Processes items added to an order.
+    /**
+     * Processes items added to an order.
      *
-     * @param order the order to which items are being added
+     * @param order      the order to which items are being added
      * @param addedItems the list of items to be added
      */
     @Transactional
@@ -303,6 +306,8 @@ public class OrderServiceImpl implements OrderService{
 
         List<OrderItem> items = new ArrayList<>();
         List<Pallet> pallets = palletRepository.findAll();
+
+        List<Product> updatedProducts = new ArrayList<>();
         // Create a map for quick pallet lookup by ID:
         HashMap<Integer,Pallet> palletHashMap = new HashMap<>();
         for(Pallet p : pallets){
@@ -315,17 +320,19 @@ public class OrderServiceImpl implements OrderService{
                     .orElseThrow(ProductNotFoundException::new);
 
             // Check stock availability
-            if (p.getTotalWeight() < dto.getItemWeight()) {
-                throw new IllegalArgumentException("Insufficient stock for product: " + p.getProductCode());
+            if (!validateStock(p, dto.getItemWeight())) {
+                throw new ProductLowStock("Insufficient stock for product: " + p.getProductCode());
             }
 
             // Fetch pallet with validation
-            Pallet pallet = palletRepository.findById(dto.getPalletId())
-                    .orElseThrow(() -> new RuntimeException("Pallet not found with id: " + dto.getPalletId()));
+            Pallet pallet = palletHashMap.get(dto.getPalletId());
+            if(pallet == null){
+                throw new RuntimeException("Pallet not found with id: " + dto.getPalletId());
+            }
 
             // Update product weight
             p.setTotalWeight(p.getTotalWeight() - dto.getItemWeight());
-            productRepository.save(p);
+            updatedProducts.add(p);
 
             // Map DTO to Entity
             OrderItem newItem = new OrderItem(
@@ -344,6 +351,9 @@ public class OrderServiceImpl implements OrderService{
             items.add(newItem);
             order.addOrderItem(newItem);
         }
+
+        // Save the updated products in a single batch:
+        productRepository.saveAll(updatedProducts);
 
         // Save all the items in a single batch:
         orderItemRepository.saveAll(items);
@@ -409,8 +419,8 @@ public class OrderServiceImpl implements OrderService{
             productRepository.save(oldProduct);
 
             // Check if new product has enough stock
-            if (newProduct.getTotalWeight() < newWeight) {
-                throw new IllegalArgumentException("Insufficient stock for product: " + newProduct.getProductCode());
+            if (!validateStock(newProduct, newWeight)) {
+                throw new ProductLowStock("Insufficient stock for product: " + newProduct.getProductCode());
             }
 
             // Deduct new weight from new product
