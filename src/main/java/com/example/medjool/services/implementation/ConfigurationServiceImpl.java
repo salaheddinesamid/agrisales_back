@@ -383,6 +383,27 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         }
     }
 
+    @Override
+    public ResponseEntity<Object> addForex(NewForexCurrencyDto forexDto) {
+        try{
+            boolean exists = forexRepository.existsByCurrency(ForexCurrency.valueOf(forexDto.getCurrencyName()));
+
+            if(exists){
+                return new ResponseEntity<>("Forex already exists", HttpStatus.CONFLICT);
+            }
+            else{
+                Forex forex = new Forex();
+                forex.setCurrency(ForexCurrency.valueOf(forexDto.getCurrencyName()));
+                forex.setBuyingRate(forexDto.getBuyingRate());
+                forex.setSellingRate(forexDto.getSellingRate());
+                forexRepository.save(forex);
+                return new ResponseEntity<>("Forex added successfully", HttpStatus.CREATED);
+            }
+        }catch (RuntimeException exception){
+            throw new RuntimeException();
+        }
+    }
+
     /**     * Deletes a pallet by ID.
      *
      * @param palletId the ID of the pallet to delete

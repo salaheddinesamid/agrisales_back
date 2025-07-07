@@ -157,6 +157,11 @@ public class ConfigurationController {
         return configurationService.getAllForex();
     }
 
+    @PostMapping("/forex/new")
+    public ResponseEntity<Object> addNewForex(@RequestBody NewForexCurrencyDto forexDto) {
+        return configurationService.addForex(forexDto);
+    }
+
     @PutMapping("/forex/update/{forexId}")
     public ResponseEntity<Object> updateForex(@PathVariable Long forexId, @RequestBody UpdateForexDto forexDto) {
         return configurationService.updateForex(forexId, forexDto);
