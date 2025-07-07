@@ -253,7 +253,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
         // Costs:
         addPalletCosts(newPallet, palletDto);
-        
+
         // Preparation hours:
         newPallet.setPreparationTime(palletDto.getPreparationTime());
         newPallet.setPackaging(palletDto.getPackaging());
