@@ -3,10 +3,7 @@ package com.example.medjool.services.implementation;
 import com.example.medjool.dto.*;
 import com.example.medjool.exception.ClientAlreadyFoundException;
 import com.example.medjool.model.*;
-import com.example.medjool.repository.AddressRepository;
-import com.example.medjool.repository.ClientRepository;
-import com.example.medjool.repository.ContactRepository;
-import com.example.medjool.repository.PalletRepository;
+import com.example.medjool.repository.*;
 import com.example.medjool.services.ConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,13 +27,15 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     private final AddressRepository addressRepository;
     private final ContactRepository contactRepository;
     private final PalletRepository palletRepository;
+    private final ForexRepository forexRepository;
 
     @Autowired
-    public ConfigurationServiceImpl(ClientRepository clientRepository, AddressRepository addressRepository, ContactRepository contactRepository, PalletRepository palletRepository) {
+    public ConfigurationServiceImpl(ClientRepository clientRepository, AddressRepository addressRepository, ContactRepository contactRepository, PalletRepository palletRepository, ForexRepository forexRepository) {
         this.clientRepository = clientRepository;
         this.addressRepository = addressRepository;
         this.contactRepository = contactRepository;
         this.palletRepository = palletRepository;
+        this.forexRepository = forexRepository;
     }
 
     /**     * Adds a new client to the system.
@@ -363,6 +362,25 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     @Override
     public Pallet getPalletById(Integer id) {
         return palletRepository.findById(id).orElseThrow(null);
+    }
+
+    @Override
+    public ResponseEntity<List<Forex>> getAllForex() {
+        return ResponseEntity.ok(forexRepository.findAll());
+    }
+
+    @Override
+    public ResponseEntity<Object> updateForex(Long forexId, UpdateForexDto forexDto) {
+        try{
+            Forex forex = forexRepository.findById(forexId).orElseThrow(null);
+            forex.setBuyingRate(forexDto.getBuyingRate());
+            forex.setSellingRate(forexDto.getSellingRate());
+            forexRepository.save(forex);
+
+            return new ResponseEntity<>("Forex updated successfully", HttpStatus.OK);
+        }catch (RuntimeException ex){
+            return new ResponseEntity<>("Forex not found", HttpStatus.NOT_FOUND);
+        }
     }
 
     /**     * Deletes a pallet by ID.

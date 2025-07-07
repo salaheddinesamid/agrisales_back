@@ -2,6 +2,7 @@ package com.example.medjool.controller;
 
 import com.example.medjool.dto.*;
 import com.example.medjool.model.Client;
+import com.example.medjool.model.Forex;
 import com.example.medjool.model.Pallet;
 import com.example.medjool.services.implementation.ConfigurationServiceImpl;
 import org.springframework.http.ResponseEntity;
@@ -149,6 +150,17 @@ public class ConfigurationController {
         return configurationService.getPalletById(palletId);
     }
 
+    // -------------- Forex configuration ------------------//
+
+    @GetMapping("/forex/get_all")
+    public ResponseEntity<List<Forex>> getAllForex() {
+        return configurationService.getAllForex();
+    }
+
+    @PutMapping("/forex/update/{forexId}")
+    public ResponseEntity<Object> updateForex(@PathVariable Long forexId, @RequestBody UpdateForexDto forexDto) {
+        return configurationService.updateForex(forexId, forexDto);
+    }
 
 
 }
