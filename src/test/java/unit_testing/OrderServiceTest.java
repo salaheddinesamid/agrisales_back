@@ -195,10 +195,8 @@ public class  OrderServiceTest {
         pallet.setTotalNet(1000.0f);
 
         when(clientRepository.findByCompanyName("Fresh Fruits Inc")).thenReturn(client);
-        when(productRepository.findByProductCode("M_EA_B_M")).thenReturn(Optional.of(product1));
-        when(productRepository.findByProductCode("M_EB_B_M")).thenReturn(Optional.of(product2));
-        when(productRepository.findByProductCode("M_EC_B_M")).thenReturn(Optional.of(product3));
-        when(palletRepository.findById(1)).thenReturn(Optional.of(pallet));
+        when(productRepository.findAll()).thenReturn(List.of(product1, product2, product3));
+        when(palletRepository.findAll()).thenReturn(List.of(pallet));
         when(orderRepository.save(any(Order.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
@@ -303,7 +301,6 @@ public class  OrderServiceTest {
     @Test
     void testCreateOrder_withProductLowStock() {
 
-
         LocalDateTime localDateTime = LocalDateTime.now();
 
         // Mock a client
@@ -322,7 +319,7 @@ public class  OrderServiceTest {
         pallet.setPalletId(1);
 
         when(clientRepository.findByCompanyName("Fresh Fruits Inc")).thenReturn(client);
-        when(productRepository.findByProductCode("M_EA_B_M")).thenReturn(Optional.of(product));
+        when(productRepository.findAll()).thenReturn(List.of(product));
         when(palletRepository.findById(1)).thenReturn(Optional.of(pallet));
 
         // Create an order request
@@ -561,10 +558,10 @@ public class  OrderServiceTest {
         when(orderItemRepository.findByIdForUpdate(2L)).thenReturn(Optional.of(oi2));
         when(productRepository.findByProductCodeForUpdate("M_EA_B_M")).thenReturn(Optional.of(p1));
         when(productRepository.findByProductCodeForUpdate("M_EC_B_M")).thenReturn(Optional.of(p2));
-        when(palletRepository.findById(1)).thenReturn(Optional.of(pallet1));
+        when(palletRepository.findAll()).thenReturn(List.of(pallet1));
 
         // === Call Service Method ===
-        ResponseEntity<Object> responseDto = orderService.updateOrder(1L, dto);
+        ResponseEntity<?> responseDto = orderService.updateOrder(1L, dto);
 
         // === Assertions ===
         assertNotNull(responseDto);

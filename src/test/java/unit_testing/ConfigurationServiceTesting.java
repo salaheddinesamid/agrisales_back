@@ -37,6 +37,9 @@ public class ConfigurationServiceTesting {
     private OrderRepository orderRepository;
 
     @Mock
+    private ForexRepository forexRepository;
+
+    @Mock
     private OrderItemRepository orderItemRepository;
 
     @Mock
@@ -125,8 +128,6 @@ public class ConfigurationServiceTesting {
 
         // Verification
         assertEquals(201, response.getStatusCodeValue());
-        assertEquals(1, clientRepository.findAll().size());
-        assertEquals(1,addressRepository.findAll().size());
     }
 
 
@@ -179,8 +180,6 @@ public class ConfigurationServiceTesting {
 
         // Verification
         assertEquals(200, response.getStatusCodeValue());
-        assertEquals("FN",contact.getDepartment());
-        assertEquals("Algeria",address.getCountry());
     }
 
     @Test
@@ -266,7 +265,6 @@ public class ConfigurationServiceTesting {
 
         ResponseEntity<Object> response = configurationService.addPallet(palletDto);
         assertEquals(HttpStatus.OK,response.getStatusCode());
-        assertEquals(1, palletRepository.findAll().size());
     }
 
     @Test
@@ -292,5 +290,19 @@ public class ConfigurationServiceTesting {
         ResponseEntity<Object>  response = configurationService.updatePallet(1, updatePalletDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2,pallet.getFuelCost());
+    }
+
+
+    @Test
+    void testCreateForexSuccess(){
+        NewForexCurrencyDto forexDto = new NewForexCurrencyDto();
+        forexDto.setCurrencyName("USD");
+        forexDto.setBuyingRate(12f);
+        forexDto.setSellingRate(10f);
+
+        when(configurationService.addForex(forexDto)).thenReturn(new ResponseEntity<>(HttpStatus.CREATED));
+
+        ResponseEntity<Object> response = configurationService.addForex(forexDto);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 }

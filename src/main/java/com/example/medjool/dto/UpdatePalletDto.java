@@ -31,6 +31,9 @@ public class UpdatePalletDto {
     private float transportCost;
     @NotNull
     private float laborTransportCost;
+
+    @NotNull
+    private float packagingAT;
     @NotNull
     private float markupCost;
     @NotNull
