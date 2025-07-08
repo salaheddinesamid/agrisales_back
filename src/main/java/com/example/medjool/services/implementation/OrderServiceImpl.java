@@ -479,6 +479,7 @@ public class OrderServiceImpl implements OrderService{
         switch (newStatus) {
             case CONFIRMED -> {
                 order.setStatus(OrderStatus.CONFIRMED);
+                order.setProductionDate(orderStatusDto.getPreferredProductionDate());
                 orderHistory.setConfirmedAt(LocalDateTime.now());
                 orderHistory.setPreferredProductionDate(orderStatusDto.getPreferredProductionDate());
 
