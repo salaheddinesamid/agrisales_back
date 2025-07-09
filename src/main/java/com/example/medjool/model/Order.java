@@ -46,6 +46,10 @@ public class Order {
     @Column(name = "currency")
     private OrderCurrency currency;
 
+    @OneToOne
+    @JoinColumn(name = "forex_id", nullable = true)
+    private Forex forex;
+
     @Column(name = "total_weight", nullable = false)
     private double totalWeight;
 

@@ -28,4 +28,7 @@ public class MixedOrderItemDetails {
 
     @Column(name = "weight", nullable = true)
     private double weight;
+
+    @Column(name = "price_per_kg")
+    private double pricePerKg;
 }

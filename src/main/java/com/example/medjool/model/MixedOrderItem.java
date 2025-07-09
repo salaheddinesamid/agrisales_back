@@ -20,6 +20,10 @@ public class MixedOrderItem {
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
+     @JoinColumn(name = "pallet_id")
+     @OneToOne(fetch = FetchType.LAZY)
+     private Pallet pallet;
+
     @OneToMany(mappedBy = "mixedOrderItem", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MixedOrderItemDetails> itemDetails;
 }
