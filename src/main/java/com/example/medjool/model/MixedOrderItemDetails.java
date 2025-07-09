@@ -23,9 +23,15 @@ public class MixedOrderItemDetails {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @Column(name = "percentage",nullable = true)
+    @Column(name = "brand", nullable = false)
+    private String brand;
+
+    @Column(name = "percentage",nullable = false)
     private double percentage;
 
-    @Column(name = "weight", nullable = true)
+    @Column(name = "weight", nullable = false)
     private double weight;
+
+    @Column(name = "price_per_kg",nullable = false)
+    private double pricePerKg;
 }

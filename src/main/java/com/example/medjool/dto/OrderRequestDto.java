@@ -1,5 +1,6 @@
 package com.example.medjool.dto;
 
+import com.example.medjool.model.Order;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.List;
 public class OrderRequestDto {
     private String clientName;
     private List<OrderItemRequestDto> items;
+
     private MixedOrderDto mixedOrderDto;
     private String currency;
     private LocalDate productionDate;
@@ -31,3 +33,5 @@ public class OrderRequestDto {
                 '}';
     }
 }
+
+

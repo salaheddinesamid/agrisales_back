@@ -9,24 +9,31 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class OrderConcurrencyTest {
 
-    @Autowired
-    private OrderServiceImpl orderService;
-    @Autowired
-    private ProductRepository productRepository;
+    @LocalServerPort
+    private int port;
+
+    private final OrderServiceImpl orderService;
+    private final ProductRepository productRepository;
+
+
+    public OrderConcurrencyTest(OrderServiceImpl orderService, ProductRepository productRepository) {
+        this.orderService = orderService;
+        this.productRepository = productRepository;
+    }
 
     @BeforeEach
     public void setup() {

@@ -37,7 +37,7 @@ public interface OrderService {
      * @param orderUpdateRequestDto the DTO containing updated order details
      * @return ResponseEntity containing the updated order or an error message
      */
-    ResponseEntity<Object> updateOrder(Long id, OrderUpdateRequestDto orderUpdateRequestDto);
+    ResponseEntity<?> updateOrder(Long id, OrderUpdateRequestDto orderUpdateRequestDto);
 
 
     /**     * Updates the status of an order based on the provided OrderStatusDto.

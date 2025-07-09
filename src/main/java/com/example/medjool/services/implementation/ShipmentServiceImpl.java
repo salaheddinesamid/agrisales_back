@@ -21,7 +21,7 @@ public class ShipmentServiceImpl implements ShipmentService {
     private final ShipmentRepository shipmentRepository;
     private final OrderRepository orderRepository;
 
-    private static final String SHIPMENT_URL = "https://www.tracking.com/tracking/";
+    private static final String SHIPMENT_URL = "https://sensiwatch.com/trips/details/";
     @Autowired
     public ShipmentServiceImpl(ShipmentRepository shipmentRepository, ShipmentRepository shipmentRepository1, OrderRepository orderRepository) {
 
