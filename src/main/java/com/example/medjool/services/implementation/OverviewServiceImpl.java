@@ -145,6 +145,17 @@ public class OverviewServiceImpl implements OverviewService {
         }
         List<Order> clientOrders = orderRepository.findAllByClient(client);
 
+        if(clientOrders.isEmpty()) {
+            return new MarginClientResponseDto(
+                    companyName,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+            );
+        }
+
         List<OrderCostDto> ordersCost = clientOrders
                 .stream().map(order -> {
                     List<OrderItem> items = order.getOrderItems();

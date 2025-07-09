@@ -192,7 +192,6 @@ public class  OrderServiceTest {
         mixedItems.add(item_2);
 
         mixedOrderDto.setItems(mixedItems);
-        mixedOrderDto.setBrand("Medjool Star");
         mixedOrderDto.setPalletId(1);
 
         orderRequest.setMixedOrderDto(mixedOrderDto);

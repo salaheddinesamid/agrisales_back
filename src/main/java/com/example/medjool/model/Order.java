@@ -46,8 +46,8 @@ public class Order {
     @Column(name = "currency")
     private OrderCurrency currency;
 
-    @OneToOne
-    @JoinColumn(name = "forex_id", nullable = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "forex_id")
     private Forex forex;
 
     @Column(name = "total_weight", nullable = false)

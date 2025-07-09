@@ -159,11 +159,12 @@ public class OrderServiceImpl implements OrderService{
                 MixedOrderItemDetails detail = new MixedOrderItemDetails();
                 detail.setProduct(product);
                 detail.setWeight(weight);
+                detail.setBrand(detailDto.getBrand());
                 detail.setPercentage(detailDto.getPercentage());
                 detail.setMixedOrderItem(mixedOrderItem); // set parent
                 mixedDetails.add(detail);
             }
-
+            mixedOrderItem.setPallet(mixedPallet);
             mixedOrderItem.setItemDetails(mixedDetails);
             mixedOrderItem.setOrder(order); // ❗ set order before saving
             order.setMixedOrderItem(mixedOrderItem);
@@ -194,6 +195,13 @@ public class OrderServiceImpl implements OrderService{
 
     private boolean validateStock(Product product, double weight) {
         return product.getTotalWeight() >= weight;
+    }
+
+    private void processRegularOrder(OrderRequestDto orderRequestDto) {
+
+    }
+    private void processMixedOrder(MixedOrderDto mixedOrderDto) {
+
     }
 
     /**
@@ -428,6 +436,10 @@ public class OrderServiceImpl implements OrderService{
         }
 
         OrderHistory orderHistory = orderHistoryRepository.findByOrderId(order.getId());
+        if (orderHistory == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Order history not found for this order.");
+        }
 
         OrderStatus newStatus;
         try {
@@ -438,14 +450,12 @@ public class OrderServiceImpl implements OrderService{
 
         OrderStatus currentStatus = order.getStatus();
 
-        // Prevent illegal cancellations
+        // Prevent illegal cancellation
         if (List.of(OrderStatus.IN_PRODUCTION, OrderStatus.READY_TO_SHIPPED, OrderStatus.SHIPPED).contains(currentStatus)
                 && newStatus == OrderStatus.CANCELED) {
             throw new OrderCannotBeCanceledException("Order cannot be canceled at this stage.");
         }
 
-
-        // Status-specific logic
         switch (newStatus) {
             case CONFIRMED -> {
                 order.setStatus(OrderStatus.CONFIRMED);
@@ -459,76 +469,65 @@ public class OrderServiceImpl implements OrderService{
                         order.getWorkingHours()
                 );
 
-
                 HttpHeaders headers = new HttpHeaders();
-                headers.setBearerAuth("6jQBoznefQ5PeXKj4AcBOWflhb6XV4UcAegQIdti5PLUzz18T2QS1FtgGgX5UQUDtZNpNJUt9NU2XOxiq3gNiZns11Zmvuw5oi8WgNTEW28h9ooK2XVtHCE19TnJMx2");
+                headers.setBearerAuth("6jQBoznefQ5PeXKj4AcBOWflhb6XV4UcAegQIdti5PLUzz18T2QS1FtgGgX5UQUDtZNpNJUt9NU2XOxiq3gNiZns11Zmvuw5oi8WgNTEW28h9ooK2XVtHCE19TnJMx2"); // Externalize this
                 HttpEntity<ProductionRequestDto> requestEntity = new HttpEntity<>(productionRequestDto, headers);
+
                 try {
-                    // Add debug logging
-                    logger.info("Sending request to {} with headers: {}", PRODUCTION_SERVICE_URL, headers);
-                    logger.info("Request body: {}", productionRequestDto);
+                    logger.info("Sending production request: {}", productionRequestDto);
 
                     ResponseEntity<ProductionResponseDto> response = restTemplate.exchange(
                             "http://localhost:9090/api/production/push",
                             HttpMethod.POST,
                             requestEntity,
-                            new ParameterizedTypeReference<>() {
-                            }
+                            new ParameterizedTypeReference<>() {}
                     );
 
-                    logger.info("Production service response: {}", response.getStatusCode());
-                    logger.debug("Response body: {}", response.getBody());
-
+                    logger.info("Production response: {}", response.getStatusCode());
                 } catch (ResourceAccessException e) {
-                    // Handle connection failures
-                    logger.error("Failed to connect to production service: {}", e.getMessage());
+                    logger.error("Connection error: {}", e.getMessage());
                     throw new RuntimeException("Production service unavailable", e);
                 } catch (HttpClientErrorException e) {
-                    // Handle 4xx errors
-                    logger.error("Production service rejected request: {} - {}",
-                            e.getStatusCode(), e.getResponseBodyAsString());
-                    throw new RuntimeException("Production service error", e);
+                    logger.error("HTTP error: {} - {}", e.getStatusCode(), e.getResponseBodyAsString());
+                    throw new RuntimeException("Production service rejected request", e);
                 } catch (Exception e) {
-                    logger.error("Unexpected error", e);
-                    throw new RuntimeException("Failed to push order", e);
+                    logger.error("Unexpected error: ", e);
+                    throw new RuntimeException("Unexpected error during production service call", e);
                 }
             }
 
             case CANCELED -> {
-                List<OrderHistory> history = order.getOrderHistory();
-                for (OrderItem orderItem : order.getOrderItems()) {
-                    Product product = orderItem.getProduct();
-                    product.setTotalWeight(product.getTotalWeight() + orderItem.getItemWeight());
-                    order.getOrderItems().remove(orderItem);
+                // Restore stock and remove items
+                for (OrderItem item : new ArrayList<>(order.getOrderItems())) {
+                    Product product = item.getProduct();
+                    product.setTotalWeight(product.getTotalWeight() + item.getItemWeight());
+                    orderItemRepository.delete(item);
                 }
-                history.forEach(history::remove);
+                order.getOrderItems().clear();
+
+                // Remove history if needed
+                orderHistoryRepository.delete(orderHistory);
             }
 
             case SHIPPED -> {
                 shipmentService.createShipment(Optional.of(order));
+                orderHistory.setShippedAt(LocalDateTime.now());
             }
 
-            case IN_PRODUCTION, READY_TO_SHIPPED, RECEIVED -> {
-                // No special business logic needed here (yet), just proceed
-                if (newStatus == OrderStatus.IN_PRODUCTION) {
-                    orderHistory.setPreferredProductionDate(LocalDateTime.now());
-                } else if (newStatus == OrderStatus.READY_TO_SHIPPED) {
-                    orderHistory.setReadyToShipAt(LocalDateTime.now());
-                } else if (newStatus == OrderStatus.SHIPPED) {
-                    orderHistory.setShippedAt(LocalDateTime.now());
-                } else if (newStatus == OrderStatus.RECEIVED) {
-                    orderHistory.setReceivedAt(LocalDateTime.now());
-                }
-            }
+            case IN_PRODUCTION -> orderHistory.setPreferredProductionDate(LocalDateTime.now());
+            case READY_TO_SHIPPED -> orderHistory.setReadyToShipAt(LocalDateTime.now());
+            case RECEIVED -> orderHistory.setReceivedAt(LocalDateTime.now());
 
             default -> throw new IllegalArgumentException("Unhandled status: " + newStatus);
         }
 
-        // Final status update
         order.setStatus(newStatus);
         orderRepository.save(order);
-        return ResponseEntity.ok().build();
+        orderHistoryRepository.save(orderHistory);
+
+        return ResponseEntity.ok("Order status updated to " + newStatus.name());
     }
+
 
 
 

@@ -21,7 +21,7 @@ public class MixedOrderItem {
     private Order order;
 
      @JoinColumn(name = "pallet_id")
-     @OneToOne(fetch = FetchType.LAZY)
+     @ManyToOne(fetch = FetchType.LAZY)
      private Pallet pallet;
 
     @OneToMany(mappedBy = "mixedOrderItem", cascade = CascadeType.ALL, orphanRemoval = true)

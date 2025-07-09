@@ -21,17 +21,17 @@ public class OrderItemCostDto {
     private double total;
 
     public OrderItemCostDto(Pallet pallet, int numberOfPallets) {
-        this.productionCost = pallet.getProductionCost() * numberOfPallets;
-        this.datePurchase = pallet.getDatePurchase() * numberOfPallets;
-        this.laborCost = pallet.getLaborCost() * numberOfPallets;
-        this.packagingCost = pallet.getPackagingCost() * numberOfPallets;
-        this.fuelCost = pallet.getFuelCost() * numberOfPallets;
-        this.transportCost = pallet.getTransportationCost() * numberOfPallets;
-        this.laborTransportCost = pallet.getLaborTransportCost() * numberOfPallets;
-        this.markupCost = pallet.getMarkUpCost() * numberOfPallets;
-        this.vat = pallet.getVat() * numberOfPallets;
-        this.preliminaryLogistics = pallet.getPreliminaryLogisticsCost() * numberOfPallets;
-        this.insuranceCost = pallet.getInsuranceCost() * numberOfPallets;
+        this.productionCost = pallet.getProductionCost() * numberOfPallets * pallet.getTotalNet();
+        this.datePurchase = pallet.getDatePurchase() * numberOfPallets * pallet.getTotalNet();
+        this.laborCost = pallet.getLaborCost() * numberOfPallets * pallet.getTotalNet();
+        this.packagingCost = pallet.getPackagingCost() * numberOfPallets * pallet.getTotalNet();
+        this.fuelCost = pallet.getFuelCost() * numberOfPallets * pallet.getTotalNet();
+        this.transportCost = pallet.getTransportationCost() * numberOfPallets * pallet.getTotalNet();
+        this.laborTransportCost = pallet.getLaborTransportCost() * numberOfPallets * pallet.getTotalNet();
+        this.markupCost = pallet.getMarkUpCost() * numberOfPallets * pallet.getTotalNet();
+        this.vat = pallet.getVat() * numberOfPallets * pallet.getTotalNet();
+        this.preliminaryLogistics = pallet.getPreliminaryLogisticsCost() * numberOfPallets * pallet.getTotalNet();
+        this.insuranceCost = pallet.getInsuranceCost() * numberOfPallets * pallet.getTotalNet();
         this.total = productionCost + datePurchase + laborCost + packagingCost +
                       fuelCost + transportCost + laborTransportCost + markupCost +
                       vat + preliminaryLogistics + insuranceCost;
