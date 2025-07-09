@@ -23,6 +23,9 @@ public class MixedOrderItemDetails {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @Column(name = "brand")
+    private String brand;
+
     @Column(name = "percentage",nullable = true)
     private double percentage;
 
