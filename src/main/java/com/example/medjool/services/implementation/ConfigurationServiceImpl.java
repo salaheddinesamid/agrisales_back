@@ -42,6 +42,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      * @return ResponseEntity with the created client or an error message
      */
     @Override
+    @Transactional
     public ResponseEntity<Object> addClient(ClientDto clientDto) {
 
         if(clientRepository.findByCompanyName(clientDto.getCompanyName())!=null){
