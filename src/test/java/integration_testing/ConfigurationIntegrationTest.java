@@ -234,6 +234,54 @@ public class ConfigurationIntegrationTest {
      */
     @Test
     public void updatePalletSuccess(){
+        // Mock a pallet:
+        Pallet pallet = new Pallet(
+                null,
+                1f,
+                11,
+                10,
+                8,
+                null,
+                null,
+                3f,
+                0.8f,
+                2f,
+                4f,
+                0.33f,
+                0.99f,
+                2f,
+                1.88f,
+                2f,
+                3f,
+                1f,
+                1f,
+                180,
+                200,
+                100,
+                900.0f,
+                "",
+                "",
+                10
+        );
 
+        palletRepository.save(pallet);
+        assertEquals(pallet, palletRepository.findByPackaging(1));
+
+        // Create update pallet dto:
+        UpdatePalletDto updatePalletDto = new UpdatePalletDto(
+                1,12,11,9,3,2,4,0.9f,3,5,0.44f,1.99f,3,2.88f,3,4, 2, 1.9f, 210, 110, 100, 900f, 10, "",""
+        );
+
+        // Call the service:
+        ResponseEntity<Object> response = configurationService.updatePallet(pallet.getPalletId(),updatePalletDto);
+
+        assertEquals(200,response.getStatusCodeValue());
+
+        // Ensure that the pallet is updated in the database:
+        Pallet updatedPallet = palletRepository.findByPackaging(updatePalletDto.getPackaging());
+        assertNotNull(updatedPallet);
+
+        // Ensure that all the costs are updated:
+        assertEquals(updatePalletDto.getTotalCosts(),pallet.getTotalPalletCost());
     }
 }
