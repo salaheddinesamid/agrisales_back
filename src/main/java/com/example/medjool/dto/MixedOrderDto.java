@@ -1,5 +1,6 @@
 package com.example.medjool.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 public class MixedOrderDto {
 
     private List<MixedOrderItemRequestDto> items;
-    private String brand;
+
+    @NotNull
     private int palletId;
 }

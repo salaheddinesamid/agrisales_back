@@ -3,10 +3,7 @@ package com.example.medjool.services.implementation;
 import com.example.medjool.dto.*;
 import com.example.medjool.exception.ClientAlreadyFoundException;
 import com.example.medjool.model.*;
-import com.example.medjool.repository.AddressRepository;
-import com.example.medjool.repository.ClientRepository;
-import com.example.medjool.repository.ContactRepository;
-import com.example.medjool.repository.PalletRepository;
+import com.example.medjool.repository.*;
 import com.example.medjool.services.ConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,10 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -30,13 +25,15 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     private final AddressRepository addressRepository;
     private final ContactRepository contactRepository;
     private final PalletRepository palletRepository;
+    private final ForexRepository forexRepository;
 
     @Autowired
-    public ConfigurationServiceImpl(ClientRepository clientRepository, AddressRepository addressRepository, ContactRepository contactRepository, PalletRepository palletRepository) {
+    public ConfigurationServiceImpl(ClientRepository clientRepository, AddressRepository addressRepository, ContactRepository contactRepository, PalletRepository palletRepository, ForexRepository forexRepository) {
         this.clientRepository = clientRepository;
         this.addressRepository = addressRepository;
         this.contactRepository = contactRepository;
         this.palletRepository = palletRepository;
+        this.forexRepository = forexRepository;
     }
 
     /**     * Adds a new client to the system.
@@ -45,6 +42,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      * @return ResponseEntity with the created client or an error message
      */
     @Override
+    @Transactional
     public ResponseEntity<Object> addClient(ClientDto clientDto) {
 
         if(clientRepository.findByCompanyName(clientDto.getCompanyName())!=null){
@@ -263,13 +261,23 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         palletRepository.save(newPallet);
         return ResponseEntity.ok().body(newPallet);
     }
-
+    /**     * Adds dimensions to a new pallet.
+     *
+     * @param pallet the Pallet object to update
+     * @param palletDto the DTO containing pallet dimensions
+     */
     private void addPalletDimensions(Pallet pallet, PalletDto palletDto) {
         pallet.setHeight(palletDto.getHeight());
         pallet.setWidth(palletDto.getWidth());
         pallet.setLength(palletDto.getLength());
 
     }
+
+    /**     * Adds costs to a new pallet.
+     *
+     * @param pallet the Pallet object to update
+     * @param palletDto the DTO containing pallet costs
+     */
     private void addPalletCosts(Pallet pallet, PalletDto palletDto) {
         pallet.setProductionCost(palletDto.getProductionCost());
         pallet.setDatePurchase(palletDto.getDatePurchase());
@@ -315,11 +323,22 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         return new ResponseEntity<>("Pallet updated successfully", HttpStatus.OK);
     }
 
+    /**     * Updates the dimensions of an existing pallet.
+     *
+     * @param pallet the Pallet object to update
+     * @param palletDto the DTO containing updated pallet dimensions
+     */
     private void updatePalletDimensions(Pallet pallet, UpdatePalletDto palletDto) {
         pallet.setHeight(palletDto.getHeight());
         pallet.setWidth(palletDto.getWidth());
         pallet.setLength(palletDto.getLength());
     }
+
+    /**     * Updates the costs of an existing pallet.
+     *
+     * @param pallet the Pallet object to update
+     * @param palletDto the DTO containing updated pallet costs
+     */
     private void updatePalletCosts(Pallet pallet, UpdatePalletDto palletDto){
         pallet.setProductionCost(palletDto.getProductionCost());
         pallet.setLaborCost(palletDto.getLaborCost());
@@ -334,6 +353,11 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         pallet.setLaborTransportCost(palletDto.getLaborTransportCost());
         pallet.setPackagingAT(palletDto.getPackagingAT());
     }
+    /**     * Updates the basic information of an existing pallet.
+     *
+     * @param pallet the Pallet object to update
+     * @param palletDto the DTO containing updated pallet basic information
+     */
     private void updatePalletBasicInformation(Pallet pallet, UpdatePalletDto palletDto) {
         pallet.setNumberOfBoxesInCarton(palletDto.getNumberOfBoxesInCarton());
         pallet.setNumberOfCartonsInStory(palletDto.getNumberOfCartonsInStory());
@@ -363,6 +387,57 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     @Override
     public Pallet getPalletById(Integer id) {
         return palletRepository.findById(id).orElseThrow(null);
+    }
+
+    @Override
+    public ResponseEntity<List<Forex>> getAllForex() {
+        return ResponseEntity.ok(forexRepository.findAll());
+    }
+
+    /**     * Updates an existing Forex currency by ID.
+     *
+     * @param forexId the ID of the Forex currency to update
+     * @param forexDto the DTO containing updated Forex details
+     * @return ResponseEntity with a success message or an error message
+     */
+    @Override
+    public ResponseEntity<Object> updateForex(Long forexId, UpdateForexDto forexDto) {
+        try{
+            Forex forex = forexRepository.findById(forexId).orElseThrow(null);
+            forex.setBuyingRate(forexDto.getBuyingRate());
+            forex.setSellingRate(forexDto.getSellingRate());
+            forexRepository.save(forex);
+
+            return new ResponseEntity<>("Forex updated successfully", HttpStatus.OK);
+        }catch (RuntimeException ex){
+            return new ResponseEntity<>("Forex not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /**     * Adds a new Forex currency to the system.
+     *
+     * @param forexDto the DTO containing Forex currency details
+     * @return ResponseEntity with a success message or an error message
+     */
+    @Override
+    public ResponseEntity<Object> addForex(NewForexCurrencyDto forexDto) {
+        try{
+            boolean exists = forexRepository.existsByCurrency(ForexCurrency.valueOf(forexDto.getCurrencyName()));
+
+            if(exists){
+                return new ResponseEntity<>("Forex already exists", HttpStatus.CONFLICT);
+            }
+            else{
+                Forex forex = new Forex();
+                forex.setCurrency(ForexCurrency.valueOf(forexDto.getCurrencyName()));
+                forex.setBuyingRate(forexDto.getBuyingRate());
+                forex.setSellingRate(forexDto.getSellingRate());
+                forexRepository.save(forex);
+                return new ResponseEntity<>("Forex added successfully", HttpStatus.CREATED);
+            }
+        }catch (RuntimeException exception){
+            throw new RuntimeException();
+        }
     }
 
     /**     * Deletes a pallet by ID.

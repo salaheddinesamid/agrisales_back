@@ -2,6 +2,7 @@ package com.example.medjool.services;
 
 import com.example.medjool.dto.*;
 import com.example.medjool.model.Client;
+import com.example.medjool.model.Forex;
 import com.example.medjool.model.Pallet;
 import org.springframework.http.ResponseEntity;
 
@@ -96,4 +97,9 @@ public interface ConfigurationService {
      */
     Pallet getPalletById(Integer id);
 
+    ResponseEntity<List<Forex>> getAllForex();
+
+    ResponseEntity<Object> updateForex(Long forexId, UpdateForexDto forexDto);
+
+    ResponseEntity<Object> addForex(NewForexCurrencyDto forexDto);
 }

@@ -46,6 +46,10 @@ public class Order {
     @Column(name = "currency")
     private OrderCurrency currency;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "forex_id")
+    private Forex forex;
+
     @Column(name = "total_weight", nullable = false)
     private double totalWeight;
 

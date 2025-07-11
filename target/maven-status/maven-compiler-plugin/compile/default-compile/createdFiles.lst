@@ -11,6 +11,7 @@ com\example\medjool\controller\AuthenticationController.class
 com\example\medjool\exception\ProductLowStock.class
 com\example\medjool\component\RoleInitializer.class
 com\example\medjool\dto\AccessDeniedErrorDto$AccessDeniedErrorDtoBuilder.class
+com\example\medjool\dto\NewForexCurrencyDto.class
 com\example\medjool\exception\ConfigurationExceptionController.class
 com\example\medjool\services\FileHandling.class
 com\example\medjool\dto\ClientDto.class
@@ -25,6 +26,7 @@ com\example\medjool\config\SecurityConfiguration.class
 com\example\medjool\exception\ProductExceptionController.class
 com\example\medjool\exception\SettingExceptionController.class
 com\example\medjool\services\implementation\ConfigurationServiceImpl.class
+com\example\medjool\repository\ForexRepository.class
 com\example\medjool\services\StockService.class
 com\example\medjool\services\implementation\UserManagementServiceImpl.class
 com\example\medjool\dto\UpdateShipmentTrackingNumberResponse.class
@@ -45,6 +47,7 @@ com\example\medjool\dto\SettingDetailsDto.class
 com\example\medjool\dto\MixedOrderDto.class
 com\example\medjool\services\OverviewService.class
 com\example\medjool\model\Address.class
+com\example\medjool\component\CurrencyInitializer.class
 com\example\medjool\model\Shipment.class
 com\example\medjool\dto\OrderResponseDto.class
 com\example\medjool\services\implementation\AuthenticationServiceImpl.class
@@ -97,6 +100,7 @@ com\example\medjool\services\implementation\AlertServiceImpl.class
 com\example\medjool\dto\ProductionResponseDto.class
 com\example\medjool\dto\NotificationResponseDto.class
 com\example\medjool\dto\OrderUpdateRequestDto.class
+com\example\medjool\dto\UpdateForexDto.class
 com\example\medjool\dto\AuthenticationResponseDto.class
 com\example\medjool\dto\OrderItemRequestDto.class
 com\example\medjool\model\Order.class
@@ -106,6 +110,7 @@ com\example\medjool\model\Product.class
 com\example\medjool\model\OrderCurrency.class
 com\example\medjool\services\AuthenticationService.class
 com\example\medjool\dto\OrderRequestDto.class
+com\example\medjool\model\Forex.class
 com\example\medjool\services\implementation\SystemSettingServiceImpl.class
 com\example\medjool\repository\PalletRepository.class
 com\example\medjool\dto\OrderHistoryResponseDto.class
@@ -129,6 +134,7 @@ com\example\medjool\exception\ProductNotFoundException.class
 com\example\medjool\services\implementation\OrderServiceImpl$1.class
 com\example\medjool\dto\ClientResponseDto.class
 com\example\medjool\dto\MarginClientResponseDto.class
+com\example\medjool\dto\MixedOrderResponseDto.class
 com\example\medjool\services\UserManagementService.class
 com\example\medjool\dto\FactoryScheduleResponseDto.class
 com\example\medjool\exception\PalletNotFoundException.class
@@ -141,6 +147,8 @@ com\example\medjool\exception\ClientNotFoundException.class
 com\example\medjool\repository\SystemSettingRepository.class
 com\example\medjool\dto\MixedOrderItemRequestDto.class
 com\example\medjool\dto\AccessDeniedErrorDto.class
+com\example\medjool\dto\MixedOrderItemDto.class
+com\example\medjool\model\ForexCurrency.class
 com\example\medjool\exception\OrderExceptionController.class
 com\example\medjool\jwt\JwtUtilities.class
 com\example\medjool\controller\ConfigurationController.class

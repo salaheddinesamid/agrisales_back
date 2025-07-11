@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -56,6 +57,9 @@ public class  OrderServiceTest {
     private MixedOrderItemRepo mixedOrderItemRepo;
 
     @Mock
+    private ForexRepository forexRepository;
+
+    @Mock
     private MixeOrderItemDetailsRepo mixeOrderItemDetailsRepo;
 
     @InjectMocks
@@ -79,20 +83,27 @@ public class  OrderServiceTest {
         Product product = new Product();
         product.setProductId(1L);
         product.setProductCode("M_EA_B_M");
-        product.setTotalWeight(1000.0);
+        product.setTotalWeight(5000.0);
 
         Pallet pallet = new Pallet();
         pallet.setPalletId(1);
+        pallet.setTotalNet(200f);
         pallet.setPreparationTime(5.0);
+
+        Forex forex = new Forex();
+        forex.setId(1L);
+        forex.setCurrency(ForexCurrency.USD);
+        forex.setBuyingRate(10);
+        forex.setSellingRate(11);
 
         OrderItemRequestDto itemDto = new OrderItemRequestDto();
         itemDto.setProductCode("M_EA_B_M");
-        itemDto.setItemWeight(500.0);
+        itemDto.setItemWeight(700.0);
         itemDto.setPalletId(1);
         itemDto.setPricePerKg(2.5);
         itemDto.setPackaging(1.0);
         itemDto.setNumberOfPallets(1);
-        itemDto.setCurrency(OrderCurrency.MAD.toString());
+        itemDto.setCurrency(OrderCurrency.USD.toString());
 
         MixedOrderDto mixedOrderDto = new MixedOrderDto();
         mixedOrderDto.setItems(null); // No mixed items
@@ -101,6 +112,7 @@ public class  OrderServiceTest {
         orderRequest.setClientName(clientName);
         orderRequest.setItems(List.of(itemDto));
         orderRequest.setMixedOrderDto(mixedOrderDto);
+        orderRequest.setCurrency("USD");
         orderRequest.setShippingAddress("Test Address");
 
         // --- MOCKS ---
@@ -108,17 +120,37 @@ public class  OrderServiceTest {
         when(productRepository.findAll()).thenReturn(List.of(product));
         when(palletRepository.findAll()).thenReturn(List.of(pallet));
         when(palletRepository.findById(1)).thenReturn(Optional.of(pallet));
+        when(forexRepository.findByCurrency(ForexCurrency.USD)).thenReturn(Optional.of(forex));
         when(orderRepository.save(any(Order.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
 
         // --- WHEN ---
         ResponseEntity<?> response = orderService.createOrder(orderRequest);
 
         // --- THEN ---
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        //assertEquals("Order has been created successfully.", response.getBody());
 
-        // --- VERIFY BEHAVIOR ---
+        // --- VERIFY ORDER WAS SAVED ---
+        verify(orderRepository).save(orderCaptor.capture());
+        Order savedOrder = orderCaptor.getValue();
+
+        assertNotNull(savedOrder);
+        assertEquals(client, savedOrder.getClient());
+        assertEquals("Test Address", savedOrder.getShippingAddress());
+        assertEquals(OrderCurrency.USD, savedOrder.getCurrency());
+        assertEquals(1, savedOrder.getOrderItems().size());
+
+        OrderItem item = savedOrder.getOrderItems().get(0);
+        assertEquals("M_EA_B_M", item.getProduct().getProductCode());
+        assertEquals(4300.0, item.getProduct().getTotalWeight());
+        assertEquals(700.0, item.getItemWeight());
+        assertEquals(2.5, item.getPricePerKg());
+        assertEquals(1, item.getNumberOfPallets());
+        assertEquals(1.0, item.getPackaging());
+        assertEquals(pallet, item.getPallet());
     }
+
 
 
 
@@ -160,7 +192,6 @@ public class  OrderServiceTest {
         mixedItems.add(item_2);
 
         mixedOrderDto.setItems(mixedItems);
-        mixedOrderDto.setBrand("Medjool Star");
         mixedOrderDto.setPalletId(1);
 
         orderRequest.setMixedOrderDto(mixedOrderDto);
@@ -169,6 +200,12 @@ public class  OrderServiceTest {
         Client client = new Client();
         client.setClientStatus(ClientStatus.ACTIVE);
         client.setCompanyName("Fresh Fruits Inc");
+
+        Forex forex = new Forex();
+        forex.setId(1L);
+        forex.setCurrency(ForexCurrency.EUR);
+        forex.setBuyingRate(10);
+        forex.setSellingRate(11);
 
         // Mock the products with sufficient stock
         Product product1 = new Product();
@@ -195,6 +232,7 @@ public class  OrderServiceTest {
         pallet.setTotalNet(1000.0f);
 
         when(clientRepository.findByCompanyName("Fresh Fruits Inc")).thenReturn(client);
+        when(forexRepository.findByCurrency(ForexCurrency.EUR)).thenReturn(Optional.of(forex));
         when(productRepository.findAll()).thenReturn(List.of(product1, product2, product3));
         when(palletRepository.findAll()).thenReturn(List.of(pallet));
         when(orderRepository.save(any(Order.class))).thenAnswer(invocation -> invocation.getArgument(0));
@@ -204,6 +242,8 @@ public class  OrderServiceTest {
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        // Verify the order was saved
+
     }
 
     @Test

@@ -39,6 +39,7 @@ public class OrderServiceImpl implements OrderService{
     private final OrderItemRepository orderItemRepository;
     private final MixedOrderItemRepo mixedOrderItemRepo;
     private final MixeOrderItemDetailsRepo mixedOrderItemDetailsRepo;
+    private final ForexRepository forexRepository;
 
     private final RestTemplate restTemplate;
 
@@ -65,69 +66,46 @@ public class OrderServiceImpl implements OrderService{
         logger.info("New Order is being processed...");
         logger.info(orderRequest.toString());
 
-        // Validate client
+        // Validate and fetch client
         Client client = Optional.ofNullable(clientRepository.findByCompanyName(orderRequest.getClientName()))
                 .filter(c -> c.getClientStatus() == ClientStatus.ACTIVE)
                 .orElseThrow(ClientNotActiveException::new);
 
         Order order = new Order();
         order.setClient(client);
-        order.setOrderItems(new ArrayList<>()); // initialize to prevent null issues
+        order.setOrderItems(new ArrayList<>());
 
         double totalPrice = 0.0;
         double totalWeight = 0.0;
         long estimatedDeliveryTime = 0;
         double totalWorkingHours = 0;
 
-        // Store updated products to avoid duplicate database calls:
         Set<Product> updatedProducts = new HashSet<>();
-
-        /**
-         * Process each item in the order request
-         * - Validate product availability
-         * - Update product stock
-         * - Create OrderItem and associate it with the Order
-         */
-
-        // Fetch the products from the db once:
-        List<Product> productsList = productRepository.findAll();
-
-        // Fetch the pallets from the db once:
-        List<Pallet> palletList = palletRepository.findAll();
-
-        // Store products by their codes:
-        HashMap<String,Product> productHashMap = new HashMap<>();
-        for(Product p : productsList){
-            productHashMap.put(p.getProductCode(),p);
-        }
-
-        // Store the pallets by their ids:
-        HashMap<Integer, Pallet> palletHashMap = new HashMap<>();
-        for(Pallet p : palletList){
-            palletHashMap.put(p.getPalletId(), p);
-        }
-
         List<OrderItem> orderItemsList = new ArrayList<>();
 
-        // Iterate over each order item:
-        for (OrderItemRequestDto itemDto : orderRequest.getItems()) {
-            Product product = productHashMap.get(itemDto.getProductCode());
-            if(product == null){
-                throw new ProductNotFoundException();
-            }
+        List<Product> productsList = productRepository.findAll();
+        List<Pallet> palletList = palletRepository.findAll();
 
-            if (validateStock(product, itemDto.getItemWeight())) {
-                throw new ProductLowStock("The product with code: " + product.getProductCode() + " does not have enough stock.");
+        Map<String, Product> productMap = productsList.stream()
+                .collect(Collectors.toMap(Product::getProductCode, p -> p));
+
+        Map<Integer, Pallet> palletMap = palletList.stream()
+                .collect(Collectors.toMap(Pallet::getPalletId, p -> p));
+
+        for (OrderItemRequestDto itemDto : orderRequest.getItems()) {
+            Product product = productMap.get(itemDto.getProductCode());
+            if (product == null) throw new ProductNotFoundException();
+
+            if (!validateStock(product, itemDto.getItemWeight())) {
+                throw new ProductLowStock("Product " + product.getProductCode() + " has insufficient stock.");
             }
 
             product.setTotalWeight(product.getTotalWeight() - itemDto.getItemWeight());
             updatedProducts.add(product);
 
-            //Avoid duplicate db calls:
-            Pallet pallet = palletHashMap.get(itemDto.getPalletId());
-            if(pallet == null){
-                throw new PalletNotFoundException("The pallet with id: " + itemDto.getPalletId() + " does not exist.");
-            }
+            Pallet pallet = palletMap.get(itemDto.getPalletId());
+            if (pallet == null) throw new PalletNotFoundException("Pallet ID " + itemDto.getPalletId() + " not found.");
+
             OrderItem orderItem = new OrderItem(
                     product,
                     itemDto.getItemWeight(),
@@ -139,65 +117,60 @@ public class OrderServiceImpl implements OrderService{
                     pallet,
                     order
             );
+
+            Forex forex = forexRepository.findByCurrency(ForexCurrency.valueOf(itemDto.getCurrency()))
+                    .orElseThrow(() -> new RuntimeException("Missing forex rate for " + itemDto.getCurrency()));
+
+            order.setForex(forex);
             order.setCurrency(OrderCurrency.valueOf(itemDto.getCurrency()));
 
-            order.getOrderItems().add(orderItem); // maintain bidirectional relationship
             orderItemsList.add(orderItem);
+            order.getOrderItems().add(orderItem);
+
             totalPrice += itemDto.getPricePerKg() * itemDto.getItemWeight();
             totalWeight += itemDto.getItemWeight();
-            estimatedDeliveryTime += (long) pallet.getPreparationTime();
+            estimatedDeliveryTime += pallet.getPreparationTime();
             totalWorkingHours += pallet.getPreparationTime();
         }
 
-        //productRepository.saveAll(order.getOrderItems().stream().map(OrderItem::getProduct).collect(Collectors.toList()));
-
-        /** * Process mixed order details
-         * - Total price and weight
-         * - Production date and status
-         * - Shipping address and estimated delivery date
-         */
-        if(orderRequest.getMixedOrderDto().getItems() != null) {
+        // Mixed Order Logic
+        if (orderRequest.getMixedOrderDto().getItems() != null) {
             MixedOrderDto mixedOrderDto = orderRequest.getMixedOrderDto();
             MixedOrderItem mixedOrderItem = new MixedOrderItem();
-            List<MixedOrderItemDetails> mixedOrderItemsDetails = new ArrayList<>();
 
-            Pallet pallet = palletHashMap.get(mixedOrderDto.getPalletId());
-
-            if(pallet == null){
-                throw new PalletNotFoundException("The pallet with id: " + mixedOrderDto.getPalletId() + " does not exist.");
+            Pallet mixedPallet = palletMap.get(mixedOrderDto.getPalletId());
+            if (mixedPallet == null) {
+                throw new PalletNotFoundException("Pallet ID " + mixedOrderDto.getPalletId() + " not found.");
             }
 
-            for(MixedOrderItemRequestDto mixedOrderItemRequestDto : mixedOrderDto.getItems()) {
+            List<MixedOrderItemDetails> mixedDetails = new ArrayList<>();
+            for (MixedOrderItemRequestDto detailDto : mixedOrderDto.getItems()) {
+                Product product = productMap.get(detailDto.getProductCode());
+                if (product == null) throw new ProductNotFoundException();
 
-                Product product = productHashMap.get(mixedOrderItemRequestDto.getProductCode());
-
-                if(product == null){
-                    throw new ProductNotFoundException();
+                double weight = mixedPallet.getTotalNet() * (detailDto.getPercentage() / 100.0);
+                if (!validateStock(product, detailDto.getWeight())) {
+                    throw new ProductLowStock("Product " + product.getProductCode() + " has insufficient stock.");
                 }
 
-                double percentageWeight = Double.valueOf(pallet.getTotalNet() * (mixedOrderItemRequestDto.getPercentage() / 100.0));
-                System.out.println("Required: " + percentageWeight + ", Available: " + product.getTotalWeight());
-
-                if (!validateStock(product, mixedOrderItemRequestDto.getWeight())) {
-                    throw new ProductLowStock("The product with code: " + product.getProductCode() + " does not have enough stock.");
-                }
-
-                product.setTotalWeight(product.getTotalWeight() - percentageWeight);
+                product.setTotalWeight(product.getTotalWeight() - weight);
                 updatedProducts.add(product);
 
-                MixedOrderItemDetails mixedOrderItemDetails = new MixedOrderItemDetails();
-                mixedOrderItemDetails.setProduct(product);
-                mixedOrderItemDetails.setWeight(percentageWeight);
-                mixedOrderItemDetails.setPercentage(mixedOrderItemRequestDto.getPercentage());
-                mixedOrderItemsDetails.add(mixedOrderItemDetails);
-
+                MixedOrderItemDetails detail = new MixedOrderItemDetails();
+                detail.setProduct(product);
+                detail.setWeight(weight);
+                detail.setBrand(detailDto.getBrand());
+                detail.setPercentage(detailDto.getPercentage());
+                detail.setMixedOrderItem(mixedOrderItem); // set parent
+                mixedDetails.add(detail);
             }
-            // Batch save:
-            mixedOrderItemDetailsRepo.saveAll(mixedOrderItemsDetails);
-            mixedOrderItem.setItemDetails(mixedOrderItemsDetails);
+            mixedOrderItem.setPallet(mixedPallet);
+            mixedOrderItem.setItemDetails(mixedDetails);
+            mixedOrderItem.setOrder(order); // ❗ set order before saving
             order.setMixedOrderItem(mixedOrderItem);
         }
 
+        // Set order metadata
         order.setTotalPrice(totalPrice);
         order.setTotalWeight(totalWeight);
         order.setProductionDate(LocalDateTime.now());
@@ -207,23 +180,28 @@ public class OrderServiceImpl implements OrderService{
         order.setWorkingHours(totalWorkingHours);
         order.setOrderDate(LocalDate.now());
 
-        Order savedOrder = orderRepository.save(order); // Save after everything is set
-        orderItemRepository.saveAll(orderItemsList);
-        // Save the update products in a single batch:
+        // Save everything at once (cascade assumed)
+        Order savedOrder = orderRepository.save(order); // This will save MixedOrderItem and OrderItems if cascading is set
+
         productRepository.saveAll(updatedProducts);
 
+        OrderHistory history = new OrderHistory();
+        history.setOrder(savedOrder);
+        orderHistoryRepository.save(history);
 
-        OrderHistory orderHistory = new OrderHistory();
-        orderHistory.setOrder(savedOrder);
-        orderHistoryRepository.save(orderHistory);
-
-        OrderResponseDto orderResponseDto = new OrderResponseDto(savedOrder);
-        return ResponseEntity.ok(orderResponseDto);
-
+        return ResponseEntity.ok(new OrderResponseDto(savedOrder));
     }
 
-    private boolean validateStock(Product product, double weight){
-        return !(product.getTotalWeight() < weight);
+
+    private boolean validateStock(Product product, double weight) {
+        return product.getTotalWeight() >= weight;
+    }
+
+    private void processRegularOrder(OrderRequestDto orderRequestDto) {
+
+    }
+    private void processMixedOrder(MixedOrderDto mixedOrderDto) {
+
     }
 
     /**
@@ -458,6 +436,10 @@ public class OrderServiceImpl implements OrderService{
         }
 
         OrderHistory orderHistory = orderHistoryRepository.findByOrderId(order.getId());
+        if (orderHistory == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Order history not found for this order.");
+        }
 
         OrderStatus newStatus;
         try {
@@ -468,17 +450,16 @@ public class OrderServiceImpl implements OrderService{
 
         OrderStatus currentStatus = order.getStatus();
 
-        // Prevent illegal cancellations
+        // Prevent illegal cancellation
         if (List.of(OrderStatus.IN_PRODUCTION, OrderStatus.READY_TO_SHIPPED, OrderStatus.SHIPPED).contains(currentStatus)
                 && newStatus == OrderStatus.CANCELED) {
             throw new OrderCannotBeCanceledException("Order cannot be canceled at this stage.");
         }
 
-
-        // Status-specific logic
         switch (newStatus) {
             case CONFIRMED -> {
                 order.setStatus(OrderStatus.CONFIRMED);
+                order.setProductionDate(orderStatusDto.getPreferredProductionDate());
                 orderHistory.setConfirmedAt(LocalDateTime.now());
                 orderHistory.setPreferredProductionDate(orderStatusDto.getPreferredProductionDate());
 
@@ -488,76 +469,65 @@ public class OrderServiceImpl implements OrderService{
                         order.getWorkingHours()
                 );
 
-
                 HttpHeaders headers = new HttpHeaders();
-                headers.setBearerAuth("6jQBoznefQ5PeXKj4AcBOWflhb6XV4UcAegQIdti5PLUzz18T2QS1FtgGgX5UQUDtZNpNJUt9NU2XOxiq3gNiZns11Zmvuw5oi8WgNTEW28h9ooK2XVtHCE19TnJMx2");
+                headers.setBearerAuth("6jQBoznefQ5PeXKj4AcBOWflhb6XV4UcAegQIdti5PLUzz18T2QS1FtgGgX5UQUDtZNpNJUt9NU2XOxiq3gNiZns11Zmvuw5oi8WgNTEW28h9ooK2XVtHCE19TnJMx2"); // Externalize this
                 HttpEntity<ProductionRequestDto> requestEntity = new HttpEntity<>(productionRequestDto, headers);
+
                 try {
-                    // Add debug logging
-                    logger.info("Sending request to {} with headers: {}", PRODUCTION_SERVICE_URL, headers);
-                    logger.info("Request body: {}", productionRequestDto);
+                    logger.info("Sending production request: {}", productionRequestDto);
 
                     ResponseEntity<ProductionResponseDto> response = restTemplate.exchange(
                             "http://localhost:9090/api/production/push",
                             HttpMethod.POST,
                             requestEntity,
-                            new ParameterizedTypeReference<>() {
-                            }
+                            new ParameterizedTypeReference<>() {}
                     );
 
-                    logger.info("Production service response: {}", response.getStatusCode());
-                    logger.debug("Response body: {}", response.getBody());
-
+                    logger.info("Production response: {}", response.getStatusCode());
                 } catch (ResourceAccessException e) {
-                    // Handle connection failures
-                    logger.error("Failed to connect to production service: {}", e.getMessage());
+                    logger.error("Connection error: {}", e.getMessage());
                     throw new RuntimeException("Production service unavailable", e);
                 } catch (HttpClientErrorException e) {
-                    // Handle 4xx errors
-                    logger.error("Production service rejected request: {} - {}",
-                            e.getStatusCode(), e.getResponseBodyAsString());
-                    throw new RuntimeException("Production service error", e);
+                    logger.error("HTTP error: {} - {}", e.getStatusCode(), e.getResponseBodyAsString());
+                    throw new RuntimeException("Production service rejected request", e);
                 } catch (Exception e) {
-                    logger.error("Unexpected error", e);
-                    throw new RuntimeException("Failed to push order", e);
+                    logger.error("Unexpected error: ", e);
+                    throw new RuntimeException("Unexpected error during production service call", e);
                 }
             }
 
             case CANCELED -> {
-                List<OrderHistory> history = order.getOrderHistory();
-                for (OrderItem orderItem : order.getOrderItems()) {
-                    Product product = orderItem.getProduct();
-                    product.setTotalWeight(product.getTotalWeight() + orderItem.getItemWeight());
-                    order.getOrderItems().remove(orderItem);
+                // Restore stock and remove items
+                for (OrderItem item : new ArrayList<>(order.getOrderItems())) {
+                    Product product = item.getProduct();
+                    product.setTotalWeight(product.getTotalWeight() + item.getItemWeight());
+                    orderItemRepository.delete(item);
                 }
-                history.forEach(history::remove);
+                order.getOrderItems().clear();
+
+                // Remove history if needed
+                orderHistoryRepository.delete(orderHistory);
             }
 
             case SHIPPED -> {
                 shipmentService.createShipment(Optional.of(order));
+                orderHistory.setShippedAt(LocalDateTime.now());
             }
 
-            case IN_PRODUCTION, READY_TO_SHIPPED, RECEIVED -> {
-                // No special business logic needed here (yet), just proceed
-                if (newStatus == OrderStatus.IN_PRODUCTION) {
-                    orderHistory.setPreferredProductionDate(LocalDateTime.now());
-                } else if (newStatus == OrderStatus.READY_TO_SHIPPED) {
-                    orderHistory.setReadyToShipAt(LocalDateTime.now());
-                } else if (newStatus == OrderStatus.SHIPPED) {
-                    orderHistory.setShippedAt(LocalDateTime.now());
-                } else if (newStatus == OrderStatus.RECEIVED) {
-                    orderHistory.setReceivedAt(LocalDateTime.now());
-                }
-            }
+            case IN_PRODUCTION -> orderHistory.setPreferredProductionDate(LocalDateTime.now());
+            case READY_TO_SHIPPED -> orderHistory.setReadyToShipAt(LocalDateTime.now());
+            case RECEIVED -> orderHistory.setReceivedAt(LocalDateTime.now());
 
             default -> throw new IllegalArgumentException("Unhandled status: " + newStatus);
         }
 
-        // Final status update
         order.setStatus(newStatus);
         orderRepository.save(order);
-        return ResponseEntity.ok().build();
+        orderHistoryRepository.save(orderHistory);
+
+        return ResponseEntity.ok("Order status updated to " + newStatus.name());
     }
+
 
 
 
