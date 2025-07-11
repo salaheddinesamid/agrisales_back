@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -127,6 +128,38 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         Map<Long, Address> addressMap = addressRepository.findAll().stream()
                 .collect(Collectors.toMap(Address::getAddressId, Function.identity()));
 
+
+        // --- Optimize Contact Mapping ---
+        Map<Integer, Contact> contactMap = contactRepository.findAll().stream()
+                .collect(Collectors.toMap(Contact::getContactId, Function.identity()));
+        // Update contacts:
+        updateContacts(client,updateClientDto, contactMap);
+
+        // Update addresses:
+        updateAddresses(client, updateClientDto, addressMap);
+
+        clientRepository.save(client);
+        return ResponseEntity.ok("Client updated successfully");
+    }
+
+    @Transactional
+    void updateContacts(Client client, UpdateClientDto updateClientDto, Map<Integer, Contact> contactMap) {
+        List<Contact> updatedContacts = updateClientDto.getNewContacts().stream().map(dto -> {
+            Contact contact = contactMap.get(dto.getContactId());
+            if (contact == null) {
+                contact = new Contact();
+            }
+            contact.setEmail(dto.getNewEmailAddress());
+            contact.setPhone(dto.getNewPhoneNumber());
+            contact.setDepartment(dto.getNewDepartmentName());
+            return contactRepository.save(contact);
+        }).collect(Collectors.toList());
+
+        client.setContacts(updatedContacts);
+    }
+
+    @Transactional
+    void updateAddresses(Client client, UpdateClientDto updateClientDto, Map<Long, Address> addressMap) {
         List<Address> updatedAddresses = updateClientDto.getNewAddresses().stream().map(dto -> {
             Address address = addressMap.get(dto.getAddressId());
             if (address == null) {
@@ -138,29 +171,9 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             address.setState(dto.getState());
             address.setPostalCode(dto.getZip());
             return addressRepository.save(address);
-        }).toList();
+        }).collect(Collectors.toList());
 
         client.setAddresses(updatedAddresses);
-
-        // --- Optimize Contact Mapping ---
-        Map<Integer, Contact> contactMap = contactRepository.findAll().stream()
-                .collect(Collectors.toMap(Contact::getContactId, Function.identity()));
-
-        List<Contact> updatedContacts = updateClientDto.getNewContacts().stream().map(dto -> {
-            Contact contact = contactMap.get(dto.getContactId());
-            if (contact == null) {
-                contact = new Contact();
-            }
-            contact.setEmail(dto.getNewEmailAddress());
-            contact.setPhone(dto.getNewPhoneNumber());
-            contact.setDepartment(dto.getNewDepartmentName());
-            return contactRepository.save(contact);
-        }).toList();
-
-        client.setContacts(updatedContacts);
-
-        clientRepository.save(client);
-        return ResponseEntity.ok("Client updated successfully");
     }
 
 

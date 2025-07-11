@@ -47,9 +47,7 @@ public class StockServiceImpl implements StockService {
         System.out.println("👉 Fetching products from DB...");
         List<Product> products = productRepository.findAll();
 
-        List<ProductResponseDto> productResponseDtos =
-                products.stream().map(product -> new ProductResponseDto(product)).collect(Collectors.toList());
-        return productResponseDtos;
+        return products.stream().map(ProductResponseDto::new).collect(Collectors.toList());
     }
 
     /**     * Updates the stock of products based on the provided CSV file.

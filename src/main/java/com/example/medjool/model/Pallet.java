@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+/** * Represents a pallet in the production system.
+ * Contains information about packaging, costs, dimensions, and other attributes.
+ */
 @Entity
 @Getter
 @Setter
@@ -13,7 +15,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Pallet {
-
 
     // Basic information:
     @Id

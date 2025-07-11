@@ -14,8 +14,28 @@ import java.util.Optional;
  * Provides methods to find products by various attributes.
  */
 public interface ProductRepository extends JpaRepository<Product, Long> {
+    /**
+     * Finds a product by its calibre, color, quality, and farm.
+     *
+     * @param callibre the calibre of the product
+     * @param color the color of the product
+     * @param quality the quality of the product
+     * @param farm the farm where the product is sourced
+     * @return a Product matching the specified attributes, or null if not found
+     */
     Product findByCallibreAndColorAndQualityAndFarm(String callibre, String color, String quality,String farm);
+
+    /**     * Finds a product by its product code.
+     *
+     * @param productCode the product code to search for
+     * @return an Optional containing the Product if found, or empty if not found
+     */
     Optional<Product> findByProductCode(String productCode);
+    /**     * Checks if a product exists by its product code.
+     *
+     * @param productCode the product code to check
+     * @return true if a product with the specified code exists, false otherwise
+     */
     boolean existsByProductCode(String productCode);
 
     /**

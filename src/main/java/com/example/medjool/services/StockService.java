@@ -36,6 +36,13 @@ public interface StockService {
      * @return a ResponseEntity indicating the result of the operation.
      */
     ResponseEntity<Object> clearStock();
+
+    /** * Initializes the stock by processing a CSV file.
+     *
+     * @param file the CSV file containing initial product data.
+     * @return a ResponseEntity indicating the result of the operation.
+     * @throws IOException if an error occurs while reading the file.
+     */
     ResponseEntity<Object> initializeStock(MultipartFile file) throws IOException;
 
 }
