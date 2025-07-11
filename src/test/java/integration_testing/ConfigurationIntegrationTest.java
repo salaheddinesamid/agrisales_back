@@ -187,35 +187,7 @@ public class ConfigurationIntegrationTest {
         clientRepository.save(client);
         assertEquals(client, clientRepository.findByCompanyName(client.getCompanyName()));
 
-        Address address1 = client.getAddresses().get(0);
-        Contact contact1 = client.getContacts().get(0);
-
-        UpdateAddressDto updateAddressDto = new UpdateAddressDto();
-
-        updateAddressDto.setCity("");
-        updateAddressDto.setCountry("");
-        updateAddressDto.setStreet("");
-        updateAddressDto.setCity("");
-        UpdateContactDto updateContactDto = new UpdateContactDto();
-
-        updateContactDto.setNewEmailAddress("");
-        updateContactDto.setNewDepartmentName("");
-        updateContactDto.setNewPhoneNumber("");
-
-        // Create update client dto:
-        UpdateClientDto updateClientDto = new UpdateClientDto(
-                "Interfood",
-                "John Doe",
-                "Import & Export",
-                null,
-                null,
-                null,
-                null,
-                "www.interfood.com",
-                "INACTIVE",
-                12f,
-                "1234567890"
-        );
+        UpdateClientDto updateClientDto = getUpdateClientDto(client);
 
         // Call the service:
 
@@ -227,6 +199,39 @@ public class ConfigurationIntegrationTest {
         // Ensure that the contacts are updated:
 
         // Ensure that the addresses are updated:
+    }
+
+    private static UpdateClientDto getUpdateClientDto(Client client) {
+        Address address1 = client.getAddresses().get(0);
+        Contact contact1 = client.getContacts().get(0);
+
+        UpdateAddressDto updateAddressDto = new UpdateAddressDto();
+        updateAddressDto.setAddressId(address1.getAddressId());
+        updateAddressDto.setCity("");
+        updateAddressDto.setCountry("");
+        updateAddressDto.setStreet("");
+        updateAddressDto.setZip("");
+
+        UpdateContactDto updateContactDto = new UpdateContactDto();
+        updateContactDto.setContactId(contact1.getContactId());
+        updateContactDto.setNewEmailAddress("");
+        updateContactDto.setNewDepartmentName("");
+        updateContactDto.setNewPhoneNumber("");
+
+        // Create update client dto:
+        return new UpdateClientDto(
+                "Interfood",
+                "John Doe",
+                "Import & Export",
+                List.of(updateAddressDto),
+                List.of(updateContactDto),
+                null,
+                null,
+                "www.interfood.com",
+                "INACTIVE",
+                12f,
+                "1234567890"
+        );
     }
 
     /** * This test verifies that a pallet can be successfully updated with new information.
