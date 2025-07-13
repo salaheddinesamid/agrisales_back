@@ -6,9 +6,11 @@ import com.example.medjool.model.OrderStatus;
 import com.example.medjool.repository.OrderRepository;
 import com.example.medjool.repository.ShipmentRepository;
 import com.example.medjool.services.implementation.ShipmentServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
@@ -25,6 +27,11 @@ public class ShipmentServiceTesting {
 
     @InjectMocks
     private ShipmentServiceImpl shipmentService;
+
+    @BeforeEach
+    void setUp(){
+        MockitoAnnotations.initMocks(this);
+    }
 
 
     @Test
