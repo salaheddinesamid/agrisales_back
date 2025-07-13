@@ -194,7 +194,8 @@ public class ConfigurationIntegrationTest {
         assertEquals(200,response.getStatusCodeValue());
 
         // Ensure that the client is updated in the database:
-
+        Client savedClient = clientRepository.findByCompanyName("Test client");
+        assertEquals("www.interfood.com",client.getWebSite());
         // Ensure that the contacts are updated:
 
         // Ensure that the addresses are updated:
