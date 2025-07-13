@@ -58,32 +58,14 @@ public class SecurityConfiguration {
                 .and()
                 .csrf()
                 .disable()
-                .authorizeHttpRequests(authorizeRequests ->
-                        authorizeRequests.requestMatchers(
-                                        "/api/auth/**",
-                                        "/swagger-ui/**",
-                                        "/actuator/metrics/",
-                                        "/actuator/health",
-                                        "/actuator/info",
-                                        "/api/order/**",
-                                        "/api/margin_per_client/**",
-                                        "/api/configuration/client/delete/**",
-                                        "/api/email/**",                                        "/api-docs/**"
-                                ).permitAll()
-                                .requestMatchers("/api/user/**")
-                                .hasAnyAuthority("GENERAL_MANAGER","IT_ADMIN")
-                                .requestMatchers(
-
-                                        "/api/stock/get_all",
-
-                                        "/api/configuration/**",
-                                        "/api/settings/**",
-                                        "/api/alert/**",
-                                        "/api/production/**",
-                                        "/api/notification/**",
-                                        "/api/shipment/**"
-                                ).hasAnyAuthority("GENERAL_MANAGER","SALES","API_SERVICE")
-                                .anyRequest().authenticated()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/*").hasAnyAuthority("GENERAL_MANAGER","SALES","FACTORY")
+                        // Deny MCV and Config for SALES and FACTORY
+                        .requestMatchers("/api/margin_per_client/**").not().hasAnyAuthority("SALES", "FACTORY")
+                        .requestMatchers("/api/configuration/**").not().hasAnyAuthority("SALES", "FACTORY")
+                        // Any other request
+                        .anyRequest().authenticated()
                 )
                 .exceptionHandling(exceptionHandling ->
                         exceptionHandling

@@ -23,8 +23,6 @@ public class RoleInitializer {
     private static final RoleName[] roles = {
             RoleName.GENERAL_MANAGER,
             RoleName.SALES,
-            RoleName.LOGISTICS,
-            RoleName.FINANCE,
             RoleName.FACTORY
     };
     @Autowired
