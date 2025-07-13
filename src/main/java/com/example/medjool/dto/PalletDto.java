@@ -1,5 +1,6 @@
 package com.example.medjool.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,6 +40,7 @@ public class PalletDto {
     float length;
     Float totalNet;
     // Additional Information
+    @NotNull
     float preparationTime;
     String tag;
     String notes;

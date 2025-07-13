@@ -132,7 +132,7 @@ public class JwtUtilities {
         return Jwts.builder()
                 .setSubject(email)
                 .claim("role",role)
-                .setExpiration(new Date(System.currentTimeMillis() + 360000))
+                .setExpiration(new Date(System.currentTimeMillis() + 6 * 60 * 60 * 1000))
                 .signWith(SignatureAlgorithm.HS256,secret)
                 .compact();
     }

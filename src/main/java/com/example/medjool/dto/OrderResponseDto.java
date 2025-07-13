@@ -1,10 +1,10 @@
 package com.example.medjool.dto;
 
+import com.example.medjool.model.MixedOrderItem;
+import com.example.medjool.model.MixedOrderItemDetails;
 import com.example.medjool.model.Order;
 import com.example.medjool.utils.DateFormatter;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,6 +23,7 @@ public class OrderResponseDto {
     private String status;
 
     private List<OrderItemResponseDto> items;
+    private MixedOrderResponseDto mixedOrder;
     private String productionDate;
     private LocalDateTime deliveryDate;
     private double workingHours;
@@ -38,9 +39,44 @@ public class OrderResponseDto {
         this.items = order.getOrderItems().stream()
                 .map(OrderItemResponseDto::new)
                 .toList();
+        this.mixedOrder = order.getMixedOrderItem() != null ? new MixedOrderResponseDto(order.getMixedOrderItem()) : null;
         this.productionDate = dateFormatter.formatDate(order.getProductionDate());
         this.deliveryDate = order.getDeliveryDate();
         this.workingHours = order.getWorkingHours();
         this.shippingAddress  = order.getShippingAddress();
+    }
+}
+
+@Data
+class MixedOrderResponseDto{
+
+    private List<MixedOrderItemDto> items;
+    private int palletId;
+
+    public MixedOrderResponseDto(MixedOrderItem mixedOrderItem){
+        this.items = mixedOrderItem.getItemDetails().stream()
+                .map(MixedOrderItemDto::new)
+                .toList();
+        this.palletId = mixedOrderItem.getPallet().getPalletId();
+    }
+
+}
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+class MixedOrderItemDto{
+    private String productCode;
+    private String brand;
+    private double percentage;
+    private double pricePerKg;
+    private double weight;
+
+    public MixedOrderItemDto(MixedOrderItemDetails mixedOrderItemDetails){
+        this.productCode = mixedOrderItemDetails.getProduct().getProductCode();
+        this.percentage = mixedOrderItemDetails.getPercentage();
+        this.brand = mixedOrderItemDetails.getBrand();
+        this.pricePerKg = mixedOrderItemDetails.getPricePerKg();
+        this.weight = mixedOrderItemDetails.getWeight();
     }
 }
