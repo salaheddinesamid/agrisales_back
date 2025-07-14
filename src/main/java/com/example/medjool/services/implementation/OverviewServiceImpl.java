@@ -48,7 +48,6 @@ public class OverviewServiceImpl implements OverviewService {
     @Override
     public ResponseEntity<?> getOverview() {
         final String STOCK_KEY = "min_stock_level";
-        OverviewDto overviewDto = new OverviewDto();
 
         // Defensive check for system setting
         double minimumStockValue = systemSettingRepository.findByKey(STOCK_KEY)
@@ -96,13 +95,7 @@ public class OverviewServiceImpl implements OverviewService {
         }).reduce(0L, Long::sum);
         double totalShippedRevenue = orders.stream().map(order -> {
             if (order.getStatus().equals(OrderStatus.SHIPPED)) {
-                if(order.getCurrency().equals(OrderCurrency.USD)) {
-                    return order.getTotalPrice() * 10.5;
-                } else if(order.getCurrency().equals(OrderCurrency.EUR)) {
-                    return order.getTotalPrice() * 11;
-                } else if(order.getCurrency().equals(OrderCurrency.MAD)) {
-                    return order.getTotalPrice();
-                }
+                return order.getTotalPrice() * order.getForex().getBuyingRate();
             }
             return 0.0; // Not a shipped order
         }).reduce(0.0, Double::sum);
@@ -110,40 +103,30 @@ public class OverviewServiceImpl implements OverviewService {
             if(order.getStatus().equals(OrderStatus.PRELIMINARY) ||
                     order.getStatus().equals(OrderStatus.CONFIRMED) ||
                     order.getStatus().equals(OrderStatus.IN_PRODUCTION)) {
-                if(order.getCurrency().equals(OrderCurrency.USD)) {
-                    return order.getTotalPrice() * 10.5;
-                } else if(order.getCurrency().equals(OrderCurrency.EUR)) {
-                    return order.getTotalPrice() * 11;
-                } else if(order.getCurrency().equals(OrderCurrency.MAD)) {
-                    return order.getTotalPrice();
-                } // Count pre-production revenue
+                return order.getTotalPrice() * order.getForex().getBuyingRate();
             }
             return 0.0;
         }).reduce(0.0, Double::sum);;
         double totalPostProductionRevenue = orders.stream().map(order -> {
             if(order.getStatus().equals(OrderStatus.READY_TO_SHIPPED)) {
-                if(order.getCurrency().equals(OrderCurrency.USD)) {
-                    return order.getTotalPrice() * 10.5;
-                } else if(order.getCurrency().equals(OrderCurrency.EUR)) {
-                    return order.getTotalPrice() * 11;
-                } else if(order.getCurrency().equals(OrderCurrency.MAD)) {
-                    return order.getTotalPrice();
-                } // Count pre-production orders
+                return order.getTotalPrice() * order.getForex().getBuyingRate();
             }
             return 0.0;
-        }).reduce(0.0, Double::sum);;
+        }).reduce(0.0, Double::sum);
 
-       overviewDto.setTotalStock(totalStockWeight);
-       overviewDto.setTotalOrders(totalOrders);
-       overviewDto.setTotalOrdersPreProduction(totalOrdersPreProduction);
-       overviewDto.setTotalOrdersPostProduction(totalOrdersPostProduction);
-       overviewDto.setTotalShippedOrders(totalShippedOrders);
+        double totalRevenue = totalPreProductionRevenue + totalPostProductionRevenue + totalShippedRevenue;
 
-       overviewDto.setTotalPreProductionRevenue(totalPreProductionRevenue);
-       overviewDto.setTotalPostProductionRevenue(totalPostProductionRevenue);
-       overviewDto.setTotalShippedRevenue(totalShippedRevenue);
-
-       overviewDto.setTotalRevenue(totalPreProductionRevenue + totalPostProductionRevenue + totalShippedRevenue);
+        OverviewDto overviewDto = new OverviewDto(
+                totalStockWeight,
+                totalOrders,
+                totalOrdersPreProduction,
+                totalOrdersPostProduction,
+                totalShippedOrders,
+                totalPreProductionRevenue,
+                totalPostProductionRevenue,
+                totalShippedRevenue,
+                totalRevenue
+        );
        return new ResponseEntity<>(overviewDto, HttpStatus.OK);
     }
 
