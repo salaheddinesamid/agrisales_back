@@ -1,5 +1,6 @@
 package unit_testing;
 
+import com.example.medjool.component.StockInitializer;
 import com.example.medjool.dto.NewProductDto;
 import com.example.medjool.model.Product;
 
@@ -13,6 +14,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,11 +29,15 @@ class StockServiceTesting {
     private ProductRepository productRepository;
 
     @InjectMocks
+    private StockInitializer sockInitializer;
+
+    @InjectMocks
     private StockServiceImpl stockService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        sockInitializer.initialize();
     }
 
     @Test
@@ -78,9 +87,9 @@ class StockServiceTesting {
         @Test
         void testUpdateStock_Success() throws Exception {
 
-            // Create e CSV content:
-            String csvContent = "product_code,total_weight\nS00_EA0_D_MS,50";
-            MockMultipartFile file = new MockMultipartFile("file", "stock.csv", "text/csv", csvContent.getBytes());
+            File csvFile = new File("C:\\Users\\s.samid\\Downloads\\medjool_demo_back\\src\\main\\resources\\stock_update.csv");
+            FileInputStream inputStream = new FileInputStream(csvFile);
+            MultipartFile file = new MockMultipartFile("file", csvFile.getName(), "text/csv", inputStream);
 
 
             Product product1 = new Product();

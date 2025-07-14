@@ -94,7 +94,6 @@ public class  OrderServiceTest {
         forex.setId(1L);
         forex.setCurrency(ForexCurrency.USD);
         forex.setBuyingRate(10);
-        forex.setSellingRate(11);
 
         OrderItemRequestDto itemDto = new OrderItemRequestDto();
         itemDto.setProductCode("M_EA_B_M");
@@ -205,7 +204,6 @@ public class  OrderServiceTest {
         forex.setId(1L);
         forex.setCurrency(ForexCurrency.EUR);
         forex.setBuyingRate(10);
-        forex.setSellingRate(11);
 
         // Mock the products with sufficient stock
         Product product1 = new Product();
