@@ -298,7 +298,6 @@ public class ConfigurationServiceTesting {
         NewForexCurrencyDto forexDto = new NewForexCurrencyDto();
         forexDto.setCurrencyName("USD");
         forexDto.setBuyingRate(12f);
-        forexDto.setSellingRate(10f);
 
         when(configurationService.addForex(forexDto)).thenReturn(new ResponseEntity<>(HttpStatus.CREATED));
 

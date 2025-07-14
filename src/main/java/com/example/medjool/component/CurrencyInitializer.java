@@ -28,7 +28,6 @@ public class CurrencyInitializer {
                 Forex forex = new Forex();
                 forex.setCurrency(ForexCurrency.valueOf(currency));
                 forex.setBuyingRate(0.0); // Default buying rate
-                forex.setSellingRate(0.0);
                 forexRepository.save(forex); // Assuming 1.0 is the default rate
             }
         }

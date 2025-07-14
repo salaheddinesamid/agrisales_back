@@ -195,6 +195,7 @@ public class OrderServiceImpl implements OrderService{
             detail.setWeight(weight);
             detail.setBrand(detailDto.getBrand());
             detail.setPercentage(detailDto.getPercentage());
+            detail.setPricePerKg(detailDto.getPricePerKg());
             detail.setMixedOrderItem(mixedOrderItem); // set parent
             mixedDetails.add(detail);
         }
