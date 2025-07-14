@@ -131,9 +131,8 @@ public class OverviewServiceImpl implements OverviewService {
     }
 
     @Override
-    @Cacheable(value = "marginPerClient", key = "#companyName")
-    public ResponseEntity<MarginClientResponseDto> getMarginPerClient(String companyName) {
-        MarginClientResponseDto response = clientMargin(companyName);
+    public ResponseEntity<MarginClientResponseDto> getMarginPerClient(String companyName, String quality) {
+        MarginClientResponseDto response = clientMargin(companyName, quality);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @Override
@@ -141,12 +140,18 @@ public class OverviewServiceImpl implements OverviewService {
         return new ResponseEntity<>("",HttpStatus.OK);
     }
 
-    private MarginClientResponseDto clientMargin(String companyName){
+    private MarginClientResponseDto clientMargin(String companyName, String productCode){
         Client client = clientRepository.findByCompanyName(companyName);
         if(client == null) {
             throw new ClientNotFoundException();
         }
         List<Order> clientOrders = orderRepository.findAllByClient(client);
+        List<Order> filteredOrders = clientOrders.stream().filter(order -> {
+            if(!productCode.equals("all")) {
+                return order.getOrderItems().stream().anyMatch(item -> item.getProduct().getProductCode().equals(productCode));
+            }
+            return true;
+        }).toList();
 
         if(clientOrders.isEmpty()) {
             return new MarginClientResponseDto(
@@ -159,7 +164,7 @@ public class OverviewServiceImpl implements OverviewService {
             );
         }
 
-        List<OrderCostDto> ordersCost = clientOrders
+        List<OrderCostDto> ordersCost = filteredOrders
                 .stream().map(order -> {
                     List<OrderItem> items = order.getOrderItems();
                     List<OrderItemCostDto> itemsCosts = items
@@ -174,10 +179,10 @@ public class OverviewServiceImpl implements OverviewService {
                     return new OrderCostDto(order.getId(),itemsCosts,orderTotalCost);
                 }).toList();
 
-        double totalWeight = clientOrders.stream()
+        double totalWeight = filteredOrders.stream()
                 .map(Order::getTotalWeight)
                 .reduce(0.0, Double::sum);
-        double totalRevenue = clientOrders.stream()
+        double totalRevenue = filteredOrders.stream()
                 .map(clientOrder->{
                     if(clientOrder.getCurrency().equals(OrderCurrency.USD)) {
                         return clientOrder.getTotalPrice() * 10.5;

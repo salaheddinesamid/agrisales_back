@@ -10,7 +10,7 @@ public interface OverviewService {
      */
     ResponseEntity<?> getOverview();
 
-    ResponseEntity<MarginClientResponseDto> getMarginPerClient(String companyName);
+    ResponseEntity<MarginClientResponseDto> getMarginPerClient(String companyName, String quality);
 
     ResponseEntity<?> getAllMarginPerClient();
 }

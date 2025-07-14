@@ -21,7 +21,7 @@ public class OverviewController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<MarginClientResponseDto> getMarginPerClient(@RequestParam String companyName) {
-        return overviewService.getMarginPerClient(companyName);
+    public ResponseEntity<MarginClientResponseDto> getMarginPerClient(@RequestParam String companyName, @RequestParam String productCode) {
+        return overviewService.getMarginPerClient(companyName,productCode);
     }
 }
