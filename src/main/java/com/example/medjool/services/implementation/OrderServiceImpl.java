@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -579,5 +580,11 @@ public class OrderServiceImpl implements OrderService{
                 .map(OrderHistoryResponseDto::new)
                 .toList();
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    @Cacheable(value = "test")
+    public String test() {
+        return "Test successful!";
     }
 }

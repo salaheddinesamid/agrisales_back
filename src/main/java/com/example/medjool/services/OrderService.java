@@ -62,5 +62,6 @@ public interface OrderService {
      */
     ResponseEntity<List<OrderHistoryResponseDto>> getAllOrderHistory();
 
+    String test();
 
 }

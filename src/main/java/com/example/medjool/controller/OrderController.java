@@ -26,6 +26,11 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    @GetMapping("test")
+    public String test() {
+        return orderService.test();
+    }
+
 
     /**     * Creates a new order based on the provided order request data.
      *

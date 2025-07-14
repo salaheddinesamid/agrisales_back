@@ -76,7 +76,6 @@ public class AuthenticationServiceTesting {
         User existedUser = new User();
         when(userRepository.findByEmail(newUserDto.getEmail())).thenReturn(Optional.of(existedUser));
 
-        // Vérifiez que l'exception est levée
         UserAlreadyExistsException exception =
                 org.junit.jupiter.api.Assertions.assertThrows(
                         UserAlreadyExistsException.class,
