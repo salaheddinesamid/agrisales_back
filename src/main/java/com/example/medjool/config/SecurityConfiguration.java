@@ -62,6 +62,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/api/auth/login").permitAll()
                         .requestMatchers("/api/order/**").permitAll()
+                        .requestMatchers("/api/margin_per_client/**").permitAll()
                         .requestMatchers("/*").hasAnyAuthority("GENERAL_MANAGER","SALES","FACTORY","API_SERVICE")
                         // Deny MCV and Config for SALES and FACTORY
                         .requestMatchers("/api/margin_per_client/**").not().hasAnyAuthority("SALES", "FACTORY")

@@ -201,7 +201,7 @@ public class OrderServiceImpl implements OrderService{
         }
         mixedOrderItem.setPallet(mixedPallet);
         mixedOrderItem.setItemDetails(mixedDetails);
-        mixedOrderItem.setOrder(order); // ❗ set order before saving
+        mixedOrderItem.setOrder(order);
         order.setMixedOrderItem(mixedOrderItem);
     }
 
