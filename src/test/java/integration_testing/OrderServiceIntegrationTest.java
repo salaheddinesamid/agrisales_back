@@ -2,9 +2,9 @@ package integration_testing;
 
 import com.example.medjool.MedjoolApplication;
 import com.example.medjool.dto.OrderItemRequestDto;
-import com.example.medjool.model.Client;
-import com.example.medjool.model.ClientStatus;
+import com.example.medjool.model.*;
 import com.example.medjool.repository.ClientRepository;
+import com.example.medjool.repository.PalletRepository;
 import com.example.medjool.services.implementation.OrderServiceImpl;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -21,6 +21,9 @@ public class OrderServiceIntegrationTest {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    private PalletRepository palletRepository;
 
     @Autowired
     private OrderServiceImpl orderService;
@@ -45,8 +48,57 @@ public class OrderServiceIntegrationTest {
         );
         clientRepository.save(client);
 
+
+        // Mock pallet :
+        Pallet pallet = new Pallet(
+                null,
+                1f,
+                11,
+                10,
+                8,
+                null,
+                null,
+                3f,
+                0.8f,
+                2f,
+                4f,
+                0.33f,
+                0.99f,
+                2f,
+                1.88f,
+                2f,
+                3f,
+                1f,
+                1f,
+                180,
+                200,
+                100,
+                900.0f,
+                "",
+                "",
+                10
+        );
+        palletRepository.save(pallet);
+
+
+        // Mock a product:
+        Product product = new Product(
+                null,
+                "Test Product",
+                "Small",
+                4000.0,
+                "Dark",
+                "Farm A",
+                "Export A",
+                null
+        );
+
+        Integer palletId = pallet.getPalletId();
+
         // Prepare an order item:
         OrderItemRequestDto orderItemRequestDto = new OrderItemRequestDto();
+        orderItemRequestDto.setPalletId(palletId);
+        orderItemRequestDto.setCurrency(OrderCurrency.EUR);
 
     }
 

@@ -31,10 +31,12 @@ import java.util.stream.Collectors;
 public class StockServiceImpl implements StockService {
 
     private final ProductRepository productRepository;
+    private final RestTemplate restTemplate;
 
     @Autowired
-    public StockServiceImpl(ProductRepository productRepository) {
+    public StockServiceImpl(ProductRepository productRepository, RestTemplate restTemplate) {
         this.productRepository = productRepository;
+        this.restTemplate = restTemplate;
     }
 
     /**     * Fetches all products from the database and returns them as a list of ProductResponseDto.
