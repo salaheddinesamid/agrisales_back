@@ -58,7 +58,6 @@ public class StockController {
      * @return a ResponseEntity containing the stock overview.
      */
     @GetMapping("overview")
-    @PreAuthorize("hasAnyAuthority('GENERAL_MANAGER','SALES')")
     public ResponseEntity<?> getStockOverview() {
         return overviewService.getOverview();
     }
@@ -72,6 +71,11 @@ public class StockController {
     @PutMapping("/update")
     public ResponseEntity<Object> updateStock(@RequestBody MultipartFile file) throws IOException {
         return stockService.updateStock(file);
+    }
+
+    @GetMapping("/product_code/get_all")
+    public List<String> getAllProductCodes() {
+        return stockService.getAllProductCode();
     }
 
     /**     * Clears the stock by removing all products.

@@ -45,4 +45,6 @@ public interface StockService {
      */
     ResponseEntity<Object> initializeStock(MultipartFile file) throws IOException;
 
+    List<String> getAllProductCode();
+
 }

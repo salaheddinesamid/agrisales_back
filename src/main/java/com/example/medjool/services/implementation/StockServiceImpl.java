@@ -11,6 +11,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -177,10 +178,21 @@ public class StockServiceImpl implements StockService {
         }
     }
 
+    @Override
+    @Cacheable(value = "productCodes", key = "'allProductCodes'")
+    public List<String> getAllProductCode() {
+        return productRepository.findAll()
+                .stream().map(Product::getProductCode)
+                .collect(Collectors.toList());
+    }
+
     // Utility method to trim and return null if empty
     private String safeTrim(String value) {
         if (value == null) return null;
         String trimmed = value.trim();
         return trimmed.isEmpty() ? null : trimmed;
     }
+
+
+
 }
