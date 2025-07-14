@@ -59,6 +59,7 @@ public class SecurityConfiguration {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/api/auth/login").permitAll()
                         .requestMatchers("/*").hasAnyAuthority("GENERAL_MANAGER","SALES","FACTORY")
                         // Deny MCV and Config for SALES and FACTORY
