@@ -98,7 +98,7 @@ public class OrderServiceIntegrationTest {
         // Prepare an order item:
         OrderItemRequestDto orderItemRequestDto = new OrderItemRequestDto();
         orderItemRequestDto.setPalletId(palletId);
-        orderItemRequestDto.setCurrency(OrderCurrency.EUR);
+        //orderItemRequestDto.setCurrency(OrderCurrency.EUR);
 
     }
 

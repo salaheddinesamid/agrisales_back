@@ -7,5 +7,4 @@ public class UpdateForexDto {
 
     private String currency;
     private double buyingRate;
-    private double sellingRate;
 }

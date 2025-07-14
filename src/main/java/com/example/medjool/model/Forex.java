@@ -20,7 +20,4 @@ public class Forex {
 
     @Column(name = "buying_rate", nullable = false)
     private double buyingRate;
-
-    @Column(name = "selling_rate", nullable = false)
-    private double sellingRate;
 }

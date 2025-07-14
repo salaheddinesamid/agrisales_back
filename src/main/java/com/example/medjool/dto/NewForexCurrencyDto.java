@@ -7,5 +7,4 @@ public class NewForexCurrencyDto {
 
     private String currencyName;
     private double buyingRate;
-    private double sellingRate;
 }

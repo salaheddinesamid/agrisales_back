@@ -418,7 +418,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         try{
             Forex forex = forexRepository.findById(forexId).orElseThrow(null);
             forex.setBuyingRate(forexDto.getBuyingRate());
-            forex.setSellingRate(forexDto.getSellingRate());
             forexRepository.save(forex);
 
             return new ResponseEntity<>("Forex updated successfully", HttpStatus.OK);
@@ -444,7 +443,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
                 Forex forex = new Forex();
                 forex.setCurrency(ForexCurrency.valueOf(forexDto.getCurrencyName()));
                 forex.setBuyingRate(forexDto.getBuyingRate());
-                forex.setSellingRate(forexDto.getSellingRate());
                 forexRepository.save(forex);
                 return new ResponseEntity<>("Forex added successfully", HttpStatus.CREATED);
             }
