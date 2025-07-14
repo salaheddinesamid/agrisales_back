@@ -135,11 +135,28 @@ public class OverviewServiceImpl implements OverviewService {
         MarginClientResponseDto response = clientMargin(companyName, quality);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    /** * Retrieves the margin for all clients for a specific product code.
+     *
+     * @param productCode the product code to filter by, or "all" for all products
+     * @return ResponseEntity containing a list of MarginClientResponseDto for each client
+     */
     @Override
-    public ResponseEntity<?> getAllMarginPerClient() {
-        return new ResponseEntity<>("",HttpStatus.OK);
+    public ResponseEntity<?> getAllMarginPerClient(String productCode) {
+        List<MarginClientResponseDto> allMargins = clientRepository.findAll()
+                .stream()
+                .map(client -> getMarginPerClient(client.getCompanyName(), productCode).getBody())
+                .toList();
+
+        return new ResponseEntity<>(allMargins, HttpStatus.OK);
     }
 
+    /** * Retrieves the margin for a specific client based on company name and product code.
+     *
+     * @param companyName the name of the company
+     * @param productCode the product code to filter by, or "all" for all products
+     * @return MarginClientResponseDto containing margin details for the client
+     */
     private MarginClientResponseDto clientMargin(String companyName, String productCode){
         Client client = clientRepository.findByCompanyName(companyName);
         if(client == null) {
