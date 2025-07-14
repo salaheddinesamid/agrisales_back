@@ -12,10 +12,10 @@ public class OverviewDto
 
     double totalOrdersPreProduction;
     double totalOrdersPostProduction;
-    Long totalReceivedOrders;
+    Long totalShippedOrders;
 
     double totalPreProductionRevenue;
     double totalPostProductionRevenue;
-    double totalReceivedOrdersRevenue;
+    double totalShippedRevenue;
     double totalRevenue;
 }

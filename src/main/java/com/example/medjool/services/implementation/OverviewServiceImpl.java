@@ -70,60 +70,80 @@ public class OverviewServiceImpl implements OverviewService {
 
         List<Order> orders = orderRepository.findAll();
         long totalOrders = orders.size();
-        double totalOrdersPreProduction = 0;
-        double totalOrdersPostProduction = 0;
-        long totalReceivedOrders = 0;
-        double totalReceivedRevenue = 0;
-        double totalPreProductionRevenue = 0;
-        double totalPostProductionRevenue = 0;
 
 
-       for(Order order : orders) {
-           if(order.getStatus().equals(OrderStatus.PRELIMINARY) ||
-                   order.getStatus().equals(OrderStatus.CONFIRMED)|| order.getStatus().equals(OrderStatus.IN_PRODUCTION)){
-               totalOrdersPreProduction += 1;
-               if(order.getCurrency().equals(OrderCurrency.USD)) {
-                     totalPreProductionRevenue += order.getTotalPrice() * 10.5;
+        double totalOrdersPreProduction = orders.stream().map(order -> {
+            if(order.getStatus().equals(OrderStatus.PRELIMINARY) ||
+                    order.getStatus().equals(OrderStatus.CONFIRMED) ||
+                    order.getStatus().equals(OrderStatus.IN_PRODUCTION)) {
+                return 1.0; // Count pre-production orders
+            }
+            return 0.0;
+        }).reduce(0.0, Double::sum);
+
+        double totalOrdersPostProduction = orders.stream().map(order -> {
+            if(order.getStatus().equals(OrderStatus.READY_TO_SHIPPED)) {
+                return 1.0; // Count pre-production orders
+            }
+            return 0.0;
+        }).reduce(0.0, Double::sum);;
+
+        long totalShippedOrders = orders.stream().map(order -> {
+            if (order.getStatus().equals(OrderStatus.SHIPPED)) {
+                return 1L; // Count shipped orders
+            }
+            return 0L; // Not a shipped order
+        }).reduce(0L, Long::sum);
+        double totalShippedRevenue = orders.stream().map(order -> {
+            if (order.getStatus().equals(OrderStatus.SHIPPED)) {
+                if(order.getCurrency().equals(OrderCurrency.USD)) {
+                    return order.getTotalPrice() * 10.5;
                 } else if(order.getCurrency().equals(OrderCurrency.EUR)) {
-                     totalPreProductionRevenue += order.getTotalPrice() * 11;
+                    return order.getTotalPrice() * 11;
                 } else if(order.getCurrency().equals(OrderCurrency.MAD)) {
-                     totalPreProductionRevenue += order.getTotalPrice();
-               }
-           }
-           else if (order.getStatus().equals(OrderStatus.READY_TO_SHIPPED)
-                   || order.getStatus().equals(OrderStatus.SHIPPED)) {
-               totalOrdersPostProduction += 1;
-               if(order.getCurrency().equals(OrderCurrency.USD)) {
-                     totalPostProductionRevenue += order.getTotalPrice() * 10.5;
+                    return order.getTotalPrice();
+                }
+            }
+            return 0.0; // Not a shipped order
+        }).reduce(0.0, Double::sum);
+        double totalPreProductionRevenue = orders.stream().map(order -> {
+            if(order.getStatus().equals(OrderStatus.PRELIMINARY) ||
+                    order.getStatus().equals(OrderStatus.CONFIRMED) ||
+                    order.getStatus().equals(OrderStatus.IN_PRODUCTION)) {
+                if(order.getCurrency().equals(OrderCurrency.USD)) {
+                    return order.getTotalPrice() * 10.5;
                 } else if(order.getCurrency().equals(OrderCurrency.EUR)) {
-                     totalPostProductionRevenue += order.getTotalPrice() * 11;
+                    return order.getTotalPrice() * 11;
                 } else if(order.getCurrency().equals(OrderCurrency.MAD)) {
-                     totalPostProductionRevenue += order.getTotalPrice();
-               }
-           }
-           else if (order.getStatus().equals(OrderStatus.RECEIVED)) {
-               totalReceivedOrders += 1;
-               if(order.getCurrency().equals(OrderCurrency.USD)) {
-                     totalReceivedRevenue += order.getTotalPrice() * 10.5;
+                    return order.getTotalPrice();
+                } // Count pre-production revenue
+            }
+            return 0.0;
+        }).reduce(0.0, Double::sum);;
+        double totalPostProductionRevenue = orders.stream().map(order -> {
+            if(order.getStatus().equals(OrderStatus.READY_TO_SHIPPED)) {
+                if(order.getCurrency().equals(OrderCurrency.USD)) {
+                    return order.getTotalPrice() * 10.5;
                 } else if(order.getCurrency().equals(OrderCurrency.EUR)) {
-                     totalReceivedRevenue += order.getTotalPrice() * 11;
+                    return order.getTotalPrice() * 11;
                 } else if(order.getCurrency().equals(OrderCurrency.MAD)) {
-                     totalReceivedRevenue += order.getTotalPrice();
-               }
-           }
-       }
+                    return order.getTotalPrice();
+                } // Count pre-production orders
+            }
+            return 0.0;
+        }).reduce(0.0, Double::sum);;
 
        overviewDto.setTotalStock(totalStockWeight);
        overviewDto.setTotalOrders(totalOrders);
        overviewDto.setTotalOrdersPreProduction(totalOrdersPreProduction);
        overviewDto.setTotalOrdersPostProduction(totalOrdersPostProduction);
-       overviewDto.setTotalReceivedOrders(totalReceivedOrders);
+       overviewDto.setTotalShippedOrders(totalShippedOrders);
 
        overviewDto.setTotalPreProductionRevenue(totalPreProductionRevenue);
        overviewDto.setTotalPostProductionRevenue(totalPostProductionRevenue);
-       overviewDto.setTotalReceivedOrdersRevenue(totalReceivedRevenue);
+       overviewDto.setTotalShippedRevenue(totalShippedRevenue);
 
-       overviewDto.setTotalRevenue(totalPreProductionRevenue + totalPostProductionRevenue + totalReceivedRevenue);
+       overviewDto.setTotalRevenue(totalPreProductionRevenue + totalPostProductionRevenue + totalShippedRevenue);
        return new ResponseEntity<>(overviewDto, HttpStatus.OK);
     }
 
