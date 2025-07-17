@@ -27,7 +27,6 @@ public class OrderItemResponseDto {
         this.productCode = orderItem.getProduct().getProductCode();
         this.brand = orderItem.getBrand();
         this.quality = orderItem.getProduct().getQuality();
-        this.color = orderItem.getProduct().getColor();
         this.pricePerKg = orderItem.getPricePerKg();
         this.currency = orderItem.getOrderCurrency().toString();
         this.packaging = orderItem.getPackaging();

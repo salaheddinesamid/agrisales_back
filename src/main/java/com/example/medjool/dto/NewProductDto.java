@@ -12,7 +12,6 @@ public class NewProductDto {
     private String productCode;
     private String callibre;
     private String quality;
-    private String color;
     private String farm;
     private double totalWeight;
 }

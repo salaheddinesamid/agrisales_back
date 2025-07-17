@@ -27,7 +27,6 @@ public class ProductResponseDto {
         this.productCode = product.getProductCode();
         this.callibre = product.getCallibre();
         this.totalWeight = product.getTotalWeight();
-        this.color = product.getColor();
         this.farm = product.getFarm();
         this.quality = product.getQuality();
 

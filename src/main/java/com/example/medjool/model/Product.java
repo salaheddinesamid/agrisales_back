@@ -28,9 +28,6 @@ public class Product {
     private Double totalWeight;
 
     @Column(nullable = false)
-    private String color;
-
-    @Column(nullable = false)
     private String farm;
 
     @Column(nullable = false)
