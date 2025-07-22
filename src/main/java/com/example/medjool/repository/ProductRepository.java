@@ -18,12 +18,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
      * Finds a product by its calibre, color, quality, and farm.
      *
      * @param callibre the calibre of the product
-     * @param color the color of the product
      * @param quality the quality of the product
      * @param farm the farm where the product is sourced
      * @return a Product matching the specified attributes, or null if not found
      */
-    Product findByCallibreAndColorAndQualityAndFarm(String callibre, String color, String quality,String farm);
+    Product findByCallibreAndQualityAndFarm(String callibre, String quality,String farm);
 
     /**     * Finds a product by its product code.
      *
