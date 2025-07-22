@@ -102,7 +102,6 @@ public class  OrderServiceTest {
         itemDto.setPricePerKg(2.5);
         itemDto.setPackaging(1.0);
         itemDto.setNumberOfPallets(1);
-        itemDto.setCurrency(OrderCurrency.USD.toString());
 
         MixedOrderDto mixedOrderDto = new MixedOrderDto();
         mixedOrderDto.setItems(null); // No mixed items
@@ -166,7 +165,6 @@ public class  OrderServiceTest {
         itemDto.setPricePerKg(2.5);
         itemDto.setPackaging(1);
         itemDto.setNumberOfPallets(1);
-        itemDto.setCurrency("EUR");
 
         orderRequest.setItems(List.of(itemDto));
         orderRequest.setCurrency("EUR");

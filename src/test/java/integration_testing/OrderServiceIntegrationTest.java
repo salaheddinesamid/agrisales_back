@@ -87,7 +87,6 @@ public class OrderServiceIntegrationTest {
                 "Test Product",
                 "Small",
                 4000.0,
-                "Dark",
                 "Farm A",
                 "Export A",
                 null

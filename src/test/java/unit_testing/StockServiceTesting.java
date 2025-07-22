@@ -45,13 +45,12 @@ class StockServiceTesting {
 
         NewProductDto newProductDto = new NewProductDto();
         newProductDto.setCallibre("BBS");
-        newProductDto.setColor("Dark");
         newProductDto.setQuality("Export A");
         newProductDto.setFarm("Medjool");
 
         Product existingProduct = new Product();
-        when(productRepository.findByCallibreAndColorAndQualityAndFarm(
-                "BBS", "Dark", "Export A", "Medjool")).thenReturn(existingProduct);
+        when(productRepository.findByCallibreAndQualityAndFarm(
+                "BBS",  "Export A", "Medjool")).thenReturn(existingProduct);
 
         // Call the service method
         ResponseEntity<Object> response = stockService.createNewProduct(newProductDto);
@@ -67,13 +66,12 @@ class StockServiceTesting {
 
         NewProductDto newProductDto = new NewProductDto();
         newProductDto.setCallibre("A");
-        newProductDto.setColor("Red");
-        newProductDto.setQuality("High");
+        newProductDto.setQuality("Export A");
         newProductDto.setFarm("Farm1");
         newProductDto.setTotalWeight(100.0);
 
-        when(productRepository.findByCallibreAndColorAndQualityAndFarm(
-                "A", "Red", "High", "Farm1")).thenReturn(null);
+        when(productRepository.findByCallibreAndQualityAndFarm(
+                "A",  "Export A", "Farm1")).thenReturn(null);
 
 
         ResponseEntity<Object> response = stockService.createNewProduct(newProductDto);
