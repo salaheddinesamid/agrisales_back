@@ -1,13 +1,16 @@
 package com.example.medjool.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "mixed_order_item_details")
 public class MixedOrderItemDetails {
 

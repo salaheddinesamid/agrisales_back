@@ -21,13 +21,4 @@ public class MedjoolApplication {
 		SpringApplication.run(MedjoolApplication.class, args);
 	}
 
-	@Bean
-	public CacheManager cacheManager() {
-		CaffeineCacheManager cacheManager = new CaffeineCacheManager("products", "users","test");
-		cacheManager.setCaffeine(Caffeine.newBuilder()
-				.expireAfterWrite(10, TimeUnit.MINUTES)
-				.maximumSize(100));
-		return cacheManager;
-	}
-
 }

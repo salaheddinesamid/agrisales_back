@@ -96,9 +96,8 @@ public class StockServiceImpl implements StockService {
      */
     @Override
     public ResponseEntity<Object> createNewProduct(NewProductDto newProductDto) {
-        Product product = productRepository.findByCallibreAndColorAndQualityAndFarm(
+        Product product = productRepository.findByCallibreAndQualityAndFarm(
                 newProductDto.getCallibre(),
-                newProductDto.getColor(),
                 newProductDto.getQuality(),
                 newProductDto.getFarm()
         );
@@ -108,7 +107,6 @@ public class StockServiceImpl implements StockService {
         } else {
             Product newProduct = new Product();
             newProduct.setCallibre(newProductDto.getCallibre());
-            newProduct.setColor(newProductDto.getColor());
             newProduct.setQuality(newProductDto.getQuality());
             newProduct.setFarm(newProductDto.getFarm());
             newProduct.setTotalWeight(newProductDto.getTotalWeight());
@@ -162,7 +160,6 @@ public class StockServiceImpl implements StockService {
                 Product newProduct = new Product();
                 newProduct.setProductCode(productCode);
                 newProduct.setCallibre(callibre);
-                newProduct.setColor(color);
                 newProduct.setQuality(quality);
                 newProduct.setFarm(farm);
                 newProduct.setTotalWeight(0.0); // Initialized with 0 weight
