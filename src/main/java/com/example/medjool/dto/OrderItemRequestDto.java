@@ -18,6 +18,4 @@ public class OrderItemRequestDto {
     private double itemWeight;
     private String itemBrand;
     private Integer palletId;
-    private String currency;
-
 }

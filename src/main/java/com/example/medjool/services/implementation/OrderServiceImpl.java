@@ -76,10 +76,7 @@ public class OrderServiceImpl implements OrderService{
         order.setClient(client);
         order.setOrderItems(new ArrayList<>());
 
-        double totalPrice = 0.0;
-        double totalWeight = 0.0;
-        long estimatedDeliveryTime = 0;
-        double totalWorkingHours = 0;
+
 
         Set<Product> updatedProducts = new HashSet<>();
         List<OrderItem> orderItemsList = new ArrayList<>();
@@ -93,46 +90,17 @@ public class OrderServiceImpl implements OrderService{
         Map<Integer, Pallet> palletMap = palletList.stream()
                 .collect(Collectors.toMap(Pallet::getPalletId, p -> p));
 
-        for (OrderItemRequestDto itemDto : orderRequest.getItems()) {
-            Product product = productMap.get(itemDto.getProductCode());
-            if (product == null) throw new ProductNotFoundException();
+        Forex forex = forexRepository.findByCurrency(ForexCurrency.valueOf(orderRequest.getCurrency()))
+                .orElseThrow(() -> new RuntimeException("Missing forex rate for " + orderRequest.getCurrency()));
 
-            if (!validateStock(product, itemDto.getItemWeight())) {
-                throw new ProductLowStock("Product " + product.getProductCode() + " has insufficient stock.");
-            }
+        String orderCurrency = orderRequest.getCurrency();
+        order.setForex(forex);
 
-            product.setTotalWeight(product.getTotalWeight() - itemDto.getItemWeight());
-            updatedProducts.add(product);
-
-            Pallet pallet = palletMap.get(itemDto.getPalletId());
-            if (pallet == null) throw new PalletNotFoundException("Pallet ID " + itemDto.getPalletId() + " not found.");
-
-            OrderItem orderItem = new OrderItem(
-                    product,
-                    itemDto.getItemWeight(),
-                    itemDto.getPricePerKg(),
-                    itemDto.getPackaging(),
-                    itemDto.getNumberOfPallets(),
-                    OrderCurrency.valueOf(itemDto.getCurrency()),
-                    itemDto.getItemBrand(),
-                    pallet,
-                    order
-            );
-
-            Forex forex = forexRepository.findByCurrency(ForexCurrency.valueOf(itemDto.getCurrency()))
-                    .orElseThrow(() -> new RuntimeException("Missing forex rate for " + itemDto.getCurrency()));
-
-            order.setForex(forex);
-            order.setCurrency(OrderCurrency.valueOf(itemDto.getCurrency()));
-
-            orderItemsList.add(orderItem);
-            order.getOrderItems().add(orderItem);
-
-            totalPrice += itemDto.getPricePerKg() * itemDto.getItemWeight();
-            totalWeight += itemDto.getItemWeight();
-            estimatedDeliveryTime += pallet.getPreparationTime();
-            totalWorkingHours += pallet.getPreparationTime();
-        }
+        /**         * Process Regular Order Items
+         * This will handle the regular items in the order request.
+         */
+        processRegularOrder(order, orderRequest.getItems(),
+                orderItemsList, orderCurrency, palletMap, productMap, updatedProducts);
 
         // Mixed Order Logic
         if (orderRequest.getMixedOrderDto().getItems() != null) {
@@ -140,13 +108,45 @@ public class OrderServiceImpl implements OrderService{
             processMixedOrder(order,mixedOrderDto,palletMap,productMap,updatedProducts);
         }
 
-        // Set order metadata
+        // Calculate total price and weight
+        double totalRegularItemPrice =
+                order.getOrderItems().stream().map(item -> item.getPricePerKg() * item.getItemWeight()).reduce(0.0, Double::sum);
+
+        double totalRegularItemWeight =
+                order.getOrderItems().stream().map(OrderItem::getItemWeight).reduce(0.0, Double::sum);
+
+        double totalMixedItemPrice = Optional.ofNullable(order.getMixedOrderItem())
+                .map(MixedOrderItem::getItemDetails)
+                .map(details -> details.stream()
+                        .mapToDouble(item -> item.getPricePerKg() * item.getWeight())
+                        .sum())
+                .orElse(0.0);
+
+        double totalMixedItemWeight = Optional.ofNullable(order.getMixedOrderItem())
+                .map(MixedOrderItem::getItemDetails)
+                .map(details -> details.stream()
+                        .mapToDouble(MixedOrderItemDetails::getWeight)
+                        .sum())
+                .orElse(0.0);
+
+
+        double totalPrice = totalRegularItemPrice + totalMixedItemPrice;
+        double totalWeight = totalRegularItemWeight + totalMixedItemWeight;
         order.setTotalPrice(totalPrice);
         order.setTotalWeight(totalWeight);
+
+        double totalWorkingHours = order.getOrderItems().stream()
+                .mapToDouble(orderItem -> orderItem.getPallet().getPreparationTime())
+                .sum();
+
+
+        long estimatedDeliveryHours = (long) totalWorkingHours;
+
+
         order.setProductionDate(LocalDateTime.now());
         order.setStatus(OrderStatus.PRELIMINARY);
         order.setShippingAddress(orderRequest.getShippingAddress());
-        order.setDeliveryDate(LocalDateTime.now().plusHours(estimatedDeliveryTime));
+        order.setDeliveryDate(LocalDateTime.now().plusHours(estimatedDeliveryHours));
         order.setWorkingHours(totalWorkingHours);
         order.setOrderDate(LocalDate.now());
 
@@ -167,7 +167,40 @@ public class OrderServiceImpl implements OrderService{
         return product.getTotalWeight() >= weight;
     }
 
-    private void processRegularOrder(OrderRequestDto orderRequestDto) {
+    private void processRegularOrder(Order order,List<OrderItemRequestDto> regularItems,List<OrderItem> orderItemList,String currency,Map<Integer, Pallet> palletMap, Map<String, Product> productMap, Set<Product> updatedProducts) {
+
+        for (OrderItemRequestDto itemDto : regularItems) {
+            Product product = productMap.get(itemDto.getProductCode());
+            if (product == null) throw new ProductNotFoundException();
+
+            if (!validateStock(product, itemDto.getItemWeight())) {
+                throw new ProductLowStock("Product " + product.getProductCode() + " has insufficient stock.");
+            }
+
+            product.setTotalWeight(product.getTotalWeight() - itemDto.getItemWeight());
+            updatedProducts.add(product);
+
+            Pallet pallet = palletMap.get(itemDto.getPalletId());
+            if (pallet == null) throw new PalletNotFoundException("Pallet ID " + itemDto.getPalletId() + " not found.");
+
+            OrderItem orderItem = new OrderItem(
+                    product,
+                    itemDto.getItemWeight(),
+                    itemDto.getPricePerKg(),
+                    itemDto.getPackaging(),
+                    itemDto.getNumberOfPallets(),
+                    OrderCurrency.valueOf(currency),
+                    itemDto.getItemBrand(),
+                    pallet,
+                    order
+            );
+
+
+            order.setCurrency(OrderCurrency.valueOf(currency));
+
+            orderItemList.add(orderItem);
+            order.getOrderItems().add(orderItem);
+        }
 
     }
     private void processMixedOrder(Order order, MixedOrderDto mixedOrderDto, Map<Integer, Pallet> palletMap, Map<String, Product> productMap, Set<Product> updatedProducts) {
@@ -321,7 +354,7 @@ public class OrderServiceImpl implements OrderService{
                     dto.getPricePerKg(),
                     dto.getPackaging(),
                     dto.getNumberOfPallets(),
-                    OrderCurrency.valueOf(dto.getCurrency()),
+                    order.getCurrency(),
                     dto.getItemBrand(),
                     pallet,
                     order

@@ -1,7 +1,6 @@
 package com.example.medjool.services;
 import com.example.medjool.dto.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
