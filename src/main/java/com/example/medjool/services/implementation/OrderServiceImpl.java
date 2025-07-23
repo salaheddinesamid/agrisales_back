@@ -195,9 +195,7 @@ public class OrderServiceImpl implements OrderService{
                     order
             );
 
-
             order.setCurrency(OrderCurrency.valueOf(currency));
-
             orderItemList.add(orderItem);
             order.getOrderItems().add(orderItem);
         }
