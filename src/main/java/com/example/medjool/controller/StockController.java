@@ -68,8 +68,9 @@ public class StockController {
      * @throws IOException if an error occurs while reading the file.
      */
     @PutMapping("/update")
-    public ResponseEntity<Object> updateStock(@RequestBody MultipartFile file) throws IOException {
-        return stockService.updateStock(file);
+    public ResponseEntity<Object> updateStock(@RequestBody MultipartFile file ,
+                                              @RequestParam(value = "week_number") Integer weekNumber) throws IOException {
+        return stockService.updateStock(file,weekNumber);
     }
 
     @GetMapping("/product_code/get_all")

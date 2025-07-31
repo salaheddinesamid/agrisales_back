@@ -40,7 +40,7 @@ public class StockServiceIntegrationTest {
         FileInputStream inputStream = new FileInputStream(csvFile);
         MultipartFile file = new MockMultipartFile("file", csvFile.getName(), "text/csv", inputStream);
 
-        ResponseEntity<Object> response = stockService.updateStock(file);
+        ResponseEntity<Object> response = stockServic.updateStock(file);
 
         // Vérifications
         assertEquals(200, response.getStatusCodeValue());

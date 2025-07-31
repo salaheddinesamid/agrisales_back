@@ -22,7 +22,7 @@ public interface StockService {
      * @return a ResponseEntity indicating the result of the operation.
      * @throws IOException if an error occurs while reading the file.
      */
-    ResponseEntity<Object> updateStock(MultipartFile file) throws IOException;
+    ResponseEntity<Object> updateStock(MultipartFile file, Integer weekNumber) throws IOException;
 
     /** * Creates a new product in the stock.
      *

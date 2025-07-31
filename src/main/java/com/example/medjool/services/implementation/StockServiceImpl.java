@@ -12,19 +12,18 @@ import org.apache.commons.csv.CSVRecord;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,7 +61,7 @@ public class StockServiceImpl implements StockService {
      */
     @Override
     @Transactional
-    public ResponseEntity<Object> updateStock(MultipartFile file) throws IOException {
+    public ResponseEntity<Object> updateStock(MultipartFile file, Integer weekNumber) throws IOException {
         try (
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(file.getInputStream()));
                 CSVParser csvParser = new CSVParser(bufferedReader, CSVFormat.DEFAULT.withFirstRecordAsHeader());
@@ -71,7 +70,7 @@ public class StockServiceImpl implements StockService {
                 System.out.println("Reading the row");
                 String productCode = record.get("product_code");
                 Double totalWeight = Double.parseDouble(record.get("total_weight"));
-                Product product = productRepository.findByProductCode(productCode).orElseThrow(() -> new ProductNotFoundException());
+                Product product = productRepository.findByProductCode(productCode).orElseThrow(ProductNotFoundException::new);
 
                 if (product != null) {
                     product.setTotalWeight(product.getTotalWeight() + totalWeight);
@@ -81,11 +80,43 @@ public class StockServiceImpl implements StockService {
                 }
             }
 
+            updateAnalytics(file, weekNumber);
             return new ResponseEntity<>("Stock updated successfully", HttpStatus.OK);
+
         } catch (Exception e) {
             return new ResponseEntity<>("Failed to update stock: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    /**     * Sends the uploaded CSV file to the Django analytics service for further processing.
+     *
+     * @param multipartFile The uploaded CSV file containing product data.
+     * @param weekNumber The week number for which the analytics are being updated.
+     */
+    private void updateAnalytics(MultipartFile multipartFile, Integer weekNumber) {
+        try {
+            // Create a temp file and write the multipart content to it
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+            body.add("file", new MultipartInputStreamFileResource(multipartFile.getInputStream(), multipartFile.getOriginalFilename()));
+
+            HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
+            String url = "http://127.0.0.1:8000/stock/update/" + weekNumber + "/";
+
+            ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
+
+            System.out.println("✅ Success: " + response.getBody());
+
+        } catch (Exception e) {
+            System.err.println("❌ Error sending file: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
 
 
     /**     * Creates a new product in the stock based on the provided NewProductDto.
@@ -192,4 +223,24 @@ public class StockServiceImpl implements StockService {
 
 
 
+}
+
+class MultipartInputStreamFileResource extends InputStreamResource {
+
+    private final String filename;
+
+    public MultipartInputStreamFileResource(InputStream inputStream, String filename) {
+        super(inputStream);
+        this.filename = filename;
+    }
+
+    @Override
+    public String getFilename() {
+        return this.filename;
+    }
+
+    @Override
+    public long contentLength() {
+        return -1; // unknown length - forces multipart boundary to not include it
+    }
 }
