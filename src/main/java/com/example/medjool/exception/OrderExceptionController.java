@@ -25,5 +25,10 @@ public class OrderExceptionController {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(MixedOrderExceedPalletWeightException.class)
+    public ResponseEntity<Object> handleMixedOrderExceedPalletWeightException(MixedOrderExceedPalletWeightException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
 
 }
