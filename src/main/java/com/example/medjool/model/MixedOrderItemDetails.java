@@ -37,4 +37,7 @@ public class MixedOrderItemDetails {
 
     @Column(name = "price_per_kg",nullable = false)
     private double pricePerKg;
+
+    @Column(name = "total_price",nullable = false)
+    private double totalPrice;
 }

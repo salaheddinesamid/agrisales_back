@@ -14,7 +14,6 @@ import java.util.List;
 public class OrderResponseDto {
 
     private DateFormatter dateFormatter = new DateFormatter();
-
     private Long id;
     private String clientName;
     private double totalPrice;
@@ -51,6 +50,8 @@ public class OrderResponseDto {
 class MixedOrderResponseDto{
 
     private List<MixedOrderItemDto> items;
+    private double totalWeight;
+    private double totalPrice;
     private int palletId;
 
     public MixedOrderResponseDto(MixedOrderItem mixedOrderItem){
@@ -58,6 +59,8 @@ class MixedOrderResponseDto{
                 .map(MixedOrderItemDto::new)
                 .toList();
         this.palletId = mixedOrderItem.getPallet().getPalletId();
+        this.totalWeight = mixedOrderItem.getTotalWeight();
+        this.totalPrice = mixedOrderItem.getTotalPrice();
     }
 
 }
@@ -71,6 +74,7 @@ class MixedOrderItemDto{
     private double percentage;
     private double pricePerKg;
     private double weight;
+    private double price;
 
     public MixedOrderItemDto(MixedOrderItemDetails mixedOrderItemDetails){
         this.productCode = mixedOrderItemDetails.getProduct().getProductCode();
@@ -78,5 +82,6 @@ class MixedOrderItemDto{
         this.brand = mixedOrderItemDetails.getBrand();
         this.pricePerKg = mixedOrderItemDetails.getPricePerKg();
         this.weight = mixedOrderItemDetails.getWeight();
+        this.price = mixedOrderItemDetails.getTotalPrice();
     }
 }

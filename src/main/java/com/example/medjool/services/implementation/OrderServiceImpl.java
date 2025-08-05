@@ -203,10 +203,16 @@ public class OrderServiceImpl implements OrderService{
     }
     private void processMixedOrder(Order order, MixedOrderDto mixedOrderDto, Map<Integer, Pallet> palletMap, Map<String, Product> productMap, Set<Product> updatedProducts) {
         MixedOrderItem mixedOrderItem = new MixedOrderItem();
-
+        double totalOrderWeight = mixedOrderDto.getItems().stream().
+                mapToDouble(MixedOrderItemRequestDto::getWeight)
+                .sum();
         Pallet mixedPallet = palletMap.get(mixedOrderDto.getPalletId());
         if (mixedPallet == null) {
             throw new PalletNotFoundException("Pallet ID " + mixedOrderDto.getPalletId() + " not found.");
+        }
+
+        if(totalOrderWeight > mixedPallet.getTotalNet()){
+            throw new MixedOrderExceedPalletWeightException("Mixed order weight exceeds pallet capacity.");
         }
 
         List<MixedOrderItemDetails> mixedDetails = new ArrayList<>();
@@ -215,6 +221,7 @@ public class OrderServiceImpl implements OrderService{
             if (product == null) throw new ProductNotFoundException();
 
             double weight = mixedPallet.getTotalNet() * (detailDto.getPercentage() / 100.0);
+            double price = weight * detailDto.getPricePerKg();
             if (!validateStock(product, detailDto.getWeight())) {
                 throw new ProductLowStock("Product " + product.getProductCode() + " has insufficient stock.");
             }
@@ -228,12 +235,23 @@ public class OrderServiceImpl implements OrderService{
             detail.setBrand(detailDto.getBrand());
             detail.setPercentage(detailDto.getPercentage());
             detail.setPricePerKg(detailDto.getPricePerKg());
+            detail.setTotalPrice(price);
             detail.setMixedOrderItem(mixedOrderItem); // set parent
             mixedDetails.add(detail);
         }
+
+        double totalWeight = mixedDetails.stream()
+                .mapToDouble(MixedOrderItemDetails::getWeight)
+                .sum();
+
+        double totalPrice = mixedDetails.stream()
+                .mapToDouble(detail -> detail.getWeight() * detail.getPricePerKg())
+                .sum();
         mixedOrderItem.setPallet(mixedPallet);
         mixedOrderItem.setItemDetails(mixedDetails);
         mixedOrderItem.setOrder(order);
+        mixedOrderItem.setTotalWeight(totalWeight);
+        mixedOrderItem.setTotalPrice(totalPrice);
         order.setMixedOrderItem(mixedOrderItem);
     }
 

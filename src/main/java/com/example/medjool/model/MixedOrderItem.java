@@ -20,10 +20,16 @@ public class MixedOrderItem {
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-     @JoinColumn(name = "pallet_id")
-     @ManyToOne(fetch = FetchType.LAZY)
-     private Pallet pallet;
+    @JoinColumn(name = "pallet_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Pallet pallet;
 
     @OneToMany(mappedBy = "mixedOrderItem", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MixedOrderItemDetails> itemDetails;
+
+    @Column(name = "total_weight",nullable = false)
+    private double totalWeight;
+
+    @Column(name = "total_price")
+    private double totalPrice;
 }
