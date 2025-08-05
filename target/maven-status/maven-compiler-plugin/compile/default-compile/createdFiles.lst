@@ -7,6 +7,7 @@ com\example\medjool\model\ProductionStatus.class
 com\example\medjool\exception\JwtExceptionController.class
 com\example\medjool\repository\OrderRepository.class
 com\example\medjool\model\ProductStatus.class
+com\example\medjool\dto\UpdateAnalyticsResponseDto.class
 com\example\medjool\controller\AuthenticationController.class
 com\example\medjool\exception\ProductLowStock.class
 com\example\medjool\component\RoleInitializer.class
@@ -40,6 +41,7 @@ com\example\medjool\controller\ShipmentController.class
 com\example\medjool\services\implementation\OrderServiceImpl.class
 com\example\medjool\services\AlertService.class
 com\example\medjool\controller\StockController.class
+com\example\medjool\dto\UpdateAnalyticsRequestDto.class
 com\example\medjool\repository\RoleRepository.class
 com\example\medjool\dto\UpdateClientDto.class
 com\example\medjool\exception\SettingNotFoundException.class
@@ -99,6 +101,7 @@ com\example\medjool\services\implementation\StockServiceImpl.class
 com\example\medjool\services\implementation\AlertServiceImpl.class
 com\example\medjool\dto\ProductionResponseDto.class
 com\example\medjool\dto\NotificationResponseDto.class
+com\example\medjool\exception\MixedOrderExceedPalletWeightException.class
 com\example\medjool\dto\OrderUpdateRequestDto.class
 com\example\medjool\dto\UpdateForexDto.class
 com\example\medjool\dto\AuthenticationResponseDto.class
@@ -117,6 +120,7 @@ com\example\medjool\dto\OrderHistoryResponseDto.class
 com\example\medjool\exception\ClientExceptionController.class
 com\example\medjool\repository\ContactRepository.class
 com\example\medjool\model\Contact.class
+com\example\medjool\services\implementation\MultipartInputStreamFileResource.class
 com\example\medjool\dto\LoginRequestDto.class
 com\example\medjool\dto\ProductionRequestDto.class
 com\example\medjool\controller\UserManagementController.class

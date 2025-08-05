@@ -82,6 +82,7 @@ C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\c
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\exception\OrderCannotBeChangedException.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\model\Client.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\repository\ShipmentRepository.java
+C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\exception\MixedOrderExceedPalletWeightException.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\model\Pallet.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\services\SystemSettingService.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\repository\MixeOrderItemDetailsRepo.java
@@ -90,6 +91,7 @@ C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\d
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\model\OrderHistory.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\NewProductDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\services\implementation\OverviewServiceImpl.java
+C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\UpdateAnalyticsRequestDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\OrderHistoryResponseDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\exception\TokenExpiredException.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\OrderCostDto.java
@@ -123,6 +125,7 @@ C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\d
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\model\Role.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\exception\ClientNotActiveException.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\OrderHistoryDto.java
+C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\UpdateAnalyticsResponseDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\dto\UserDetailsDto.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\services\OverviewService.java
 C:\Users\s.samid\Downloads\medjool_demo_back\src\main\java\com\example\medjool\controller\StockController.java
