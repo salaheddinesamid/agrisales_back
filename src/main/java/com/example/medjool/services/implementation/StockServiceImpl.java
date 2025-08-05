@@ -2,6 +2,8 @@ package com.example.medjool.services.implementation;
 
 import com.example.medjool.dto.NewProductDto;
 import com.example.medjool.dto.ProductResponseDto;
+import com.example.medjool.dto.UpdateAnalyticsRequestDto;
+import com.example.medjool.dto.UpdateAnalyticsResponseDto;
 import com.example.medjool.exception.ProductNotFoundException;
 import com.example.medjool.model.Product;
 import com.example.medjool.repository.ProductRepository;
@@ -12,31 +14,30 @@ import org.apache.commons.csv.CSVRecord;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 public class StockServiceImpl implements StockService {
 
     private final ProductRepository productRepository;
-    private final RestTemplate restTemplate;
+    //private final RestTemplate restTemplate;
 
     @Autowired
     public StockServiceImpl(ProductRepository productRepository, RestTemplate restTemplate) {
         this.productRepository = productRepository;
-        this.restTemplate = restTemplate;
+        //this.restTemplate = restTemplate;
     }
 
     /**     * Fetches all products from the database and returns them as a list of ProductResponseDto.
@@ -61,26 +62,37 @@ public class StockServiceImpl implements StockService {
      */
     @Override
     @Transactional
-    public ResponseEntity<Object> updateStock(MultipartFile file, Integer weekNumber) throws IOException {
+    public ResponseEntity<Object> updateStock(MultipartFile file, Integer weekNumber) {
+        List<UpdateAnalyticsRequestDto> updateAnalyticsRequestDto = new ArrayList<>();
+
         try (
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(file.getInputStream()));
-                CSVParser csvParser = new CSVParser(bufferedReader, CSVFormat.DEFAULT.withFirstRecordAsHeader());
+                CSVParser csvParser = new CSVParser(bufferedReader, CSVFormat.DEFAULT.withFirstRecordAsHeader())
         ) {
             for (CSVRecord record : csvParser) {
-                System.out.println("Reading the row");
-                String productCode = record.get("product_code");
-                Double totalWeight = Double.parseDouble(record.get("total_weight"));
-                Product product = productRepository.findByProductCode(productCode).orElseThrow(ProductNotFoundException::new);
+                try {
+                    String productCode = record.get("product_code").trim();
+                    Double totalWeight = Double.parseDouble(record.get("total_weight").trim());
 
-                if (product != null) {
+                    // Check if product exists in DB
+                    Product product = productRepository.findByProductCode(productCode)
+                            .orElseThrow(() -> new ProductNotFoundException());
+
+                    // Optionally update local DB weight if needed
                     product.setTotalWeight(product.getTotalWeight() + totalWeight);
-                } else {
-                    // Optionally log or collect missing product IDs
-                    System.out.println("Product not found: " + productCode);
+                    productRepository.save(product);
+
+                    updateAnalyticsRequestDto.add(new UpdateAnalyticsRequestDto(productCode, totalWeight));
+
+                } catch (ProductNotFoundException | NumberFormatException e) {
+                    // You can log these or store in a results object
+                    System.err.println("Skipping record due to error: " + e.getMessage());
                 }
             }
 
-            updateAnalytics(file, weekNumber);
+            // Send JSON data to Django analytics
+            updateAnalytics(updateAnalyticsRequestDto, weekNumber);
+
             return new ResponseEntity<>("Stock updated successfully", HttpStatus.OK);
 
         } catch (Exception e) {
@@ -88,33 +100,30 @@ public class StockServiceImpl implements StockService {
         }
     }
 
-    /**     * Sends the uploaded CSV file to the Django analytics service for further processing.
-     *
-     * @param multipartFile The uploaded CSV file containing product data.
-     * @param weekNumber The week number for which the analytics are being updated.
-     */
-    private void updateAnalytics(MultipartFile multipartFile, Integer weekNumber) {
+    private void updateAnalytics(List<UpdateAnalyticsRequestDto> requestDtoList, Integer weekNumber) {
+        String url = "http://127.0.0.1:8000/stock/update/" + weekNumber + "/";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<List<UpdateAnalyticsRequestDto>> httpEntity = new HttpEntity<>(requestDtoList, headers);
+        RestTemplate restTemplate = new RestTemplate();
+
         try {
-            // Create a temp file and write the multipart content to it
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+            ResponseEntity<String> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    httpEntity,
+                    String.class
+            );
 
-            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-            body.add("file", new MultipartInputStreamFileResource(multipartFile.getInputStream(), multipartFile.getOriginalFilename()));
-
-            HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-
-            String url = "http://127.0.0.1:8000/stock/update/" + weekNumber + "/";
-
-            ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
-
-            System.out.println("✅ Success: " + response.getBody());
-
+            System.out.println("Analytics update response: " + response.getBody());
         } catch (Exception e) {
-            System.err.println("❌ Error sending file: " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("Failed to send analytics data: " + e.getMessage());
+            throw new RuntimeException("Analytics update failed", e);
         }
     }
+
 
 
 
