@@ -35,6 +35,7 @@ public class CorsConfiguration {
                 registry.addMapping("/**") // Apply to all endpoints
                         .allowedOrigins(
                                 "http://localhost:3000",
+                                "http://127.0.0.1:6000",
                                 "http://192.168.15.52:3000"
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allow specific HTTP methods

@@ -99,7 +99,7 @@ class StockServiceTesting {
             when(productRepository.findById(1L)).thenReturn(Optional.of(product1));
 
 
-            ResponseEntity<Object> response = stockService.updateStock(file);
+            ResponseEntity<Object> response = stockService.updateStock(file,2);
 
             // Vérifications
             assertEquals(200, response.getStatusCodeValue());
@@ -118,7 +118,7 @@ class StockServiceTesting {
             when(productRepository.findByProductCode("789")).thenReturn(Optional.empty());
 
             // Appel de la méthode à tester
-            ResponseEntity<Object> response = stockService.updateStock(file);
+            ResponseEntity<Object> response = stockService.updateStock(file,2);
 
             // Vérifications
             assertEquals(200, response.getStatusCodeValue());
