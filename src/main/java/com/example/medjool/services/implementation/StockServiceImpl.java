@@ -3,11 +3,13 @@ package com.example.medjool.services.implementation;
 import com.example.medjool.dto.NewProductDto;
 import com.example.medjool.dto.ProductResponseDto;
 import com.example.medjool.dto.UpdateAnalyticsRequestDto;
-import com.example.medjool.dto.UpdateAnalyticsResponseDto;
 import com.example.medjool.exception.ProductNotFoundException;
 import com.example.medjool.model.Product;
 import com.example.medjool.repository.ProductRepository;
 import com.example.medjool.services.StockService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -16,8 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class StockServiceImpl implements StockService {
 
@@ -82,7 +87,8 @@ public class StockServiceImpl implements StockService {
                     product.setTotalWeight(product.getTotalWeight() + totalWeight);
                     productRepository.save(product);
 
-                    updateAnalyticsRequestDto.add(new UpdateAnalyticsRequestDto(productCode, totalWeight));
+                    UpdateAnalyticsRequestDto dto = new UpdateAnalyticsRequestDto(productCode,totalWeight);
+                    updateAnalyticsRequestDto.add(dto);
 
                 } catch (ProductNotFoundException | NumberFormatException e) {
                     // You can log these or store in a results object
@@ -100,6 +106,7 @@ public class StockServiceImpl implements StockService {
         }
     }
 
+    /*
     private void updateAnalytics(List<UpdateAnalyticsRequestDto> requestDtoList, Integer weekNumber) {
         String url = "http://127.0.0.1:8000/stock/update/" + weekNumber + "/";
 
@@ -116,10 +123,56 @@ public class StockServiceImpl implements StockService {
                     httpEntity,
                     String.class
             );
-
+            log.info("The request body sent to the analytics service is : " + requestDtoList.toString());
             System.out.println("Analytics update response: " + response.getBody());
         } catch (Exception e) {
             System.err.println("Failed to send analytics data: " + e.getMessage());
+            log.info("The request body is: " + requestDtoList.toString() );
+            throw new RuntimeException("Analytics update failed", e);
+        }
+    }
+
+     */
+    
+    private void updateAnalytics(List<UpdateAnalyticsRequestDto> requestDtoList, Integer weekNumber) {
+        String url = "http://127.0.0.1:8000/stock/update/" + weekNumber + "/";
+
+        try {
+            // 1. Serialize the request body to JSON
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonPayload = mapper.writeValueAsString(requestDtoList);
+
+            System.out.println("📦 JSON Payload to Django:\n" + jsonPayload);
+
+            // 2. Set headers
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            // 3. Build the HTTP request
+            HttpEntity<String> httpEntity = new HttpEntity<>(jsonPayload, headers);
+
+            // 4. Configure RestTemplate with Jackson
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
+            // 5. Send the request
+            ResponseEntity<String> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    httpEntity,
+                    String.class
+            );
+
+            System.out.println("✅ Django Response: " + response.getStatusCode());
+            System.out.println("📩 Response Body: " + response.getBody());
+
+        } catch (HttpClientErrorException e) {
+            System.err.println("❌ HTTP Error: " + e.getStatusCode());
+            System.err.println("❌ Response Body: " + e.getResponseBodyAsString());
+            throw new RuntimeException("Django analytics update failed: " + e.getMessage(), e);
+
+        } catch (Exception e) {
+            System.err.println("❌ Unexpected error while sending analytics: " + e.getMessage());
             throw new RuntimeException("Analytics update failed", e);
         }
     }
