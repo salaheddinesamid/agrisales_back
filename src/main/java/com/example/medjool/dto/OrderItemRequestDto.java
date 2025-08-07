@@ -15,7 +15,7 @@ public class OrderItemRequestDto {
     private double pricePerKg;
     private double packaging;
     private int numberOfPallets;
-    private double itemWeight;
+    //private double itemWeight;
     private String itemBrand;
     private Integer palletId;
 }

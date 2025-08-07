@@ -171,21 +171,25 @@ public class OrderServiceImpl implements OrderService{
 
         for (OrderItemRequestDto itemDto : regularItems) {
             Product product = productMap.get(itemDto.getProductCode());
-            if (product == null) throw new ProductNotFoundException();
-
-            if (!validateStock(product, itemDto.getItemWeight())) {
-                throw new ProductLowStock("Product " + product.getProductCode() + " has insufficient stock.");
-            }
-
-            product.setTotalWeight(product.getTotalWeight() - itemDto.getItemWeight());
-            updatedProducts.add(product);
 
             Pallet pallet = palletMap.get(itemDto.getPalletId());
             if (pallet == null) throw new PalletNotFoundException("Pallet ID " + itemDto.getPalletId() + " not found.");
 
+            double itemWeight = pallet.getTotalNet() * itemDto.getNumberOfPallets(); // Item weight to be calculated based on pallet weight and number of pallets
+            if (product == null) throw new ProductNotFoundException();
+
+            if (!validateStock(product, itemWeight)) {
+                throw new ProductLowStock("Product " + product.getProductCode() + " has insufficient stock.");
+            }
+
+            product.setTotalWeight(product.getTotalWeight() - itemWeight); // Update product weight in the stock
+            updatedProducts.add(product); // Add the updated product into a list
+
+
+
             OrderItem orderItem = new OrderItem(
                     product,
-                    itemDto.getItemWeight(),
+                    itemWeight,
                     itemDto.getPricePerKg(),
                     itemDto.getPackaging(),
                     itemDto.getNumberOfPallets(),
@@ -348,25 +352,29 @@ public class OrderServiceImpl implements OrderService{
             Product p = productRepository.findByProductCodeForUpdate(dto.getProductCode())
                     .orElseThrow(ProductNotFoundException::new);
 
-            // Check stock availability
-            if (!validateStock(p, dto.getItemWeight())) {
-                throw new ProductLowStock("Insufficient stock for product: " + p.getProductCode());
-            }
-
             // Fetch pallet with validation
             Pallet pallet = palletHashMap.get(dto.getPalletId());
             if(pallet == null){
                 throw new RuntimeException("Pallet not found with id: " + dto.getPalletId());
             }
 
+            double itemWeight = pallet.getTotalNet() * dto.getNumberOfPallets();
+
+            // Check stock availability
+            if (!validateStock(p, itemWeight)) {
+                throw new ProductLowStock("Insufficient stock for product: " + p.getProductCode());
+            }
+
+
+
             // Update product weight
-            p.setTotalWeight(p.getTotalWeight() - dto.getItemWeight());
+            p.setTotalWeight(p.getTotalWeight() - itemWeight); // Deduct the weight from the product stock
             updatedProducts.add(p);
 
             // Map DTO to Entity
             OrderItem newItem = new OrderItem(
                     p,
-                    dto.getItemWeight(),
+                    itemWeight,
                     dto.getPricePerKg(),
                     dto.getPackaging(),
                     dto.getNumberOfPallets(),

@@ -97,7 +97,7 @@ public class  OrderServiceTest {
 
         OrderItemRequestDto itemDto = new OrderItemRequestDto();
         itemDto.setProductCode("M_EA_B_M");
-        itemDto.setItemWeight(700.0);
+        //itemDto.setItemWeight(700.0);
         itemDto.setPalletId(1);
         itemDto.setPricePerKg(2.5);
         itemDto.setPackaging(1.0);
@@ -160,7 +160,7 @@ public class  OrderServiceTest {
         // Mock order item
         OrderItemRequestDto itemDto = new OrderItemRequestDto();
         itemDto.setProductCode("M_EB_B_M");
-        itemDto.setItemWeight(500.0);
+        //itemDto.setItemWeight(500.0);
         itemDto.setPalletId(1);
         itemDto.setPricePerKg(2.5);
         itemDto.setPackaging(1);
@@ -252,7 +252,7 @@ public class  OrderServiceTest {
 
         OrderItemRequestDto itemDto = new OrderItemRequestDto();
         itemDto.setProductCode("M_EA_B_M");
-        itemDto.setItemWeight(500.0);
+        //itemDto.setItemWeight(500.0);
         itemDto.setPalletId(1);
         itemDto.setPricePerKg(2.5);
         itemDto.setPackaging(1);
@@ -299,7 +299,7 @@ public class  OrderServiceTest {
 
         OrderItemRequestDto itemDto = new OrderItemRequestDto();
         itemDto.setProductCode("M_EA_B_M");
-        itemDto.setItemWeight(500.0);
+        //itemDto.setItemWeight(500.0);
         itemDto.setPalletId(1);
         itemDto.setPricePerKg(2.5);
         itemDto.setPackaging(1);
@@ -363,7 +363,7 @@ public class  OrderServiceTest {
         orderRequest.setClientName("Fresh Fruits Inc");
         OrderItemRequestDto itemDto = new OrderItemRequestDto();
         itemDto.setProductCode("M_EA_B_M");
-        itemDto.setItemWeight(500.0);
+        //itemDto.setItemWeight(500.0);
         itemDto.setPalletId(1);
         itemDto.setPricePerKg(2.5);
         itemDto.setPackaging(1);
@@ -569,7 +569,7 @@ public class  OrderServiceTest {
         addedItem.setItemBrand("Medjool Star");
         addedItem.setPalletId(1);
         addedItem.setNumberOfPallets(3);
-        addedItem.setItemWeight(900.0);
+        //addedItem.setItemWeight(900.0);
         addedItem.setPricePerKg(2.0);
         addedItem.setPackaging(1);
 

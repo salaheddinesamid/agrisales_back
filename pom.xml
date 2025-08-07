@@ -186,6 +186,12 @@
 			<artifactId>caffeine</artifactId>
 			<version>3.1.8</version> <!-- You can check for the latest version -->
 		</dependency>
+		<dependency>
+			<groupId>org.jetbrains</groupId>
+			<artifactId>annotations</artifactId>
+			<version>RELEASE</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

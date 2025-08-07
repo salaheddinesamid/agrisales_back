@@ -11,4 +11,5 @@ public class UpdateAnalyticsRequestDto {
 
     private String productCode;
     private double totalWeight;
+
 }
