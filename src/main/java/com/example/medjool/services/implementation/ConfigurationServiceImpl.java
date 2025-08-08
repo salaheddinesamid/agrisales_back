@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -57,31 +56,13 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         client.setCompanyActivity(clientDto.getCompanyActivity());
         client.setGeneralManager(clientDto.getGeneralManager());
         client.setClientStatus(ClientStatus.valueOf(clientDto.getStatus()));
-        List<Address> clientAddresses = clientDto
-                .getAddresses().stream().map(addressDto -> {
-                    Address address = new Address();
-                    address.setCity(addressDto.getCity());
-                    address.setCountry(addressDto.getCountry());
-                    address.setStreet(addressDto.getStreet());
-                    address.setState(addressDto.getState());
-                    address.setPostalCode(addressDto.getPostalCode());
-                    return address;
-                }).toList();
 
-        // Save all the addresses in a single batch:
-        addressRepository.saveAll(clientAddresses);
 
-        List<Contact> clientContacts = clientDto.getContacts().stream().map(
-                contactDto -> {
-                    Contact contact = new Contact();
-                    contact.setEmail(contactDto.getEmail());
-                    contact.setPhone(contactDto.getPhone());
-                    contact.setDepartment(contactDto.getDepartment());
-                    return contact;
-                }
-        ).toList();
+        List<Address> clientAddresses = mapAddresses(clientDto.getAddresses()); // Map addresses from DTO to entity
+        addressRepository.saveAll(clientAddresses); // Save addresses to the repository
 
-        contactRepository.saveAll(clientContacts);
+        List<Contact> clientContacts = mapContacts(clientDto.getContacts()); // Map contacts from DTO to entity
+        contactRepository.saveAll(clientContacts); // Save contacts to the repository
 
         client.setAddresses(clientAddresses);
         client.setContacts(clientContacts);
@@ -91,8 +72,31 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
         // Save the client
         clientRepository.save(client);
-
         return new ResponseEntity<>(client, HttpStatus.CREATED);
+    }
+
+    private List<Address> mapAddresses(List<AddressDto> addresses){
+        return addresses.stream().map(addressDto -> {
+                    Address address = new Address();
+                    address.setCity(addressDto.getCity());
+                    address.setCountry(addressDto.getCountry());
+                    address.setStreet(addressDto.getStreet());
+                    address.setState(addressDto.getState());
+                    address.setPostalCode(addressDto.getPostalCode());
+                    return address;
+                }).toList();
+
+    }
+    private List<Contact> mapContacts(List<ContactDto> contacts){
+        return contacts.stream().map(
+                contactDto -> {
+                    Contact contact = new Contact();
+                    contact.setEmail(contactDto.getEmail());
+                    contact.setPhone(contactDto.getPhone());
+                    contact.setDepartment(contactDto.getDepartment());
+                    return contact;
+                }
+        ).toList();
     }
 
 
