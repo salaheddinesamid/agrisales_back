@@ -28,7 +28,8 @@ public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        String apiKey = request.getHeader(API_KEY_HEADER);
+
+        String apiKey = request.getHeader(API_KEY_HEADER);  // Extract the API KEY from the client request header
 
         // If no API key, just continue the filter chain (JWT filter will handle auth)
         if (apiKey == null || apiKey.isEmpty()) {
@@ -37,7 +38,9 @@ public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
         }
 
         try {
+            // Check if the API key is valid
             if (isValidApiKey(apiKey)) {
+                // If the API key is valid, we create an list of authorities to enable the services access the endpoint
                 List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("API_SERVICE");
                 Authentication auth = new ApiKeyAuthenticationToken(apiKey, authorities);
                 SecurityContextHolder.getContext().setAuthentication(auth);

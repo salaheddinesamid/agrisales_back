@@ -65,23 +65,23 @@ public class JWTFilter extends OncePerRequestFilter {
                 String email = jwtUtil.extractUserName(token);
                 // Load user details
                 UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-                if (userDetails != null && userDetails.isAccountNonLocked()) {
+                if (userDetails != null && userDetails.isAccountNonLocked()) {  // Check if the user exists and the account is not locked
                     UsernamePasswordAuthenticationToken authentication =
                             new UsernamePasswordAuthenticationToken(userDetails.
-                                    getUsername(), null, userDetails.getAuthorities());
+                                    getUsername(), null, userDetails.getAuthorities()); // We create an authentication object
                     log.info("authenticated user with email :{}", email);
 
                     // Set the authentication context
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
                 else if(userDetails != null && !userDetails.isAccountNonLocked()) {
-                    throw new UserAccountLockedException("User account is locked");
+                    throw new UserAccountLockedException("User account is locked"); // If the user account is locked, we block access and throw an exception
                 }
                 else {
-                    throw new UserNotFoundException();
+                    throw new UserNotFoundException(); // If the user does not exist, we throw an error
                 }
             }
-            filterChain.doFilter(request, response);
+            filterChain.doFilter(request, response); // Continue the filter chain if the token is valid
 
         } catch (ExpiredJwtException ex) {
             log.error("JWT Token expired: {}", ex.getMessage());

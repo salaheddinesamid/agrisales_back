@@ -354,13 +354,21 @@ public class  OrderServiceTest {
         pallet.setPreparationTime(5.0);
         pallet.setPalletId(1);
 
+        // Mock a forex:
+        Forex forex = new Forex();
+        forex.setCurrency(ForexCurrency.EUR);
+        forex.setBuyingRate(10.0);
+
         when(clientRepository.findByCompanyName("Fresh Fruits Inc")).thenReturn(client);
         when(productRepository.findAll()).thenReturn(List.of(product));
         when(palletRepository.findById(1)).thenReturn(Optional.of(pallet));
+        when(forexRepository.findByCurrency(ForexCurrency.EUR)).thenReturn(Optional.of(forex));
 
         // Create an order request
         OrderRequestDto orderRequest = new OrderRequestDto();
         orderRequest.setClientName("Fresh Fruits Inc");
+        orderRequest.setCurrency("EUR");
+
         OrderItemRequestDto itemDto = new OrderItemRequestDto();
         itemDto.setProductCode("M_EA_B_M");
         //itemDto.setItemWeight(500.0);
@@ -368,8 +376,10 @@ public class  OrderServiceTest {
         itemDto.setPricePerKg(2.5);
         itemDto.setPackaging(1);
         itemDto.setNumberOfPallets(1);
+
+
         orderRequest.setItems(List.of(itemDto));
-        orderRequest.setCurrency(OrderCurrency.MAD.toString());
+        orderRequest.setCurrency(OrderCurrency.EUR.toString());
         orderRequest.setProductionDate(localDateTime.toLocalDate());
 
         // Act & Assert

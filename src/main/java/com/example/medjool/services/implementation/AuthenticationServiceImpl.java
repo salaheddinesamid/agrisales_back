@@ -50,24 +50,29 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public ResponseEntity<?> authenticate(LoginRequestDto loginRequestDto) {
 
         User user = userRepository.findByEmail(loginRequestDto.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));  // Fetch the user from the database
 
         if (!user.isAccountNonLocked()) {
-            throw new UserAccountLockedException("User account is locked");
+            throw new UserAccountLockedException("User account is locked"); // Check if the user account is locked
         }
 
         if (!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {
-            throw new InvalidCredentialsException("Invalid credentials,please try again");
+            throw new InvalidCredentialsException("Invalid credentials,please try again"); // Check if the credentials are valid
         }
 
+
+        // If the user is authenticated, we create an authentication and a JWT token
         LocalDateTime now = LocalDateTime.now();
         AuthenticationResponseDto authenticationResponseDto = new AuthenticationResponseDto();
 
+
+        // Generate a token based on user email and role
         String token = jwtUtilities.generateToken(user.getEmail(), user.getRole().getRoleName().toString());
 
         user.setLastLogin(now);
         userRepository.save(user);
 
+        // Return an authentication response that contains all the user details
         UserDetailsDto userDetailsDto = new UserDetailsDto(
                 user.getUserId(),
                 user.getFirstName(),

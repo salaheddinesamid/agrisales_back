@@ -133,8 +133,8 @@ public class StockServiceImpl implements StockService {
     }
 
      */
-    
-    private void updateAnalytics(List<UpdateAnalyticsRequestDto> requestDtoList, Integer weekNumber) {
+
+    public void updateAnalytics(List<UpdateAnalyticsRequestDto> requestDtoList, Integer weekNumber) {
         String url = "http://127.0.0.1:8000/stock/update/" + weekNumber + "/";
 
         try {

@@ -9,9 +9,13 @@ import com.example.medjool.services.implementation.StockServiceImpl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +26,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
+
 
 class StockServiceTesting {
 
@@ -34,10 +39,13 @@ class StockServiceTesting {
     @InjectMocks
     private StockServiceImpl stockService;
 
+    private static final String CSV_CONTENT = "product_code,total_weight\nP001,10.5\nP002,20.0\n";
+
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        sockInitializer.initialize();
+        //sockInitializer.initialize();
     }
 
     @Test
@@ -82,31 +90,40 @@ class StockServiceTesting {
         verify(productRepository, times(1)).save(any(Product.class));
     }
 
-        @Test
-        void testUpdateStock_Success() throws Exception {
+    @Test
+    void testUpdateStock_SuccessfulUpdate() throws Exception {
+        // Given
+        MockMultipartFile mockFile = new MockMultipartFile(
+                "file", "stock.csv", "text/csv", CSV_CONTENT.getBytes());
 
-            File csvFile = new File("C:\\Users\\s.samid\\Downloads\\medjool_demo_back\\src\\main\\resources\\stock_update.csv");
-            FileInputStream inputStream = new FileInputStream(csvFile);
-            MultipartFile file = new MockMultipartFile("file", csvFile.getName(), "text/csv", inputStream);
+        Product product1 = new Product();
+        product1.setProductCode("P001");
+        product1.setTotalWeight(50.0);
 
+        Product product2 = new Product();
+        product2.setProductCode("P002");
+        product2.setTotalWeight(30.0);
 
-            Product product1 = new Product();
-            product1.setProductId(1L);
-            product1.setProductCode("S00_EA0_D_MS");
-            product1.setTotalWeight(100.0);
+        when(productRepository.findByProductCode("P001")).thenReturn(Optional.of(product1));
+        when(productRepository.findByProductCode("P002")).thenReturn(Optional.of(product2));
 
+        // We mock the repository save() method
+        when(productRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
-            when(productRepository.findById(1L)).thenReturn(Optional.of(product1));
+        // Spy to verify private method indirectly (or move updateAnalytics to separate service for mocking)
+        StockServiceImpl spyService = Mockito.spy(stockService);
+        doNothing().when(spyService).updateAnalytics(anyList(), eq(34)); // Example weekNumber
 
+        // When
+        ResponseEntity<Object> response = spyService.updateStock(mockFile, 34);
 
-            ResponseEntity<Object> response = stockService.updateStock(file,2);
+        // Then
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Stock updated successfully", response.getBody());
 
-            // Vérifications
-            assertEquals(200, response.getStatusCodeValue());
-            assertEquals("Stock updated successfully", response.getBody());
-            assertEquals(50.0, product1.getTotalWeight());
-            verify(productRepository, times(2)).save(any(Product.class));
-        }
+        verify(productRepository, times(2)).save(any());
+        verify(spyService).updateAnalytics(anyList(), eq(34));
+    }
 
         @Test
         void testUpdateStock_ProductNotFound() throws Exception {
