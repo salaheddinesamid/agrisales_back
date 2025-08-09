@@ -297,16 +297,26 @@ public class OrderServiceImpl implements OrderService{
     public ResponseEntity<?> updateOrder(Long id, OrderUpdateRequestDto orderUpdateRequestDto) {
 
         try{
+            logger.info("Fetching the order from the database with ID: {}", id);
             Order order = orderRepository.findByIdForUpdate(id).orElseThrow(()-> new RuntimeException("Order not found"));
+
 
             if (order.getStatus() == OrderStatus.READY_TO_SHIPPED) {
                 throw new OrderCannotBeCanceledException("Order cannot be updated at this stage.");
             }
 
-
+            logger.info("Processing the deleted items: {}", orderUpdateRequestDto.getItemsDeleted());
             processItemsDeleted(order,orderUpdateRequestDto.getItemsDeleted());
+            logger.info("Deleted items processed successfully.");
+
+            logger.info("Processing the new items: {}", orderUpdateRequestDto.getItemsAdded());
             processItemsAdded(order,orderUpdateRequestDto.getItemsAdded());
+            logger.info("New items processed successfully.");
+
+            logger.info("Processing the updated items: {}", orderUpdateRequestDto.getUpdatedItems());
             processItemsUpdated(order,orderUpdateRequestDto.getUpdatedItems());
+            logger.info("Updated items processed successfully.");
+
 
             double totalPrice = order.getOrderItems().stream()
                     .map(item -> item.getItemWeight() * item.getPricePerKg())
