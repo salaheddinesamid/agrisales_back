@@ -152,16 +152,33 @@ public class ConfigurationController {
 
     // -------------- Forex configuration ------------------//
 
+
+    /**     * Retrieves all forex configurations.
+     *
+     * @return ResponseEntity containing a list of all forex configurations
+     */
     @GetMapping("/forex/get_all")
     public ResponseEntity<List<Forex>> getAllForex() {
         return configurationService.getAllForex();
     }
 
+
+    /**     * Adds a new forex configuration.
+     *
+     * @param forexDto the forex details to be added
+     * @return ResponseEntity with the result of the operation
+     */
     @PostMapping("/forex/new")
     public ResponseEntity<Object> addNewForex(@RequestBody NewForexCurrencyDto forexDto) {
         return configurationService.addForex(forexDto);
     }
 
+
+    /**     * Update a forex configuration by its ID.
+     *
+     * @param forexId the ID of the forex to delete
+     * @return ResponseEntity with the result of the deletion operation
+     */
     @PutMapping("/forex/update/{forexId}")
     public ResponseEntity<Object> updateForex(@PathVariable Long forexId, @RequestBody UpdateForexDto forexDto) {
         return configurationService.updateForex(forexId, forexDto);

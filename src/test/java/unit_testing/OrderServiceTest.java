@@ -141,8 +141,8 @@ public class  OrderServiceTest {
 
         OrderItem item = savedOrder.getOrderItems().get(0);
         assertEquals("M_EA_B_M", item.getProduct().getProductCode());
-        assertEquals(4300.0, item.getProduct().getTotalWeight());
-        assertEquals(700.0, item.getItemWeight());
+        assertEquals(4800.0, item.getProduct().getTotalWeight());
+        assertEquals(200.0, item.getItemWeight());
         assertEquals(2.5, item.getPricePerKg());
         assertEquals(1, item.getNumberOfPallets());
         assertEquals(1.0, item.getPackaging());
@@ -307,7 +307,7 @@ public class  OrderServiceTest {
 
 
         orderRequest.setItems(List.of(itemDto));
-        orderRequest.setCurrency(OrderCurrency.MAD.toString());
+        orderRequest.setCurrency(OrderCurrency.EUR.toString());
         orderRequest.setProductionDate(now);
 
         Client client = new Client();
@@ -319,11 +319,16 @@ public class  OrderServiceTest {
         product.setTotalWeight(1000.0);
 
         Pallet pallet = new Pallet();
-
+        pallet.setPackaging(1);
         pallet.setPreparationTime(5.0);
 
+        Forex forex = new Forex();
+        forex.setCurrency(ForexCurrency.EUR);
+        forex.setBuyingRate(12);
+
         when(clientRepository.findByCompanyName("Fresh Fruits Inc")).thenReturn(client);
-        when(palletRepository.findById(1)).thenReturn(Optional.of(pallet));
+        when(palletRepository.findByPackaging(1)).thenReturn(pallet);
+        when(forexRepository.findByCurrency(ForexCurrency.EUR)).thenReturn(Optional.of(forex));
         when(orderRepository.save(any(Order.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
 

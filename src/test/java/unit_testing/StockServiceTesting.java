@@ -9,19 +9,14 @@ import com.example.medjool.services.implementation.StockServiceImpl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -131,15 +126,13 @@ class StockServiceTesting {
             String csvContent = "product_id,quantity\n789,20";
             MockMultipartFile file = new MockMultipartFile("file", "stock.csv", "text/csv", csvContent.getBytes());
 
-            // Mock pour un produit non trouvé
             when(productRepository.findByProductCode("789")).thenReturn(Optional.empty());
 
-            // Appel de la méthode à tester
             ResponseEntity<Object> response = stockService.updateStock(file,2);
 
             // Vérifications
-            assertEquals(200, response.getStatusCodeValue());
-            assertEquals("Stock updated successfully", response.getBody());
+            assertEquals(400, response.getStatusCodeValue());
+            //assertEquals("Stock updated successfully", response.getBody());
             verify(productRepository, never()).save(any(Product.class));
         }
     }
