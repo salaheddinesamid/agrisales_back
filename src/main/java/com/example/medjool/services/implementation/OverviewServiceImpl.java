@@ -28,6 +28,8 @@ public class OverviewServiceImpl implements OverviewService {
     private final AlertServiceImpl alertService;
     private final ClientRepository clientRepository;
 
+
+
     @Autowired
     public OverviewServiceImpl(ProductRepository productRepository, OrderRepository orderRepository, SystemSettingRepository systemSettingRepository, AlertServiceImpl alertService, ClientRepository clientRepository) {
         this.productRepository = productRepository;
@@ -36,7 +38,6 @@ public class OverviewServiceImpl implements OverviewService {
         this.alertService = alertService;
         this.clientRepository = clientRepository;
     }
-
 
     /** * Retrieves an overview of the system, including total stock, orders, and revenue.
      *
@@ -51,7 +52,9 @@ public class OverviewServiceImpl implements OverviewService {
                 .map(SystemSetting::getValue)
                 .orElseThrow(() -> new IllegalStateException("System setting 'min_stock_level' not found"));
 
-        List<Product> products = productRepository.findAll();
+        List<Product> products = productRepository.findAll(); // Fetch all products
+
+        // Calculate total stock weight and check for low stock
         double totalStockWeight = products.stream()
                 .mapToDouble(product -> {
                     double weight = product.getTotalWeight();
@@ -64,10 +67,10 @@ public class OverviewServiceImpl implements OverviewService {
 
 
 
-        List<Order> orders = orderRepository.findAll();
-        long totalOrders = orders.size();
+        List<Order> orders = orderRepository.findAll(); // Fetch all orders
+        long totalOrders = orders.size(); // Return the total number of orders
 
-
+        // Calculate total pre-production orders
         double totalOrdersPreProduction = orders.stream().map(order -> {
             if(order.getStatus().equals(OrderStatus.PRELIMINARY) ||
                     order.getStatus().equals(OrderStatus.CONFIRMED) ||
@@ -77,6 +80,7 @@ public class OverviewServiceImpl implements OverviewService {
             return 0.0;
         }).reduce(0.0, Double::sum);
 
+        // Calculate total post-production orders
         double totalOrdersPostProduction = orders.stream().map(order -> {
             if(order.getStatus().equals(OrderStatus.READY_TO_SHIPPED)) {
                 return 1.0; // Count pre-production orders
@@ -84,18 +88,23 @@ public class OverviewServiceImpl implements OverviewService {
             return 0.0;
         }).reduce(0.0, Double::sum);;
 
+        // Calculate total shipped orders
         long totalShippedOrders = orders.stream().map(order -> {
             if (order.getStatus().equals(OrderStatus.SHIPPED)) {
                 return 1L; // Count shipped orders
             }
             return 0L; // Not a shipped order
         }).reduce(0L, Long::sum);
+
+        // Calculate total shipped revenue
         double totalShippedRevenue = orders.stream().map(order -> {
             if (order.getStatus().equals(OrderStatus.SHIPPED)) {
                 return order.getTotalPrice() * order.getForex().getBuyingRate();
             }
             return 0.0; // Not a shipped order
         }).reduce(0.0, Double::sum);
+
+        // Calculate total pre-production revenue
         double totalPreProductionRevenue = orders.stream().map(order -> {
             if(order.getStatus().equals(OrderStatus.PRELIMINARY) ||
                     order.getStatus().equals(OrderStatus.CONFIRMED) ||
@@ -103,7 +112,9 @@ public class OverviewServiceImpl implements OverviewService {
                 return order.getTotalPrice() * order.getForex().getBuyingRate();
             }
             return 0.0;
-        }).reduce(0.0, Double::sum);;
+        }).reduce(0.0, Double::sum);
+
+        // Calculate total post-production revenue
         double totalPostProductionRevenue = orders.stream().map(order -> {
             if(order.getStatus().equals(OrderStatus.READY_TO_SHIPPED)) {
                 return order.getTotalPrice() * order.getForex().getBuyingRate();
@@ -111,7 +122,8 @@ public class OverviewServiceImpl implements OverviewService {
             return 0.0;
         }).reduce(0.0, Double::sum);
 
-        double totalRevenue = totalPreProductionRevenue + totalPostProductionRevenue + totalShippedRevenue;
+        // Calculate total revenue across all orders
+        double totalRevenue = orders.stream().map(order -> order.getTotalPrice() * order.getForex().getBuyingRate()).reduce(0.0, Double::sum);;
 
         OverviewDto overviewDto = new OverviewDto(
                 totalStockWeight,
