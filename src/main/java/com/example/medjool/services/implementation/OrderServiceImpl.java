@@ -70,13 +70,11 @@ public class OrderServiceImpl implements OrderService{
         // Validate and fetch client
         Client client = Optional.ofNullable(clientRepository.findByCompanyName(orderRequest.getClientName()))
                 .filter(c -> c.getClientStatus() == ClientStatus.ACTIVE)
-                .orElseThrow(ClientNotActiveException::new);
+                .orElseThrow(ClientNotActiveException::new); // Throw an exception when a client is not found
 
         Order order = new Order();
         order.setClient(client);
         order.setOrderItems(new ArrayList<>());
-
-
 
         Set<Product> updatedProducts = new HashSet<>();
         List<OrderItem> orderItemsList = new ArrayList<>();
@@ -84,14 +82,17 @@ public class OrderServiceImpl implements OrderService{
         List<Product> productsList = productRepository.findAll();
         List<Pallet> palletList = palletRepository.findAll();
 
+        // Map products by product code for quick lookup:
         Map<String, Product> productMap = productsList.stream()
                 .collect(Collectors.toMap(Product::getProductCode, p -> p));
 
+        // Map pallets by ID for quick lookup:
         Map<Integer, Pallet> palletMap = palletList.stream()
                 .collect(Collectors.toMap(Pallet::getPalletId, p -> p));
 
+        // Fetch forex from the database:
         Forex forex = forexRepository.findByCurrency(ForexCurrency.valueOf(orderRequest.getCurrency()))
-                .orElseThrow(() -> new RuntimeException("Missing forex rate for " + orderRequest.getCurrency()));
+                .orElseThrow(() -> new ForexNotFoundException("The forex is not found: "+ orderRequest.getCurrency())); // handle case where forex is not found
 
         String orderCurrency = orderRequest.getCurrency();
         order.setForex(forex);
@@ -184,8 +185,6 @@ public class OrderServiceImpl implements OrderService{
 
             product.setTotalWeight(product.getTotalWeight() - itemWeight); // Update product weight in the stock
             updatedProducts.add(product); // Add the updated product into a list
-
-
 
             OrderItem orderItem = new OrderItem(
                     product,
