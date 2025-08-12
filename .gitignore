@@ -7,6 +7,9 @@ HELP.md
 .apt_generated
 .classpath
 
+# Ignore build directory
+target
+
 .factorypath
 .project
 .settings
