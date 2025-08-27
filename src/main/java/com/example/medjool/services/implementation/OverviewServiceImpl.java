@@ -17,7 +17,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class OverviewServiceImpl implements OverviewService {
@@ -155,7 +157,12 @@ public class OverviewServiceImpl implements OverviewService {
         List<MarginClientResponseDto> allMargins = clientRepository.findAll()
                 .stream()
                 .map(client -> getMarginPerClient(client.getCompanyName(), productCode).getBody())
+                .filter(Objects::nonNull)
                 .toList();
+
+        if (allMargins.isEmpty()) {
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
+        }
 
         return new ResponseEntity<>(allMargins, HttpStatus.OK);
     }
@@ -179,15 +186,8 @@ public class OverviewServiceImpl implements OverviewService {
             return true;
         }).toList();
 
-        if(clientOrders.isEmpty()) {
-            return new MarginClientResponseDto(
-                    companyName,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0
-            );
+        if(filteredOrders.isEmpty()) {
+            return null;
         }
 
         List<OrderCostDto> ordersCost = filteredOrders
