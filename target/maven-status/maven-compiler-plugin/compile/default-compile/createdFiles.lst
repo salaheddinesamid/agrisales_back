@@ -4,6 +4,7 @@ com\example\medjool\repository\NotificationRepository.class
 com\example\medjool\dto\UpdateAddressDto.class
 com\example\medjool\exception\UserNotFoundException.class
 com\example\medjool\model\ProductionStatus.class
+com\example\medjool\exception\ForexNotFoundException.class
 com\example\medjool\exception\JwtExceptionController.class
 com\example\medjool\repository\OrderRepository.class
 com\example\medjool\model\ProductStatus.class
@@ -45,6 +46,7 @@ com\example\medjool\dto\UpdateAnalyticsRequestDto.class
 com\example\medjool\repository\RoleRepository.class
 com\example\medjool\dto\UpdateClientDto.class
 com\example\medjool\exception\SettingNotFoundException.class
+com\example\medjool\services\implementation\TestService.class
 com\example\medjool\dto\SettingDetailsDto.class
 com\example\medjool\dto\MixedOrderDto.class
 com\example\medjool\services\OverviewService.class
@@ -139,6 +141,7 @@ com\example\medjool\services\implementation\OrderServiceImpl$1.class
 com\example\medjool\dto\ClientResponseDto.class
 com\example\medjool\dto\MarginClientResponseDto.class
 com\example\medjool\dto\MixedOrderResponseDto.class
+com\example\medjool\exception\ForexExceptionHandler.class
 com\example\medjool\services\UserManagementService.class
 com\example\medjool\dto\FactoryScheduleResponseDto.class
 com\example\medjool\exception\PalletNotFoundException.class
