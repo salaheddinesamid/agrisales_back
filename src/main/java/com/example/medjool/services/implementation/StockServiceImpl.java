@@ -15,6 +15,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
@@ -36,6 +37,8 @@ import java.util.stream.Collectors;
 @Service
 public class StockServiceImpl implements StockService {
 
+    @Value("${analytics.service.url}")
+    private static String ANALYTICS_SERVICE_URL;
     private final ProductRepository productRepository;
     //private final RestTemplate restTemplate;
 

@@ -1,0 +1,52 @@
+2025-09-04T18:13:51.200+01:00  INFO 33100 --- [medjool] [restartedMain] com.example.medjool.MedjoolApplication   : Starting MedjoolApplication using Java 23.0.2 with PID 33100 (C:\Users\s.samid\Downloads\medjool_demo_back\target\classes started by s.samid in C:\Users\s.samid\Downloads\medjool_demo_back)
+2025-09-04T18:13:51.202+01:00 DEBUG 33100 --- [medjool] [restartedMain] com.example.medjool.MedjoolApplication   : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-09-04T18:13:51.202+01:00  INFO 33100 --- [medjool] [restartedMain] com.example.medjool.MedjoolApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-09-04T18:13:52.645+01:00  INFO 33100 --- [medjool] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-04T18:13:52.837+01:00  INFO 33100 --- [medjool] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 184 ms. Found 17 JPA repository interfaces.
+2025-09-04T18:13:53.471+01:00  INFO 33100 --- [medjool] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-04T18:13:53.476+01:00  INFO 33100 --- [medjool] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-04T18:13:53.476+01:00  INFO 33100 --- [medjool] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-09-04T18:13:53.569+01:00  INFO 33100 --- [medjool] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-04T18:13:53.569+01:00  INFO 33100 --- [medjool] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2364 ms
+2025-09-04T18:13:54.421+01:00  INFO 33100 --- [medjool] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-04T18:13:54.429+01:00  INFO 33100 --- [medjool] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-04T18:13:54.600+01:00  INFO 33100 --- [medjool] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-04T18:13:54.605+01:00  INFO 33100 --- [medjool] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2025-09-04T18:13:54.664+01:00  INFO 33100 --- [medjool] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7cd6d9f0
+2025-09-04T18:13:54.664+01:00  INFO 33100 --- [medjool] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2025-09-04T18:13:54.669+01:00  INFO 33100 --- [medjool] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-2)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-04T18:13:55.463+01:00  INFO 33100 --- [medjool] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-04T18:13:55.848+01:00  INFO 33100 --- [medjool] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-04T18:13:56.296+01:00 DEBUG 33100 --- [medjool] [restartedMain] com.example.medjool.filters.JWTFilter    : Filter 'JWTFilter' configured for use
+2025-09-04T18:13:56.296+01:00 DEBUG 33100 --- [medjool] [restartedMain] c.e.m.f.SimpleFilter$$SpringCGLIB$$0     : Filter 'simpleFilter' configured for use
+2025-09-04T18:13:56.296+01:00 DEBUG 33100 --- [medjool] [restartedMain] c.e.m.f.ApiKeyAuthenticationFilter       : Filter 'apiKeyAuthenticationFilter' configured for use
+2025-09-04T18:13:57.002+01:00  INFO 33100 --- [medjool] [restartedMain] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.example.medjool.services.implementation.OrderServiceImpl.PRODUCTION_SERVICE_URL
+2025-09-04T18:13:57.003+01:00  INFO 33100 --- [medjool] [restartedMain] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.example.medjool.services.implementation.OrderServiceImpl.API_KEY
+2025-09-04T18:13:57.044+01:00  INFO 33100 --- [medjool] [restartedMain] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.example.medjool.services.implementation.StockServiceImpl.ANALYTICS_SERVICE_URL
+2025-09-04T18:13:57.352+01:00  WARN 33100 --- [medjool] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-04T18:13:57.441+01:00  INFO 33100 --- [medjool] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2025-09-04T18:13:57.985+01:00  INFO 33100 --- [medjool] [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 16 endpoints beneath base path '/actuator'
+2025-09-04T18:13:58.191+01:00  INFO 33100 --- [medjool] [restartedMain] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-09-04T18:13:58.978+01:00  INFO 33100 --- [medjool] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-09-04T18:13:59.029+01:00  INFO 33100 --- [medjool] [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+2025-09-04T18:13:59.030+01:00  INFO 33100 --- [medjool] [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@6016af28]]
+2025-09-04T18:13:59.030+01:00  INFO 33100 --- [medjool] [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+2025-09-04T18:13:59.037+01:00  INFO 33100 --- [medjool] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-04T18:13:59.050+01:00  INFO 33100 --- [medjool] [restartedMain] com.example.medjool.MedjoolApplication   : Started MedjoolApplication in 7.959 seconds (process running for 163.647)
+2025-09-04T18:13:59.055+01:00  INFO 33100 --- [medjool] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2025-09-04T18:14:10.656+01:00  INFO 33100 --- [medjool] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-09-04T18:14:10.656+01:00  INFO 33100 --- [medjool] [Thread-7] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-04T18:14:10.681+01:00  INFO 33100 --- [medjool] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-04T18:14:10.682+01:00  INFO 33100 --- [medjool] [Thread-7] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopping...
+2025-09-04T18:14:10.682+01:00  INFO 33100 --- [medjool] [Thread-7] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@6016af28]]
+2025-09-04T18:14:10.683+01:00  INFO 33100 --- [medjool] [Thread-7] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopped.
+2025-09-04T18:14:10.687+01:00  INFO 33100 --- [medjool] [Thread-7] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-04T18:14:10.692+01:00  INFO 33100 --- [medjool] [Thread-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
+2025-09-04T18:14:10.707+01:00  INFO 33100 --- [medjool] [Thread-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.

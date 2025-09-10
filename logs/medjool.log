@@ -1,0 +1,21 @@
+2025-09-10T08:22:27.822+01:00  INFO 31020 --- [medjool] [http-nio-8080-exec-6] com.example.medjool.jwt.JwtUtilities     : Expired JWT token.
+2025-09-10T08:22:28.467+01:00 ERROR 31020 --- [medjool] [http-nio-8080-exec-6] com.example.medjool.filters.JWTFilter    : JWT Token expired: JWT Token expired
+2025-09-10T08:22:31.003+01:00  WARN 31020 --- [medjool] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=10h34m27s835ms551µs400ns).
+2025-09-10T08:24:58.287+01:00  INFO 31020 --- [medjool] [http-nio-8080-exec-5] com.example.medjool.jwt.JwtUtilities     : Expired JWT token.
+2025-09-10T08:24:58.306+01:00 ERROR 31020 --- [medjool] [http-nio-8080-exec-5] com.example.medjool.filters.JWTFilter    : JWT Token expired: JWT Token expired
+2025-09-10T08:25:23.407+01:00  INFO 31020 --- [medjool] [http-nio-8080-exec-4] com.example.medjool.jwt.JwtUtilities     : Expired JWT token.
+2025-09-10T08:25:23.407+01:00 ERROR 31020 --- [medjool] [http-nio-8080-exec-4] com.example.medjool.filters.JWTFilter    : JWT Token expired: JWT Token expired
+2025-09-10T08:26:23.389+01:00  INFO 31020 --- [medjool] [http-nio-8080-exec-1] com.example.medjool.jwt.JwtUtilities     : Expired JWT token.
+2025-09-10T08:26:23.389+01:00 ERROR 31020 --- [medjool] [http-nio-8080-exec-1] com.example.medjool.filters.JWTFilter    : JWT Token expired: JWT Token expired
+2025-09-10T08:27:23.395+01:00  INFO 31020 --- [medjool] [http-nio-8080-exec-3] com.example.medjool.jwt.JwtUtilities     : Expired JWT token.
+2025-09-10T08:27:23.395+01:00 ERROR 31020 --- [medjool] [http-nio-8080-exec-3] com.example.medjool.filters.JWTFilter    : JWT Token expired: JWT Token expired
+2025-09-10T08:28:23.391+01:00  INFO 31020 --- [medjool] [http-nio-8080-exec-6] com.example.medjool.jwt.JwtUtilities     : Expired JWT token.
+2025-09-10T08:28:23.392+01:00 ERROR 31020 --- [medjool] [http-nio-8080-exec-6] com.example.medjool.filters.JWTFilter    : JWT Token expired: JWT Token expired
+2025-09-10T08:29:13.630+01:00  INFO 31020 --- [medjool] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-10T08:29:13.750+01:00  INFO 31020 --- [medjool] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-10T08:29:13.795+01:00  INFO 31020 --- [medjool] [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopping...
+2025-09-10T08:29:13.798+01:00  INFO 31020 --- [medjool] [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@4e58dc50]]
+2025-09-10T08:29:13.799+01:00  INFO 31020 --- [medjool] [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopped.
+2025-09-10T08:29:13.964+01:00  INFO 31020 --- [medjool] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-10T08:29:14.242+01:00  INFO 31020 --- [medjool] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-09-10T08:29:14.353+01:00  INFO 31020 --- [medjool] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

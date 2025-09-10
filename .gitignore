@@ -8,7 +8,6 @@ HELP.md
 .classpath
 
 # Ignore build directory
-target
 
 .factorypath
 .project
