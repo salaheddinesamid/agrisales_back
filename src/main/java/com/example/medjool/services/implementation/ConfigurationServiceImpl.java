@@ -254,6 +254,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             newPallet.setNumberOfStoriesInPallet(palletDto.getNumberOfStoriesInPallet());
             totalBoxes = newPallet.getNumberOfBoxesInStory() * newPallet.getNumberOfStoriesInPallet();
             totalWeight = totalBoxes * 5;
+            newPallet.setTotalNet(totalWeight);
             newPallet.setNumberOfBoxesInPallet(totalBoxes);
         }else{
             newPallet.setPackaging(palletDto.getPackaging());
@@ -275,7 +276,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         newPallet.setPreparationTime(palletDto.getPreparationTime());
         newPallet.setPackaging(palletDto.getPackaging());
         newPallet.setTag(palletDto.getTag());
-        newPallet.setTotalNet(palletDto.getTotalNet());
+        //newPallet.setTotalNet(palletDto.getTotalNet());
 
         palletRepository.save(newPallet);
         return ResponseEntity.ok().body(newPallet);

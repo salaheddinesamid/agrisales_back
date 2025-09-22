@@ -362,3 +362,268 @@ Caused by: java.lang.ClassNotFoundException: com.example.medjool.services.implem
 2025-09-22T19:05:24.870+01:00  INFO 8844 --- [medjool] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2025-09-22T19:05:24.876+01:00  INFO 8844 --- [medjool] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
 2025-09-22T19:05:24.891+01:00  INFO 8844 --- [medjool] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.
+2025-09-22T20:05:02.945+01:00  INFO 28080 --- [medjool] [restartedMain] com.example.medjool.MedjoolApplication   : Starting MedjoolApplication using Java 23.0.2 with PID 28080 (C:\Users\s.samid\Downloads\medjool_demo_back\target\classes started by s.samid in C:\Users\s.samid\Downloads\medjool_demo_back)
+2025-09-22T20:05:02.950+01:00 DEBUG 28080 --- [medjool] [restartedMain] com.example.medjool.MedjoolApplication   : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-09-22T20:05:02.952+01:00  INFO 28080 --- [medjool] [restartedMain] com.example.medjool.MedjoolApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-09-22T20:05:03.088+01:00  INFO 28080 --- [medjool] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-09-22T20:05:03.088+01:00  INFO 28080 --- [medjool] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-09-22T20:05:06.082+01:00  INFO 28080 --- [medjool] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-22T20:05:06.340+01:00  INFO 28080 --- [medjool] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 239 ms. Found 17 JPA repository interfaces.
+2025-09-22T20:05:08.353+01:00  INFO 28080 --- [medjool] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-22T20:05:08.386+01:00  INFO 28080 --- [medjool] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-22T20:05:08.386+01:00  INFO 28080 --- [medjool] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-09-22T20:05:08.574+01:00  INFO 28080 --- [medjool] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-22T20:05:08.575+01:00  INFO 28080 --- [medjool] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5485 ms
+2025-09-22T20:05:09.457+01:00  INFO 28080 --- [medjool] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-22T20:05:09.599+01:00  INFO 28080 --- [medjool] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.8.Final
+2025-09-22T20:05:09.700+01:00  INFO 28080 --- [medjool] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-22T20:05:10.560+01:00  INFO 28080 --- [medjool] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-22T20:05:10.668+01:00  INFO 28080 --- [medjool] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-09-22T20:05:11.966+01:00  INFO 28080 --- [medjool] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2789d485
+2025-09-22T20:05:11.970+01:00  INFO 28080 --- [medjool] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-09-22T20:05:12.228+01:00  INFO 28080 --- [medjool] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-22T20:05:15.184+01:00  INFO 28080 --- [medjool] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-22T20:05:15.946+01:00  INFO 28080 --- [medjool] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-22T20:05:17.028+01:00 DEBUG 28080 --- [medjool] [restartedMain] com.example.medjool.filters.JWTFilter    : Filter 'JWTFilter' configured for use
+2025-09-22T20:05:17.028+01:00 DEBUG 28080 --- [medjool] [restartedMain] c.e.m.f.SimpleFilter$$SpringCGLIB$$0     : Filter 'simpleFilter' configured for use
+2025-09-22T20:05:17.031+01:00 DEBUG 28080 --- [medjool] [restartedMain] c.e.m.f.ApiKeyAuthenticationFilter       : Filter 'apiKeyAuthenticationFilter' configured for use
+2025-09-22T20:05:17.255+01:00  INFO 28080 --- [medjool] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-09-22T20:05:18.527+01:00  INFO 28080 --- [medjool] [restartedMain] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.example.medjool.services.implementation.OrderServiceImpl.PRODUCTION_SERVICE_URL
+2025-09-22T20:05:18.527+01:00  INFO 28080 --- [medjool] [restartedMain] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.example.medjool.services.implementation.OrderServiceImpl.API_KEY
+2025-09-22T20:05:18.561+01:00  INFO 28080 --- [medjool] [restartedMain] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.example.medjool.services.implementation.StockServiceImpl.ANALYTICS_SERVICE_URL
+2025-09-22T20:05:18.927+01:00  WARN 28080 --- [medjool] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-22T20:05:19.000+01:00  INFO 28080 --- [medjool] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2025-09-22T20:05:20.000+01:00  INFO 28080 --- [medjool] [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 16 endpoints beneath base path '/actuator'
+2025-09-22T20:05:20.339+01:00  INFO 28080 --- [medjool] [restartedMain] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-09-22T20:05:21.856+01:00  INFO 28080 --- [medjool] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-09-22T20:05:22.010+01:00  INFO 28080 --- [medjool] [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+2025-09-22T20:05:22.010+01:00  INFO 28080 --- [medjool] [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@2d7b94c1]]
+2025-09-22T20:05:22.014+01:00  INFO 28080 --- [medjool] [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+2025-09-22T20:05:22.068+01:00  INFO 28080 --- [medjool] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-22T20:05:22.105+01:00  INFO 28080 --- [medjool] [restartedMain] com.example.medjool.MedjoolApplication   : Started MedjoolApplication in 20.218 seconds (process running for 23.38)
+2025-09-22T20:05:23.312+01:00  INFO 28080 --- [medjool] [RMI TCP Connection(6)-192.168.11.115] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-22T20:05:23.313+01:00  INFO 28080 --- [medjool] [RMI TCP Connection(6)-192.168.11.115] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-22T20:05:23.317+01:00  INFO 28080 --- [medjool] [RMI TCP Connection(6)-192.168.11.115] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2025-09-22T20:05:39.896+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-5] com.example.medjool.jwt.JwtUtilities     : Invalid JWT token.
+2025-09-22T20:05:39.896+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-9] com.example.medjool.jwt.JwtUtilities     : Invalid JWT token.
+2025-09-22T20:05:39.896+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-8] com.example.medjool.jwt.JwtUtilities     : Invalid JWT token.
+2025-09-22T20:05:39.921+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-6] com.example.medjool.jwt.JwtUtilities     : Invalid JWT token.
+2025-09-22T20:05:39.922+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-10] com.example.medjool.jwt.JwtUtilities     : Invalid JWT token.
+2025-09-22T20:05:39.922+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-7] com.example.medjool.jwt.JwtUtilities     : Invalid JWT token.
+2025-09-22T20:05:42.649+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/auth/loginType of request:POST
+2025-09-22T20:05:42.649+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:05:42.950+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:05:44.560+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-8] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-09-22T20:05:44.561+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-09-22T20:05:44.561+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:05:44.577+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:05:44.589+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-9] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-09-22T20:05:44.590+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-09-22T20:05:44.591+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:05:44.595+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:05:47.098+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-3] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-09-22T20:05:47.100+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-09-22T20:05:47.100+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:05:47.129+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:05:47.140+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-2] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-09-22T20:05:47.141+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-09-22T20:05:47.141+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:05:47.148+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:05:52.512+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-8] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-09-22T20:05:52.513+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-09-22T20:05:52.513+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:05:52.517+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:05:52.528+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-9] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-09-22T20:05:52.528+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-09-22T20:05:52.528+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:05:52.543+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:06:17.197+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-6] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-09-22T20:06:17.197+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/newType of request:POST
+2025-09-22T20:06:17.199+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:06:17.294+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:06:19.350+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-1] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-09-22T20:06:19.351+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-09-22T20:06:19.351+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:06:19.357+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:06:19.368+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-7] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-09-22T20:06:19.369+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-09-22T20:06:19.369+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:06:19.379+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:06:21.925+01:00  INFO 28080 --- [medjool] [MessageBroker-1] o.s.w.s.c.WebSocketMessageBrokerStats    : WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 0]
+2025-09-22T20:06:44.510+01:00  INFO 28080 --- [medjool] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 1 deletion, 0 modifications)
+2025-09-22T20:06:44.527+01:00  INFO 28080 --- [medjool] [Thread-5] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-22T20:06:44.553+01:00  INFO 28080 --- [medjool] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-22T20:06:44.559+01:00  INFO 28080 --- [medjool] [Thread-5] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopping...
+2025-09-22T20:06:44.559+01:00  INFO 28080 --- [medjool] [Thread-5] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@2d7b94c1]]
+2025-09-22T20:06:44.559+01:00  INFO 28080 --- [medjool] [Thread-5] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopped.
+2025-09-22T20:06:44.581+01:00  INFO 28080 --- [medjool] [Thread-5] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-22T20:06:44.590+01:00  INFO 28080 --- [medjool] [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-09-22T20:06:44.611+01:00  INFO 28080 --- [medjool] [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-09-22T20:06:44.929+01:00  INFO 28080 --- [medjool] [restartedMain] com.example.medjool.MedjoolApplication   : Starting MedjoolApplication using Java 23.0.2 with PID 28080 (C:\Users\s.samid\Downloads\medjool_demo_back\target\classes started by s.samid in C:\Users\s.samid\Downloads\medjool_demo_back)
+2025-09-22T20:06:44.929+01:00 DEBUG 28080 --- [medjool] [restartedMain] com.example.medjool.MedjoolApplication   : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-09-22T20:06:44.929+01:00  INFO 28080 --- [medjool] [restartedMain] com.example.medjool.MedjoolApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-09-22T20:06:46.089+01:00  INFO 28080 --- [medjool] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-22T20:06:46.208+01:00  INFO 28080 --- [medjool] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 116 ms. Found 17 JPA repository interfaces.
+2025-09-22T20:06:46.694+01:00  INFO 28080 --- [medjool] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-22T20:06:46.698+01:00  INFO 28080 --- [medjool] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-22T20:06:46.698+01:00  INFO 28080 --- [medjool] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-09-22T20:06:46.787+01:00  INFO 28080 --- [medjool] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-22T20:06:46.787+01:00  INFO 28080 --- [medjool] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1858 ms
+2025-09-22T20:06:47.293+01:00  INFO 28080 --- [medjool] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-22T20:06:47.295+01:00  INFO 28080 --- [medjool] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-22T20:06:47.333+01:00  INFO 28080 --- [medjool] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-22T20:06:47.333+01:00  INFO 28080 --- [medjool] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2025-09-22T20:06:47.408+01:00  INFO 28080 --- [medjool] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5559858a
+2025-09-22T20:06:47.410+01:00  INFO 28080 --- [medjool] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2025-09-22T20:06:47.412+01:00  INFO 28080 --- [medjool] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-2)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-22T20:06:48.323+01:00  INFO 28080 --- [medjool] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-22T20:06:48.588+01:00  INFO 28080 --- [medjool] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-22T20:06:48.978+01:00 DEBUG 28080 --- [medjool] [restartedMain] com.example.medjool.filters.JWTFilter    : Filter 'JWTFilter' configured for use
+2025-09-22T20:06:48.978+01:00 DEBUG 28080 --- [medjool] [restartedMain] c.e.m.f.SimpleFilter$$SpringCGLIB$$0     : Filter 'simpleFilter' configured for use
+2025-09-22T20:06:48.978+01:00 DEBUG 28080 --- [medjool] [restartedMain] c.e.m.f.ApiKeyAuthenticationFilter       : Filter 'apiKeyAuthenticationFilter' configured for use
+2025-09-22T20:06:49.426+01:00  WARN 28080 --- [medjool] [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'configurationController' defined in file [C:\Users\s.samid\Downloads\medjool_demo_back\target\classes\com\example\medjool\controller\ConfigurationController.class]: Unsatisfied dependency expressed through constructor parameter 0: No qualifying bean of type 'com.example.medjool.services.implementation.ConfigurationServiceImpl' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2025-09-22T20:06:49.428+01:00  INFO 28080 --- [medjool] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-22T20:06:49.428+01:00  INFO 28080 --- [medjool] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
+2025-09-22T20:06:49.442+01:00  INFO 28080 --- [medjool] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
+2025-09-22T20:06:49.444+01:00  INFO 28080 --- [medjool] [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2025-09-22T20:06:49.466+01:00  INFO 28080 --- [medjool] [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-09-22T20:06:49.562+01:00 ERROR 28080 --- [medjool] [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.example.medjool.controller.ConfigurationController required a bean of type 'com.example.medjool.services.implementation.ConfigurationServiceImpl' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.example.medjool.services.implementation.ConfigurationServiceImpl' in your configuration.
+
+2025-09-22T20:06:51.235+01:00  INFO 28080 --- [medjool] [restartedMain] com.example.medjool.MedjoolApplication   : Starting MedjoolApplication using Java 23.0.2 with PID 28080 (C:\Users\s.samid\Downloads\medjool_demo_back\target\classes started by s.samid in C:\Users\s.samid\Downloads\medjool_demo_back)
+2025-09-22T20:06:51.237+01:00 DEBUG 28080 --- [medjool] [restartedMain] com.example.medjool.MedjoolApplication   : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-09-22T20:06:51.237+01:00  INFO 28080 --- [medjool] [restartedMain] com.example.medjool.MedjoolApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-09-22T20:06:52.142+01:00  INFO 28080 --- [medjool] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-22T20:06:52.225+01:00  INFO 28080 --- [medjool] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 86 ms. Found 17 JPA repository interfaces.
+2025-09-22T20:06:52.509+01:00  INFO 28080 --- [medjool] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-22T20:06:52.515+01:00  INFO 28080 --- [medjool] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-22T20:06:52.515+01:00  INFO 28080 --- [medjool] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-09-22T20:06:52.570+01:00  INFO 28080 --- [medjool] [restartedMain] o.a.c.c.C.[Tomcat-1].[localhost].[/]     : Initializing Spring embedded WebApplicationContext
+2025-09-22T20:06:52.570+01:00  INFO 28080 --- [medjool] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1332 ms
+2025-09-22T20:06:52.874+01:00  INFO 28080 --- [medjool] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-22T20:06:52.887+01:00  INFO 28080 --- [medjool] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-22T20:06:52.905+01:00  INFO 28080 --- [medjool] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-22T20:06:52.905+01:00  INFO 28080 --- [medjool] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2025-09-22T20:06:52.918+01:00  INFO 28080 --- [medjool] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Added connection com.mysql.cj.jdbc.ConnectionImpl@511b7d05
+2025-09-22T20:06:52.933+01:00  INFO 28080 --- [medjool] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2025-09-22T20:06:52.934+01:00  INFO 28080 --- [medjool] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-3)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-22T20:06:53.492+01:00  INFO 28080 --- [medjool] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-22T20:06:53.742+01:00  INFO 28080 --- [medjool] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-22T20:06:54.066+01:00 DEBUG 28080 --- [medjool] [restartedMain] com.example.medjool.filters.JWTFilter    : Filter 'JWTFilter' configured for use
+2025-09-22T20:06:54.066+01:00 DEBUG 28080 --- [medjool] [restartedMain] c.e.m.f.SimpleFilter$$SpringCGLIB$$0     : Filter 'simpleFilter' configured for use
+2025-09-22T20:06:54.066+01:00 DEBUG 28080 --- [medjool] [restartedMain] c.e.m.f.ApiKeyAuthenticationFilter       : Filter 'apiKeyAuthenticationFilter' configured for use
+2025-09-22T20:06:54.675+01:00  INFO 28080 --- [medjool] [restartedMain] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.example.medjool.services.implementation.OrderServiceImpl.PRODUCTION_SERVICE_URL
+2025-09-22T20:06:54.675+01:00  INFO 28080 --- [medjool] [restartedMain] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.example.medjool.services.implementation.OrderServiceImpl.API_KEY
+2025-09-22T20:06:54.708+01:00  INFO 28080 --- [medjool] [restartedMain] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String com.example.medjool.services.implementation.StockServiceImpl.ANALYTICS_SERVICE_URL
+2025-09-22T20:06:54.866+01:00  WARN 28080 --- [medjool] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-22T20:06:54.910+01:00  INFO 28080 --- [medjool] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2025-09-22T20:06:55.342+01:00  INFO 28080 --- [medjool] [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 16 endpoints beneath base path '/actuator'
+2025-09-22T20:06:55.531+01:00  INFO 28080 --- [medjool] [restartedMain] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-09-22T20:06:56.069+01:00  INFO 28080 --- [medjool] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-09-22T20:06:56.100+01:00  INFO 28080 --- [medjool] [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+2025-09-22T20:06:56.100+01:00  INFO 28080 --- [medjool] [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@7f7f1acc]]
+2025-09-22T20:06:56.100+01:00  INFO 28080 --- [medjool] [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+2025-09-22T20:06:56.110+01:00  INFO 28080 --- [medjool] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-22T20:06:56.124+01:00  INFO 28080 --- [medjool] [restartedMain] com.example.medjool.MedjoolApplication   : Started MedjoolApplication in 4.938 seconds (process running for 117.399)
+2025-09-22T20:06:56.126+01:00  INFO 28080 --- [medjool] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2025-09-22T20:07:33.072+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-3] o.a.c.c.C.[Tomcat-1].[localhost].[/]     : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-22T20:07:33.072+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-22T20:07:33.075+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2025-09-22T20:07:33.086+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-3] com.example.medjool.jwt.JwtUtilities     : Invalid JWT token.
+2025-09-22T20:07:33.095+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-1] com.example.medjool.jwt.JwtUtilities     : Invalid JWT token.
+2025-09-22T20:07:33.117+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-9] com.example.medjool.jwt.JwtUtilities     : Invalid JWT token.
+2025-09-22T20:07:33.119+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-2] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-09-22T20:07:33.120+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-5] com.example.medjool.jwt.JwtUtilities     : Invalid JWT token.
+2025-09-22T20:07:33.121+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-09-22T20:07:33.121+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:07:33.154+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:07:33.161+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-7] com.example.medjool.jwt.JwtUtilities     : Invalid JWT token.
+2025-09-22T20:07:33.184+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-6] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-09-22T20:07:33.185+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-09-22T20:07:33.185+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:07:33.197+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:07:33.207+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-8] com.example.medjool.jwt.JwtUtilities     : Invalid JWT token.
+2025-09-22T20:07:35.926+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-10] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-09-22T20:07:35.927+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/delete/3Type of request:DELETE
+2025-09-22T20:07:35.927+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:07:35.983+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:07:37.682+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-3] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-09-22T20:07:37.684+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-09-22T20:07:37.684+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:07:37.698+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:07:37.713+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-1] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-09-22T20:07:37.716+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-09-22T20:07:37.716+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:07:37.723+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:07:38.879+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-9] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-09-22T20:07:38.880+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-09-22T20:07:38.880+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:07:38.887+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:07:38.902+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-5] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-09-22T20:07:38.902+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-09-22T20:07:38.902+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:07:38.911+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:07:41.039+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-2] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-09-22T20:07:41.040+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-09-22T20:07:41.040+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:07:41.045+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:07:41.061+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-7] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-09-22T20:07:41.062+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-09-22T20:07:41.062+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:07:41.068+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:07:56.100+01:00  INFO 28080 --- [medjool] [MessageBroker-1] o.s.w.s.c.WebSocketMessageBrokerStats    : WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 0]
+2025-09-22T20:08:00.299+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-6] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-09-22T20:08:00.300+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/newType of request:POST
+2025-09-22T20:08:00.300+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:08:00.331+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:08:02.381+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-8] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-09-22T20:08:02.381+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-09-22T20:08:02.381+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:08:02.390+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:08:02.400+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-4] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-09-22T20:08:02.401+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-09-22T20:08:02.401+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-09-22T20:08:02.407+01:00  INFO 28080 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-09-22T20:08:16.633+01:00  INFO 28080 --- [medjool] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-22T20:08:16.649+01:00  INFO 28080 --- [medjool] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-22T20:08:16.651+01:00  INFO 28080 --- [medjool] [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopping...
+2025-09-22T20:08:16.651+01:00  INFO 28080 --- [medjool] [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@7f7f1acc]]
+2025-09-22T20:08:16.651+01:00  INFO 28080 --- [medjool] [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopped.
+2025-09-22T20:08:16.655+01:00  INFO 28080 --- [medjool] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-22T20:08:16.656+01:00  INFO 28080 --- [medjool] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
+2025-09-22T20:08:16.662+01:00  INFO 28080 --- [medjool] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.
