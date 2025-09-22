@@ -246,12 +246,14 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         Pallet newPallet = new Pallet();
 
         int totalBoxes = 0;
+        float totalWeight = 0;
 
         if(palletDto.getPackaging() == 5){
             newPallet.setPackaging(5);
             newPallet.setNumberOfBoxesInStory(palletDto.getNumberOfBoxesInStory());
             newPallet.setNumberOfStoriesInPallet(palletDto.getNumberOfStoriesInPallet());
             totalBoxes = newPallet.getNumberOfBoxesInStory() * newPallet.getNumberOfStoriesInPallet();
+            totalWeight = totalBoxes * 5;
             newPallet.setNumberOfBoxesInPallet(totalBoxes);
         }else{
             newPallet.setPackaging(palletDto.getPackaging());
@@ -278,6 +280,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         palletRepository.save(newPallet);
         return ResponseEntity.ok().body(newPallet);
     }
+
+
     /**     * Adds dimensions to a new pallet.
      *
      * @param pallet the Pallet object to update
