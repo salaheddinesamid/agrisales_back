@@ -7,7 +7,7 @@ HELP.md
 .apt_generated
 .classpath
 
-logs
+/logs
 # Ignore build directory
 
 .factorypath
