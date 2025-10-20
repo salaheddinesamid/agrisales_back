@@ -263,7 +263,9 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             newPallet.setNumberOfStoriesInPallet(palletDto.getNumberOfStoriesInPallet());
 
             totalBoxes = newPallet.getNumberOfBoxesInCarton() * newPallet.getNumberOfCartonsInStory() * newPallet.getNumberOfStoriesInPallet();
+            totalWeight = totalBoxes * newPallet.getPackaging();
             newPallet.setNumberOfBoxesInPallet(totalBoxes);
+            newPallet.setTotalNet(totalWeight);
         }
 
         // Dimensions:
