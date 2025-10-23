@@ -276,3 +276,302 @@ Consider defining a bean of type 'com.example.medjool.services.implementation.Co
 2025-10-20T14:54:17.795+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
 2025-10-20T14:54:17.795+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : MAC Address: null
 2025-10-20T14:54:17.806+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T14:54:35.828+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T14:54:35.831+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/newType of request:POST
+2025-10-20T14:54:35.832+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T14:54:35.973+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T14:54:38.014+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T14:54:38.015+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-10-20T14:54:38.015+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T14:54:38.023+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T14:54:38.034+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T14:54:38.035+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-10-20T14:54:38.035+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T14:54:38.044+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T14:55:12.906+01:00  INFO 28616 --- [medjool] [MessageBroker-1] o.s.w.s.c.WebSocketMessageBrokerStats    : WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 0]
+2025-10-20T15:00:36.608+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:36.613+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:00:36.614+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:36.645+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:36.662+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:36.663+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:00:36.663+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:36.668+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:38.211+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:38.214+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/order/get_allType of request:GET
+2025-10-20T15:00:38.214+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:38.531+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:38.545+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:38.545+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/order/get_allType of request:GET
+2025-10-20T15:00:38.545+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:38.591+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:39.094+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:39.095+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-10-20T15:00:39.095+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:39.097+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:39.098+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/client/get_allType of request:GET
+2025-10-20T15:00:39.098+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:39.102+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:39.103+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/stock/get_allType of request:GET
+2025-10-20T15:00:39.103+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:39.107+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:39.118+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:39.119+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-10-20T15:00:39.119+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:39.120+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:39.126+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:39.126+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:39.126+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/stock/get_allType of request:GET
+2025-10-20T15:00:39.126+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:39.126+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:39.137+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-10-20T15:00:39.137+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:39.142+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:39.144+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:39.144+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:39.153+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/stock/get_allType of request:GET
+2025-10-20T15:00:39.153+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:39.155+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:39.157+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:39.157+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-10-20T15:00:39.157+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:39.162+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:39.166+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:39.168+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:39.169+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/client/get_allType of request:GET
+2025-10-20T15:00:39.170+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:39.170+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:39.170+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/stock/get_allType of request:GET
+2025-10-20T15:00:39.170+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:39.184+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:39.193+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:39.199+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:39.201+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-10-20T15:00:39.201+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:39.208+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:39.209+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/stock/get_allType of request:GET
+2025-10-20T15:00:39.210+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:39.210+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:39.222+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:39.224+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:39.224+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-10-20T15:00:39.225+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:39.231+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:39.231+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:39.231+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/stock/get_allType of request:GET
+2025-10-20T15:00:39.231+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:39.241+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:41.564+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:41.564+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/stock/get_allType of request:GET
+2025-10-20T15:00:41.564+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:41.564+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:41.565+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-10-20T15:00:41.565+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:41.566+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:41.566+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/client/get_allType of request:GET
+2025-10-20T15:00:41.566+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:41.572+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:41.575+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:41.576+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:41.577+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/client/addresses/OMA%20TradingType of request:GET
+2025-10-20T15:00:41.577+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:41.581+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:41.608+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:41.618+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:41.619+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/client/addresses/OMA%20TradingType of request:GET
+2025-10-20T15:00:41.619+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:41.623+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:41.644+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:41.644+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:41.645+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/stock/get_allType of request:GET
+2025-10-20T15:00:41.645+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:41.645+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-10-20T15:00:41.645+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:41.652+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:41.654+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:41.666+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:41.666+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:00:41.666+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-10-20T15:00:41.666+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:41.666+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/stock/get_allType of request:GET
+2025-10-20T15:00:41.667+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:00:41.672+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:00:41.672+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:09:20.165+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:09:20.165+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:09:20.165+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:09:20.167+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-10-20T15:09:20.167+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:09:20.167+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/order/get_allType of request:GET
+2025-10-20T15:09:20.167+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:09:20.167+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:09:20.167+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:09:20.187+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:09:20.194+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:09:20.199+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:09:20.199+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:09:20.199+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:09:20.204+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:09:20.205+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:09:20.206+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-10-20T15:09:20.206+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:09:20.212+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:09:20.216+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:09:20.216+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:09:20.217+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:09:20.222+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:09:20.236+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:09:20.237+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:09:20.237+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:09:20.237+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:09:20.242+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:09:20.257+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:09:20.257+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/order/get_allType of request:GET
+2025-10-20T15:09:20.257+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:09:20.291+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:09:20.307+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:09:20.309+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/order/get_allType of request:GET
+2025-10-20T15:09:20.309+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:09:20.333+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:09:20.347+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:09:20.348+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/order/get_allType of request:GET
+2025-10-20T15:09:20.349+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:09:20.373+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:09:23.598+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:09:23.599+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-10-20T15:09:23.599+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:09:23.608+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:09:23.617+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:09:23.618+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-10-20T15:09:23.618+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:09:23.624+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:09:25.260+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:09:25.261+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:09:25.261+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:09:25.265+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:09:25.277+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:09:25.278+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:09:25.278+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:09:25.284+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:10:59.317+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:10:59.318+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:10:59.319+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:10:59.326+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:10:59.356+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:10:59.357+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:10:59.357+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:10:59.363+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:11:46.069+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:11:46.070+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/newType of request:POST
+2025-10-20T15:11:46.070+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:11:46.157+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:11:48.189+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:11:48.190+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-10-20T15:11:48.190+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:11:48.195+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:11:48.204+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:11:48.205+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/configuration/pallet/get_allType of request:GET
+2025-10-20T15:11:48.205+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:11:48.212+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:11:53.179+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:11:53.181+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:11:53.181+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:11:53.186+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:11:53.195+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:11:53.196+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:11:53.196+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:11:53.200+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:12:23.201+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:12:23.202+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:12:23.202+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:12:23.206+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:12:53.197+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:12:53.198+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:12:53.198+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:12:53.205+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:13:23.211+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:13:23.212+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:13:23.213+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:13:23.221+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:13:53.198+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:13:53.199+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:13:53.199+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:13:53.204+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:14:23.201+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:14:23.202+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:14:23.202+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:14:23.207+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:14:53.267+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:14:53.268+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:14:53.268+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:14:53.272+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:15:23.342+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:15:23.342+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:15:23.343+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:15:23.350+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:15:55.025+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:15:55.026+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:15:55.026+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:15:55.035+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:16:23.190+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:16:23.191+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:16:23.191+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:16:23.195+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:16:53.210+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:16:53.210+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:16:53.210+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:16:53.218+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:17:23.268+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:17:23.270+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:17:23.270+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:17:23.276+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:17:53.273+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:17:53.273+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:17:53.273+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:17:53.281+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-3] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:18:46.276+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:18:46.277+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:18:46.277+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:18:46.283+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-7] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:19:46.280+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:19:46.284+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:19:46.284+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:19:46.289+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-1] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:20:46.272+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:20:46.272+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:20:46.273+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:20:46.277+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-5] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:21:46.273+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:21:46.273+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:21:46.273+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:21:46.276+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-9] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:22:46.265+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:22:46.266+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:22:46.266+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:22:46.270+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-2] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:23:46.279+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:23:46.280+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:23:46.281+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:23:46.287+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-10] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:24:46.324+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:24:46.325+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:24:46.325+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:24:46.329+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-6] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:25:12.921+01:00  INFO 28616 --- [medjool] [MessageBroker-1] o.s.w.s.c.WebSocketMessageBrokerStats    : WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 2, active threads = 1, queued tasks = 0, completed tasks = 1]
+2025-10-20T15:25:46.264+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:25:46.265+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:25:46.265+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:25:46.269+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-8] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T15:26:46.268+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] com.example.medjool.filters.JWTFilter    : authenticated user with email :Oussama.elmir@medjoolstar.com
+2025-10-20T15:26:46.269+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : Incoming request: /api/alertType of request:GET
+2025-10-20T15:26:46.269+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : MAC Address: null
+2025-10-20T15:26:46.276+01:00  INFO 28616 --- [medjool] [http-nio-8080-exec-4] c.example.medjool.filters.SimpleFilter   : Outgoing response with status: 200
+2025-10-20T18:59:07.380+01:00  WARN 28616 --- [medjool] [HikariPool-3 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Thread starvation or clock leap detected (housekeeper delta=3h14m59s317ms11µs500ns).
+2025-10-20T19:07:40.746+01:00  INFO 28616 --- [medjool] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-10-20T19:07:40.824+01:00  INFO 28616 --- [medjool] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-10-20T19:07:40.860+01:00  INFO 28616 --- [medjool] [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopping...
+2025-10-20T19:07:40.864+01:00  INFO 28616 --- [medjool] [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@6c6d276b]]
+2025-10-20T19:07:40.865+01:00  INFO 28616 --- [medjool] [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopped.
+2025-10-20T19:07:40.899+01:00  INFO 28616 --- [medjool] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-10-20T19:07:40.940+01:00  INFO 28616 --- [medjool] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
+2025-10-20T19:07:41.050+01:00  INFO 28616 --- [medjool] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.
