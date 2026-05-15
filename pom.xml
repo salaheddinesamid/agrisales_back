@@ -15,7 +15,7 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
-		<lombok.version>1.18.30</lombok.version> <!-- Explicit Lombok version -->
+		<lombok.version>1.18.32</lombok.version> <!-- Explicit Lombok version -->
 	</properties>
 
 	<dependencies>
@@ -196,7 +196,6 @@
 
 	<build>
 		<plugins>
-			<!-- Maven Compiler Plugin (for Lombok support) -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -214,19 +213,11 @@
 				</configuration>
 			</plugin>
 
-			<!-- Spring Boot Maven Plugin -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.3.1</version>
-				<configuration>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 </project>
