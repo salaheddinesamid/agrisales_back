@@ -1,14 +1,13 @@
 package unit_testing;
 
 
-import com.example.medjool.model.Client;
-import com.example.medjool.model.Order;
-import com.example.medjool.model.Pallet;
-import com.example.medjool.repository.OrderRepository;
-import com.example.medjool.repository.ProductRepository;
-import com.example.medjool.repository.SystemSettingRepository;
-import com.example.medjool.services.implementation.AlertServiceImpl;
-import com.example.medjool.services.implementation.OverviewServiceImpl;
+import com.example.medjool.modules.client.model.Client;
+import com.example.medjool.modules.order.model.Order;
+import com.example.medjool.modules.stock.model.Pallet;
+import com.example.medjool.modules.order.repository.OrderRepository;
+import com.example.medjool.modules.stock.repository.ProductRepository;
+import com.example.medjool.modules.user_management.service.implementation.repository.SystemSettingRepository;
+import com.example.medjool.modules.notification.service.implementation.AlertServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

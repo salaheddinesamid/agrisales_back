@@ -1,7 +1,7 @@
 package com.example.medjool.component;
 
-import com.example.medjool.model.SystemSetting;
-import com.example.medjool.repository.SystemSettingRepository;
+import com.example.medjool.modules.settings.model.SystemSetting;
+import com.example.medjool.modules.user_management.service.implementation.repository.SystemSettingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;

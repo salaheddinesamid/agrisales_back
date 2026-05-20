@@ -1,0 +1,28 @@
+package com.example.medjool.modules.shipment.model;
+
+import com.example.medjool.modules.order.model.Order;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+@Entity
+@Getter
+@Setter
+public class Shipment {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long shipmentId;
+
+    private String trackingNumber;
+
+    @Column(name = "tracking_url")
+    private String trackingUrl;
+
+    @OneToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Order order;
+
+}

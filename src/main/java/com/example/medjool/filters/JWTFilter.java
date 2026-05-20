@@ -4,7 +4,7 @@ import com.example.medjool.exception.TokenExpiredException;
 import com.example.medjool.exception.UserAccountLockedException;
 import com.example.medjool.exception.UserNotFoundException;
 import com.example.medjool.jwt.JwtUtilities;
-import com.example.medjool.services.implementation.UserDetailsServiceImpl;
+import com.example.medjool.modules.user_management.service.implementation.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;

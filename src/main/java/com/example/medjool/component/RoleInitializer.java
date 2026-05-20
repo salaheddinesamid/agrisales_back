@@ -1,12 +1,11 @@
 package com.example.medjool.component;
 
-import com.example.medjool.dto.NewUserDto;
-import com.example.medjool.model.Role;
-import com.example.medjool.model.RoleName;
-import com.example.medjool.model.User;
-import com.example.medjool.repository.RoleRepository;
-import com.example.medjool.repository.UserRepository;
-import com.example.medjool.services.implementation.UserManagementServiceImpl;
+import com.example.medjool.modules.user_management.dto.NewUserDto;
+import com.example.medjool.modules.user_management.model.Role;
+import com.example.medjool.modules.user_management.model.RoleName;
+import com.example.medjool.modules.user_management.repository.RoleRepository;
+import com.example.medjool.modules.user_management.repository.UserRepository;
+import com.example.medjool.modules.user_management.service.implementation.UserManagementServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;

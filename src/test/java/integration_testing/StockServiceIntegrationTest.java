@@ -1,9 +1,9 @@
 package integration_testing;
 
 import com.example.medjool.MedjoolApplication;
-import com.example.medjool.model.Product;
-import com.example.medjool.repository.ProductRepository;
-import com.example.medjool.services.implementation.StockServiceImpl;
+import com.example.medjool.modules.stock.model.Product;
+import com.example.medjool.modules.stock.repository.ProductRepository;
+import com.example.medjool.modules.stock.service.implementation.StockServiceImpl;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

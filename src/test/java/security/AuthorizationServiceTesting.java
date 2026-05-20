@@ -3,7 +3,7 @@ package security;
 import com.example.medjool.MedjoolApplication;
 import com.example.medjool.jwt.JwtUtilities;
 
-import com.example.medjool.services.implementation.UserDetailsServiceImpl;
+import com.example.medjool.modules.user_management.service.implementation.UserDetailsServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;

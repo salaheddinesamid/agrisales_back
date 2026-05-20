@@ -1,16 +1,29 @@
 package unit_testing;
 
-import com.example.medjool.dto.*;
-
 import com.example.medjool.exception.ClientNotActiveException;
 import com.example.medjool.exception.OrderCannotBeCanceledException;
 import com.example.medjool.exception.ProductLowStock;
 import com.example.medjool.exception.ProductNotFoundException;
 
-import com.example.medjool.model.*;
+import com.example.medjool.modules.client.model.Client;
+import com.example.medjool.modules.client.model.ClientStatus;
+import com.example.medjool.modules.client.repository.ClientRepository;
+import com.example.medjool.modules.order.dto.*;
+import com.example.medjool.modules.order.model.Order;
+import com.example.medjool.modules.order.model.OrderCurrency;
+import com.example.medjool.modules.order.model.OrderItem;
+import com.example.medjool.modules.order.model.OrderStatus;
+import com.example.medjool.modules.order.repository.*;
+import com.example.medjool.modules.settings.model.Forex;
+import com.example.medjool.modules.settings.model.ForexCurrency;
+import com.example.medjool.modules.stock.model.Pallet;
+import com.example.medjool.modules.stock.model.Product;
+import com.example.medjool.modules.stock.repository.PalletRepository;
+import com.example.medjool.modules.stock.repository.ProductRepository;
+import com.example.medjool.modules.user_management.service.implementation.repository.ForexRepository;
 import com.example.medjool.repository.*;
 
-import com.example.medjool.services.implementation.OrderServiceImpl;
+import com.example.medjool.modules.order.service.implementation.OrderServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

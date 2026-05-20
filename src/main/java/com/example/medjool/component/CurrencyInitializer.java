@@ -1,8 +1,8 @@
 package com.example.medjool.component;
 
-import com.example.medjool.model.Forex;
-import com.example.medjool.model.ForexCurrency;
-import com.example.medjool.repository.ForexRepository;
+import com.example.medjool.modules.settings.model.Forex;
+import com.example.medjool.modules.settings.model.ForexCurrency;
+import com.example.medjool.modules.user_management.service.implementation.repository.ForexRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;

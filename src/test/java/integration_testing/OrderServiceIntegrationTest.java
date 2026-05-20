@@ -1,22 +1,27 @@
 package integration_testing;
 
 import com.example.medjool.MedjoolApplication;
-import com.example.medjool.dto.*;
-import com.example.medjool.model.*;
+import com.example.medjool.modules.client.model.Client;
+import com.example.medjool.modules.client.model.ClientStatus;
+import com.example.medjool.modules.client.repository.ClientRepository;
+import com.example.medjool.modules.order.dto.*;
+import com.example.medjool.modules.order.model.Order;
+import com.example.medjool.modules.order.repository.OrderItemRepository;
+import com.example.medjool.modules.order.repository.OrderRepository;
+import com.example.medjool.modules.stock.model.Pallet;
+import com.example.medjool.modules.stock.model.Product;
+import com.example.medjool.modules.stock.repository.PalletRepository;
+import com.example.medjool.modules.stock.repository.ProductRepository;
+import com.example.medjool.modules.user_management.service.implementation.repository.ForexRepository;
 import com.example.medjool.repository.*;
-import com.example.medjool.services.implementation.OrderServiceImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.medjool.modules.order.service.implementation.OrderServiceImpl;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 

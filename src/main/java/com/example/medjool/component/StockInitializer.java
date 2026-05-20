@@ -1,7 +1,7 @@
 package com.example.medjool.component;
-import com.example.medjool.dto.NewProductDto;
-import com.example.medjool.model.Product;
-import com.example.medjool.repository.ProductRepository;
+import com.example.medjool.modules.stock.dto.NewProductDto;
+import com.example.medjool.modules.stock.model.Product;
+import com.example.medjool.modules.stock.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;

@@ -1,11 +1,11 @@
 package com.example.medjool.integration;
 
 import com.example.medjool.MedjoolApplication;
-import com.example.medjool.dto.AuthenticationResponseDto;
+import com.example.medjool.modules.auth.dto.AuthenticationResponseDto;
 
 
-import com.example.medjool.dto.LoginRequestDto;
-import com.example.medjool.services.implementation.AuthenticationServiceImpl;
+import com.example.medjool.modules.auth.dto.LoginRequestDto;
+import com.example.medjool.modules.auth.service.implementation.AuthenticationServiceImpl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;

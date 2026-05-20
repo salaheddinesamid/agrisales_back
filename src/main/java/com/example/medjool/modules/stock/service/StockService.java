@@ -1,0 +1,44 @@
+package com.example.medjool.modules.stock.service;
+
+import com.example.medjool.modules.stock.dto.ProductResponseDto;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
+
+public interface StockService {
+
+    /** * Fetches all products from the stock.
+     *
+     * @return a list of ProductResponseDto containing product details.
+     */
+    List<ProductResponseDto> getAllProducts();
+
+    /** * Updates the stock by processing a CSV file.
+     *
+     * @param file the CSV file containing product data.
+     * @return a ResponseEntity indicating the result of the operation.
+     * @throws IOException if an error occurs while reading the file.
+     */
+    ResponseEntity<Object> updateStock(MultipartFile file, Integer weekNumber) throws IOException;
+
+
+
+    /** * clear the stock.
+     *
+     * @return a ResponseEntity indicating the result of the operation.
+     */
+    ResponseEntity<Object> clearStock();
+
+    /** * Initializes the stock by processing a CSV file.
+     *
+     * @param file the CSV file containing initial product data.
+     * @return a ResponseEntity indicating the result of the operation.
+     * @throws IOException if an error occurs while reading the file.
+     */
+    ResponseEntity<Object> initializeStock(MultipartFile file) throws IOException;
+
+    List<String> getAllProductCode();
+
+}

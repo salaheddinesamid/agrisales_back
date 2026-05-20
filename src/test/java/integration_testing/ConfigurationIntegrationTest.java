@@ -1,13 +1,18 @@
 package integration_testing;
 
 import com.example.medjool.MedjoolApplication;
-import com.example.medjool.dto.*;
-import com.example.medjool.model.*;
-import com.example.medjool.repository.AddressRepository;
-import com.example.medjool.repository.ClientRepository;
-import com.example.medjool.repository.ContactRepository;
-import com.example.medjool.repository.PalletRepository;
-import com.example.medjool.services.implementation.ConfigurationServiceImpl;
+import com.example.medjool.modules.client.dto.*;
+import com.example.medjool.modules.client.model.Address;
+import com.example.medjool.modules.client.model.Client;
+import com.example.medjool.modules.client.model.ClientStatus;
+import com.example.medjool.modules.client.model.Contact;
+import com.example.medjool.modules.settings.dto.PalletDto;
+import com.example.medjool.modules.settings.dto.UpdatePalletDto;
+import com.example.medjool.modules.stock.model.Pallet;
+import com.example.medjool.modules.client.repository.AddressRepository;
+import com.example.medjool.modules.client.repository.ClientRepository;
+import com.example.medjool.modules.client.repository.ContactRepository;
+import com.example.medjool.modules.stock.repository.PalletRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

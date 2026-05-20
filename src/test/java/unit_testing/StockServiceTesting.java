@@ -1,11 +1,11 @@
 package unit_testing;
 
 import com.example.medjool.component.StockInitializer;
-import com.example.medjool.dto.NewProductDto;
-import com.example.medjool.model.Product;
+import com.example.medjool.modules.stock.dto.NewProductDto;
+import com.example.medjool.modules.stock.model.Product;
 
-import com.example.medjool.repository.ProductRepository;
-import com.example.medjool.services.implementation.StockServiceImpl;
+import com.example.medjool.modules.stock.repository.ProductRepository;
+import com.example.medjool.modules.stock.service.implementation.StockServiceImpl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
