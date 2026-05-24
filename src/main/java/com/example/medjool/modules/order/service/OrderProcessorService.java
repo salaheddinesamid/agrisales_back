@@ -4,6 +4,12 @@ import com.example.medjool.modules.order.dto.OrderRequestDto;
 import com.example.medjool.modules.order.dto.OrderResponseDto;
 
 public interface OrderProcessorService {
+    /**
+     * 
+     * @param orderType
+     * @return
+     */
+    boolean supports(String orderType);
     /**     * Creates a new order based on the provided OrderRequestDto.
      *
      * @param orderRequestDto the DTO containing order details
