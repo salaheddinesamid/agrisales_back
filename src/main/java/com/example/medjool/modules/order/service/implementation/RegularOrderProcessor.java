@@ -53,6 +53,11 @@ public class RegularOrderProcessor implements OrderProcessorService {
     }
 
     @Override
+    public boolean supports(String orderType) {
+        return orderType.equals("REGULAR");
+    }
+
+    @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
     @CacheEvict(value = "marginPerClient", key = "#orderRequestDto.clientName")
     public OrderResponseDto processOrder(OrderRequestDto orderRequestDto) {

@@ -17,7 +17,7 @@ import java.util.List;
 public class OrderController {
 
     
-    private final OrderServiceImpl orderService;
+    private final Order
     @Autowired
     public OrderController(OrderServiceImpl orderService) {
         this.orderService = orderService;
