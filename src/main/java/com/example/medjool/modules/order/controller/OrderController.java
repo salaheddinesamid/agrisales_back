@@ -1,12 +1,17 @@
 package com.example.medjool.modules.order.controller;
 
 import com.example.medjool.modules.order.dto.*;
+import com.example.medjool.modules.order.service.OrderProcessorService;
+import com.example.medjool.modules.order.service.implementation.OrderCancellerServiceImpl;
+import com.example.medjool.modules.order.service.implementation.OrderQueryServiceImpl;
+import com.example.medjool.modules.order.service.implementation.OrderUpdateServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /** * Controller for handling order-related requests such as creating, updating, and retrieving orders.
  */
@@ -17,15 +22,17 @@ import java.util.List;
 public class OrderController {
 
     
-    private final Order
-    @Autowired
-    public OrderController(OrderServiceImpl orderService) {
-        this.orderService = orderService;
-    }
+    private final OrderQueryServiceImpl orderQueryService;
+    private final List<OrderProcessorService> orderProcessorServices;
+    private final OrderUpdateServiceImpl orderUpdateService;
+    private final OrderCancellerServiceImpl orderCancellerService;
 
-    @GetMapping("test")
-    public String test() {
-        return orderService.test();
+    @Autowired
+    public OrderController(OrderQueryServiceImpl orderQueryService, List<OrderProcessorService> orderProcessorServices, OrderUpdateServiceImpl orderUpdateService, OrderCancellerServiceImpl orderCancellerService) {
+        this.orderQueryService = orderQueryService;
+        this.orderProcessorServices = orderProcessorServices;
+        this.orderUpdateService = orderUpdateService;
+        this.orderCancellerService = orderCancellerService;
     }
 
 
@@ -37,7 +44,19 @@ public class OrderController {
      */
     @PostMapping("")
     public ResponseEntity<?> makeOrder(@RequestBody OrderRequestDto orderRequestDto) throws Exception {
-        return orderService.createOrder(orderRequestDto);
+        try{
+            OrderProcessorService processor = orderProcessorServices
+                    .stream().filter(orderProcessorService -> orderProcessorService.supports("REGULAR"))
+                    .findFirst().get();
+
+            return ResponseEntity.status(200)
+                    .body(processor.processOrder(orderRequestDto));
+
+        }
+        catch (Exception exception){
+            return ResponseEntity.status(500)
+                    .body("An error occurred during order processing, please try again");
+        }
     }
 
 
@@ -46,8 +65,13 @@ public class OrderController {
      * @return OrderResponseDto containing details of the specified order
      */
     @GetMapping("/get_all")
-    public List<OrderResponseDto> getAll(){
-        return orderService.getAllOrders();
+    public ResponseEntity<?> getAll(){
+        try{
+            return ResponseEntity.ok(orderQueryService.getAllOrders());
+        }catch (Exception e){
+            return ResponseEntity.status(500)
+                    .body("An error occurred during fetching the orders...");
+        }
     }
 
     /**     * Updates an order status by its ID.
@@ -57,7 +81,14 @@ public class OrderController {
      */
     @PutMapping("status/update/{id}")
     public ResponseEntity<Object> updateOrderStatus(@PathVariable Long id, @RequestBody OrderStatusDto orderStatusDto) throws Exception {
-        return orderService.updateOrderStatus(id,orderStatusDto);
+        try{
+            return ResponseEntity.ok(
+                    orderUpdateService.updateOrderStatus(id,orderStatusDto)
+            );
+        }catch (Exception e){
+            return ResponseEntity.status(500)
+                    .body("");
+        }
     }
 
     /**     * Updates an order details by its ID.
@@ -67,7 +98,14 @@ public class OrderController {
      */
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateOrder(@PathVariable Long id, @RequestBody OrderUpdateRequestDto orderRequestDto) throws Exception {
-        return orderService.updateOrder(id,orderRequestDto);
+        try{
+            return ResponseEntity.ok(
+                    orderUpdateService.updateOrder(id,orderRequestDto)
+            );
+        }catch (Exception exception){
+            return ResponseEntity.status(500)
+                    .body("An error occurred during order update");
+        }
     }
 
 
@@ -76,8 +114,15 @@ public class OrderController {
      * @return OrderResponseDto containing details of the specified order
      */
     @GetMapping("history/get_all")
-    public ResponseEntity<List<OrderHistoryResponseDto>> getAllHistory(){
-        return orderService.getAllOrderHistory();
+    public ResponseEntity<?> getAllHistory(){
+        try{
+            return ResponseEntity.ok(
+                    orderQueryService.getAllOrderHistory()
+            );
+        }catch (Exception exception){
+            return ResponseEntity.status(500)
+                    .body("An error occurred during fetching order history");
+        }
     }
 
     /**     * Cancels an order by its ID.
@@ -87,7 +132,14 @@ public class OrderController {
      */
     @DeleteMapping("/cancel/{id}")
     public ResponseEntity<Object> cancelOrder(@PathVariable Long id) {
-        return orderService.cancelOrder(id);
+        try{
+            orderCancellerService.cancelOrder(id);
+            return ResponseEntity.status(200)
+                    .body(String.format("The order with ID: %s has been cancelled", id));
+        }catch (Exception ex){
+            return ResponseEntity.status(500)
+                    .body("");
+        }
     }
 
     /**     * Retrieves an order by its ID.
@@ -96,8 +148,15 @@ public class OrderController {
      * @return OrderResponseDto containing details of the specified order
      */
     @GetMapping("/get/{id}")
-    public OrderResponseDto getOrder(@PathVariable Long id) {
-        return orderService.getOrderById(id);
+    public ResponseEntity<?> getOrder(@PathVariable Long id) {
+        try{
+            return ResponseEntity.ok(
+                    orderQueryService.getOrderById(id)
+            );
+        }catch (Exception exception){
+            return ResponseEntity.status(500)
+                    .body("");
+        }
     }
 
 }
