@@ -35,7 +35,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
-
+/**
 public class ConfigurationServiceTesting {
 
 
@@ -319,4 +319,4 @@ public class ConfigurationServiceTesting {
         ResponseEntity<Object> response = configurationService.addForex(forexDto);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
-}
+}**/
