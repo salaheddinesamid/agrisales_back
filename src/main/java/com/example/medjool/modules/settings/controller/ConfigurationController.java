@@ -10,6 +10,7 @@ import com.example.medjool.modules.client.dto.ClientDto;
 import com.example.medjool.modules.client.dto.ClientResponseDto;
 import com.example.medjool.modules.client.dto.UpdateClientDto;
 import com.example.medjool.modules.stock.model.Pallet;
+import org.hibernate.engine.config.internal.ConfigurationServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
