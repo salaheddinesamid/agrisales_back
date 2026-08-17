@@ -1,8 +1,10 @@
 package com.example.medjool.modules.stock.controller;
 
+import com.example.medjool.component.StockInitializer;
 import com.example.medjool.modules.stock.dto.NewProductDto;
 import com.example.medjool.modules.stock.dto.ProductResponseDto;
 import com.example.medjool.modules.stock.service.implementation.StockAdderServiceImpl;
+import com.example.medjool.modules.stock.service.implementation.StockInitializerServiceImpl;
 import com.example.medjool.modules.stock.service.implementation.StockQueryServiceImpl;
 import com.example.medjool.modules.stock.service.implementation.StockUpdateServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +29,14 @@ public class StockController {
     private final StockQueryServiceImpl stockQueryService;
     private final StockAdderServiceImpl stockAdderService;
     private final StockUpdateServiceImpl stockUpdateService;
-    private final OverviewServiceImpl overviewService;
+    private final StockInitializerServiceImpl stockInitializerService;
 
     @Autowired
-    public StockController(StockQueryServiceImpl stockQueryService, StockAdderServiceImpl stockAdderService, StockUpdateServiceImpl stockUpdateService, OverviewServiceImpl overviewService) {
+    public StockController(StockQueryServiceImpl stockQueryService, StockAdderServiceImpl stockAdderService, StockUpdateServiceImpl stockUpdateService, StockInitializerServiceImpl stockInitializerService) {
         this.stockQueryService = stockQueryService;
         this.stockAdderService = stockAdderService;
         this.stockUpdateService = stockUpdateService;
-        this.overviewService = overviewService;
+        this.stockInitializerService = stockInitializerService;
     }
 
     /**     * Fetches all products from the stock.
@@ -69,10 +71,12 @@ public class StockController {
      *
      * @return a ResponseEntity containing the stock overview.
      */
+    /**
     @GetMapping("overview")
     public ResponseEntity<?> getStockOverview() {
         return overviewService.getOverview();
     }
+    **/
 
     /**     * Updates the stock by processing a CSV file.
      *
@@ -83,12 +87,19 @@ public class StockController {
     @PutMapping("/update")
     public ResponseEntity<Object> updateStock(@RequestBody MultipartFile file ,
                                               @RequestParam(value = "week_number") Integer weekNumber) throws IOException {
-        return stockService.updateStock(file,weekNumber);
+        try{
+            stockUpdateService.updateStock(file,weekNumber);
+            return ResponseEntity   .status(200)
+                    .body("The stock has been updated successfully");
+        }catch (Exception exception){
+            return ResponseEntity.status(500)
+                    .body("An error occurred during stock update");
+        }
     }
 
     @GetMapping("/product_code/get_all")
     public List<String> getAllProductCodes() {
-        return stockService.getAllProductCode();
+        return List.of("");
     }
 
     /**     * Clears the stock by removing all products.
@@ -97,7 +108,15 @@ public class StockController {
      */
     @PutMapping("/clear")
     public ResponseEntity<Object> clearStock() {
-        return stockService.clearStock();
+        try{
+            stockUpdateService.clearStock();
+            return ResponseEntity.status(200)
+                    .body("The stock has been cleared successfully");
+        }catch (Exception exception){
+            return ResponseEntity.status(500)
+                    .body("An error occurred during stock clearance");
+        }
+
     }
 
     /**     * Initializes the stock by processing a CSV file.
@@ -108,7 +127,14 @@ public class StockController {
      */
     @PostMapping("/initialize")
     public ResponseEntity<Object> initializeStock(@RequestBody MultipartFile file) throws IOException {
-        return stockService.initializeStock(file);
+        try{
+            stockInitializerService.initializeStock(file)
+            return ResponseEntity.status(200)
+                    .body("The stock has been initialized successfully");
+        }catch (Exception exception){
+            return ResponseEntity.status(500)
+                    .body("An error occurred during the stock initialization");
+        }
     }
     
 }

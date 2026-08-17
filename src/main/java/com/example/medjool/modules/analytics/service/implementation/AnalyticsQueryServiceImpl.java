@@ -12,7 +12,6 @@ import com.example.medjool.modules.order.model.Order;
 import com.example.medjool.modules.order.model.OrderStatus;
 import com.example.medjool.modules.stock.model.Product;
 import com.example.medjool.modules.stock.repository.ProductRepository;
-import com.example.medjool.modules.stock.service.implementation.StockQueryServiceImpl;
 import com.example.medjool.modules.user_management.service.implementation.repository.SystemSettingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
