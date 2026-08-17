@@ -1,6 +1,5 @@
 package com.example.medjool.modules.stock.controller;
 
-import com.example.medjool.component.StockInitializer;
 import com.example.medjool.modules.stock.dto.NewProductDto;
 import com.example.medjool.modules.stock.dto.ProductResponseDto;
 import com.example.medjool.modules.stock.service.implementation.StockAdderServiceImpl;
