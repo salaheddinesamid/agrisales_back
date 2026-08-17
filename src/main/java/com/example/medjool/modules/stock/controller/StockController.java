@@ -128,7 +128,7 @@ public class StockController {
     @PostMapping("/initialize")
     public ResponseEntity<Object> initializeStock(@RequestBody MultipartFile file) throws IOException {
         try{
-            stockInitializerService.initializeStock(file)
+            stockInitializerService.initializeStock(file);
             return ResponseEntity.status(200)
                     .body("The stock has been initialized successfully");
         }catch (Exception exception){
