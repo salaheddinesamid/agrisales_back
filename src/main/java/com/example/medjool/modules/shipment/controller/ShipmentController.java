@@ -1,6 +1,9 @@
 package com.example.medjool.modules.shipment.controller;
 
 import com.example.medjool.modules.shipment.dto.ShipmentDetailsDto;
+import com.example.medjool.modules.shipment.service.implementation.ShipmentAdderServiceImpl;
+import com.example.medjool.modules.shipment.service.implementation.ShipmentQueryServiceImpl;
+import com.example.medjool.modules.shipment.service.implementation.ShipmentUpdateServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +20,15 @@ import java.util.List;
 
 public class ShipmentController {
 
-    private final ShipmentServiceImpl shipmentService;
+    private final ShipmentAdderServiceImpl shipmentAdderService;
+    private final ShipmentQueryServiceImpl shipmentQueryService;
+    private final ShipmentUpdateServiceImpl shipmentUpdateService;
 
     @Autowired
-    public ShipmentController(ShipmentServiceImpl shipmentService) {
-        this.shipmentService = shipmentService;
+    public ShipmentController(ShipmentAdderServiceImpl shipmentAdderService,ShipmentQueryServiceImpl shipmentQueryService, ShipmentUpdateServiceImpl shipmentUpdateService) {
+        this.shipmentAdderService = shipmentAdderService;
+        this.shipmentQueryService = shipmentQueryService;
+        this.shipmentUpdateService = shipmentUpdateService;
     }
 
     /**     * Retrieves all shipments.
@@ -30,8 +37,14 @@ public class ShipmentController {
      * @throws Exception if an error occurs while fetching shipments.
      */
     @GetMapping("/get_all")
-    public List<ShipmentDetailsDto> getAllShipments() throws Exception {
-        return shipmentService.getAllShipments();
+    public ResponseEntity<?> getAllShipments() throws Exception {
+        try{
+            return ResponseEntity.status(200)
+                    .body(shipmentQueryService.getAllShipments());
+        }catch (Exception exception){
+            return ResponseEntity.status(500)
+                    .build();
+        }
     }
 
 
@@ -43,7 +56,15 @@ public class ShipmentController {
      */
     @PutMapping("/update/tracking/{shipmentId}")
     public ResponseEntity<?> updateTrackingNumber(@PathVariable long shipmentId, @RequestParam String trackingNumber) throws Exception {
-        return shipmentService.updateShipmentTracker(shipmentId, trackingNumber);
+        try{
+            return ResponseEntity.status(200)
+                    .body(
+                            shipmentUpdateService.updateShipmentTracker(shipmentId, trackingNumber)
+                    );
+        }catch (Exception exception){
+            return ResponseEntity.status(500)
+                    .build();
+        }
     }
 
     /**     * Cancels a shipment by its ID.
@@ -54,7 +75,13 @@ public class ShipmentController {
      */
     @DeleteMapping("/delete/{shipmentId}")
     public ResponseEntity<String> cancelShipment(@PathVariable long shipmentId) throws Exception {
-        return shipmentService.cancelShipment(shipmentId);
+        try{
+            shipmentUpdateService.cancelShipment(shipmentId);
+            return ResponseEntity.ok().build();
+        }catch (Exception exception){
+            return ResponseEntity.status(500)
+                    .build();
+        }
     }
 
 }
